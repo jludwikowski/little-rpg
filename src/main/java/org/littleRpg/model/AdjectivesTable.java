@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AdjectivesTable {
 
-    int entryProbability;
+    public int entryProbability;
     public List<String> adjectives;
 
     public AdjectivesTable(int probability, String[] adjectives){

@@ -1,8 +1,10 @@
 package org.littleRpg.generator;
 
+import org.littleRpg.engine.Roller;
 import org.littleRpg.model.AdjectivesTable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class Generator<T> {
@@ -16,9 +18,27 @@ public abstract class Generator<T> {
         List<T> entities = new ArrayList<T>();
         while(Math.random()*100 < probability){
             entities.add(this.getEntity());
-
         }
         return entities;
     }
+
+    public T finalizeEntity(T entity) {
+        if(adjectiveTypes!=null && !adjectiveTypes.isEmpty()) {
+            Iterator<AdjectivesTable> tableList = adjectiveTypes.listIterator();
+            while(tableList.hasNext()) {
+                AdjectivesTable adjectivesList = tableList.next();
+                String adjective = null;
+                if(Math.random()*100 < adjectivesList.entryProbability) {
+                    adjective = adjectivesList.adjectives.get(Roller.pickNumberFrom(adjectivesList.adjectives.size()));
+                }
+                if(adjective != null) {
+                    entity = this.Adjust(entity, adjective);
+                }
+            }
+        }
+        return entity;
+    }
+
+    abstract public T Adjust(T entity, String adj);
 
 }
