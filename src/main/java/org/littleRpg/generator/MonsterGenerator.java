@@ -26,7 +26,7 @@ public class MonsterGenerator extends Generator<Monster> {
     }
 
     @Override
-    public Monster Adjust(Monster entity, String adj) {
+    public Monster adjust(Monster entity, String adj) {
         entity.name = adj + " " + entity.name;
         entity.description = adj + " " + entity.description;
 
@@ -66,37 +66,16 @@ public class MonsterGenerator extends Generator<Monster> {
     }
 
     private Monster getBaseByType(MonsterTypes mosterType) {
-        Monster monster = new Monster();
-
+        String name = mosterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(mosterType) {
             case goblin:
-                monster.name = "goblin " + String.valueOf(Math.floor(Math.random()*1000));
-                monster.maxHp = 5;
-                monster.currentHp = 5;
-                monster.strength = 3;
-                monster.attack = 30;
-                monster.description = "green goblin";
-                break;
+                return new Monster(name, "green goblin",5,5,30,3,null, null, null);
             case slime:
-                monster.name = "slime " + String.valueOf(Math.floor(Math.random()*1000));
-                monster.maxHp = 20;
-                monster.currentHp = 20;
-                monster.strength = 1;
-                monster.attack = 15;
-                monster.description = "foul smelling gelatinous mass";
-                break;
+                return new Monster(name, "foul smelling gelatinous mass",20,20,15,1,null, null, null);
             case orc:
-                monster.name = "orc " + String.valueOf(Math.floor(Math.random()*1000));
-                monster.maxHp = 20;
-                monster.currentHp = 20;
-                monster.strength = 5;
-                monster.attack = 25;
-                monster.description = "orc";
-                break;
-            default:
-                return null;
+                return new Monster(name, "orc",20,20,25,5,null, null, null);
         }
-        return monster;
+        return null;
     }
 
 }

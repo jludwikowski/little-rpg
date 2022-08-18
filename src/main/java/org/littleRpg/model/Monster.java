@@ -16,6 +16,17 @@ public class Monster extends GameEntity {
 
     public List<Item> loot;
 
+    public Monster(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot) {
+        super(name, description);
+        this.maxHp = maxHp;
+        this.currentHp = currentHp;
+        this.attack = attack;
+        this.strength = strength;
+        this.mainWeapon = mainWeapon;
+        this.armor = armor;
+        this.loot = loot;
+    }
+
     public int getAttack() {
         if(this.mainWeapon != null) {
             return this.mainWeapon.bonusAttack + this.attack;

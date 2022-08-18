@@ -15,11 +15,7 @@ public class Runner {
 
         Place[] world = WorldGenerator.generateWorld();
 
-        Human player = new Human();
-        player.maxHp = 30;
-        player.currentHp = player.maxHp;
-        player.strength = 4;
-        player.attack = 40;
+        Human player = new Human("player","player",30,30,40,4,null,null,null);
 
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);

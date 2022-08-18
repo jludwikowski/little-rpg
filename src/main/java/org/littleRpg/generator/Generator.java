@@ -32,13 +32,13 @@ public abstract class Generator<T> {
                     adjective = adjectivesList.adjectives.get(Roller.pickNumberFrom(adjectivesList.adjectives.size()));
                 }
                 if(adjective != null) {
-                    entity = this.Adjust(entity, adjective);
+                    entity = this.adjust(entity, adjective);
                 }
             }
         }
         return entity;
     }
 
-    abstract public T Adjust(T entity, String adj);
+    abstract public T adjust(T entity, String adj);
 
 }

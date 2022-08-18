@@ -12,4 +12,9 @@ public class GameEntity
     public String getDescription(){
         return this.description;
     }
+
+    public GameEntity(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

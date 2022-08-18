@@ -1,5 +1,6 @@
 package org.littleRpg.engine;
 
+import org.littleRpg.generator.ItemGenerator;
 import org.littleRpg.model.*;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class WorldGenerator {
         world[3] = new Place(3, "Clearing in the red Forest","This is a clearing in the red Forest. Small bushes can hide surprises.", getExits(world, new int[]{4}), generateMonsters(50), itemsList);
         world[2] = new Place(2, "Path is red Forest","This is an egde of the forest. Trees have large red leaves and are covered with golden sap.", getExits(world, new int[]{3}) , generateMonsters(50));
         world[1] = new Place(1, "Blue meadow edge","This is edge of the meadow new red scary forest", getExits(world,new int[]{2}) , generateMonsters(50));
-        world[0] = new Place(0, "Blue meadow","You are in the meadow with tall bluish grass", getExits(world,new int[]{1}), empty);
+        world[0] = new Place(0, "Blue meadow","You are in the meadow with tall bluish grass", getExits(world,new int[]{1}), empty, generateItems(70));
 
         return world;
     }
@@ -44,24 +45,17 @@ public class WorldGenerator {
         return monsterGenerator.getEntities(probability);
     }
 
-    private static Item itemOnTheGround() {
-        Item shield = new Item();
-        shield.name = "Shield";
-        shield.weight = 1;
-        shield.description = "Basic wooden shield";
-        return shield;
+    private static List<Item> generateItems(int probability) {
+        ItemGenerator itemGenerator = new ItemGenerator();
+        return itemGenerator.getEntities(probability);
+    }
 
+    private static Item itemOnTheGround() {
+        return new Item("Shield","Basic wooden shield",5);
     }
 
     private static Weapon weaponOnTheGround() {
-        Weapon stick = new Weapon();
-        stick.name = "Stick";
-        stick.weight = 1;
-        stick.baseDamageValue = 0;
-        stick.bonusAttack = 2;
-        stick.description = "Basic wooden stick";
-        return stick;
-
+        return new Weapon("Stick","Basic wooden stick",1,2,0);
     }
 
 }

@@ -11,10 +11,8 @@ public class Place extends GameEntity {
     public List<Monster> monsters;
     public List<Item> items;
 
-    public Place(){
-        this.id = 999;
-    }
     public Place(int id, String shortDescription, String description, List<Place> exits, List<Monster>  monsters) {
+        super(shortDescription,description);
         this.id = id;
         this.description = description;
         this.exits = exits;
@@ -23,6 +21,7 @@ public class Place extends GameEntity {
     }
 
     public Place(int id, String shortDescription, String description, List<Place> exits, List<Monster>  monsters, List<Item> items) {
+        super(shortDescription,description);
         this.id = id;
         this.description = description;
         this.exits = exits;
