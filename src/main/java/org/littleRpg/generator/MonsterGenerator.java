@@ -9,6 +9,9 @@ import java.util.Arrays;
 
 public class MonsterGenerator extends Generator<Monster> {
 
+    ArmorGenerator armorGenerator = new ArmorGenerator();
+    WeaponGenerator weaponGenerator = new WeaponGenerator();
+
     public MonsterGenerator() {
         AdjectivesTable sizeAdjectives = new AdjectivesTable(60, new String[] {"big","small","huge","enormous"});
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"ugly","strange","dark","pale"});
@@ -69,11 +72,11 @@ public class MonsterGenerator extends Generator<Monster> {
         String name = mosterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(mosterType) {
             case goblin:
-                return new Monster(name, "green goblin",5,5,30,3,null, null, null);
+                return new Monster(name, "green goblin",5,5,30,3,weaponGenerator.getEntity(), armorGenerator.getEntity(), null);
             case slime:
                 return new Monster(name, "foul smelling gelatinous mass",20,20,15,1,null, null, null);
             case orc:
-                return new Monster(name, "orc",20,20,25,5,null, null, null);
+                return new Monster(name, "orc",20,20,25,5,weaponGenerator.getEntity(), armorGenerator.getEntity(), null);
         }
         return null;
     }
