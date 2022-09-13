@@ -5,21 +5,26 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Place extends GameEntity {
+
     public int id;
     public String shortDescription;
     public List<Place> exits;
     public List<Monster> monsters;
     public List<Item> items;
+    public Biome biome;
 
 
-    public Place(int id, String shortDescription, String description, List<Place> exits, List<Monster>  monsters, List<Item> items) {
+
+    public Place(int id, Biome biome, String shortDescription, String description, List<Place> exits, List<Monster>  monsters, List<Item> items) {
         super(shortDescription,description);
         this.id = id;
+        this.biome = biome;
         this.description = description;
         this.exits = exits;
         this.monsters = monsters;
         this.shortDescription = shortDescription;
         this.items = items;
+
     }
 
      public void describeLocation() {

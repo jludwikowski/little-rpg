@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorldGenerator {
-
+    MapPlace lastPlace =  null;
     PlaceGenerator placeGenerator = new PlaceGenerator();
     MapPlace[][][] world = new MapPlace[MAX_Z][MAX_Y][MAX_X];
     static int MAX_Z = 1;
@@ -16,8 +16,10 @@ public class WorldGenerator {
         for(int i=0;i<MAX_Z;i++) {
             for(int j=0;j<MAX_Y;j++) {
                 for(int k=0;k<MAX_X;k++) {
-                    MapPlace place = placeGenerator.getEntity();
+                    MapPlace place = placeGenerator.getEntity(lastPlace);
+                    lastPlace = place;
                     this.world[i][j][k] = place;
+
                 }
             }
         }

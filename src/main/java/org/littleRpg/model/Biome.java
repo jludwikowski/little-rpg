@@ -5,6 +5,6 @@ public enum Biome {
     mountain,
     hill,
     forest,
-    meadow,
-    swamp
+    swamp,
+    meadow
 }
