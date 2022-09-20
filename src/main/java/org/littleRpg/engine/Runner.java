@@ -5,11 +5,13 @@ import org.littleRpg.model.Human;
 import org.littleRpg.model.MapPlace;
 import org.littleRpg.model.Place;
 import org.littleRpg.generator.WorldGenerator;
-import org.littleRpg.generator.PlaceGenerator;
+
+
 
 import java.util.Scanner;
 
 public class Runner {
+
 
     public static void main(String[] args) {
 
@@ -31,6 +33,7 @@ public class Runner {
     }
 
     public static void mapPrinter(Place[][][] world, int[] location) {
+
         for (int i=0; i < world.length; i++){
             for (int j=0; j < world[0].length; j++){
 
@@ -73,42 +76,53 @@ public class Runner {
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
         location.describeLocation();
 
-
-
-
-        System.out.println("If you want print the Map input 666");
-        try {
-            String mapPrint = keyboard.nextLine();
-            int idMap = Integer.parseInt(mapPrint);
-            if (idMap == 666) {
-                mapPrinter(world, player.location);
-            }
-        }catch (Exception e) {
-            System.out.println("Not an correct!");
-        }
+        System.out.println("If you want print the Map press m");
 
         System.out.println("What Do you do?");
+
         if(!location.monsters.isEmpty()) {
-            System.out.println("You encountered monster!!! 999 to attack");
+            System.out.println("You encountered monster!!! press a to attack");
         }
-
         try {
-            String action = keyboard.nextLine();
-            int id = Integer.parseInt(action);
-
-            if(id == 999 && !location.monsters.isEmpty()) {
-                location.monsters = Judge.combat(player, location.monsters);
-            } /*else {
-                Place placePlayerChose = world[id];
-                if (location.exits.contains(placePlayerChose)) {
-                    return placePlayerChose.id;
-                } else {
-                    System.out.println("Not an right exit!");
-                }
-            }*/
-        } catch (Exception e) {
-            System.out.println("Not an exit!");
+            String command = keyboard.nextLine();
+            switch (command) {
+                case "stats":
+                    System.out.println(player.getStats());
+                case "n":
+                    if (player.location[1] > 0) {
+                        player.location[1] = player.location[1] - 1;
+                    }
+                    break;
+                case "s":
+                    if (player.location[1] < 19) {
+                        player.location[1] = player.location[1] + 1;
+                    }
+                    break;
+                case "e":
+                    if (player.location[2] > 0) {
+                        player.location[2] = player.location[2] - 1;
+                    }
+                    break;
+                case "w":
+                    if (player.location[2] < 19) {
+                        player.location[2] = player.location[2] + 1;
+                    }
+                    break;
+                case "m":
+                    mapPrinter(world, player.location);
+                    break;
+                case "a":
+                    if (!location.monsters.isEmpty()) {
+                        location.monsters = Judge.combat(player, location.monsters);
+                    }
+                    break;
+                default:
+                    System.out.println("i don't recognize this try again");
+            }
+        }catch (Exception e) {
+            System.out.println("Not a correct command!");
         }
+
         return player.location;
     }
 

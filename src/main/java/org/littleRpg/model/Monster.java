@@ -25,6 +25,12 @@ public class Monster extends GameEntity {
         this.mainWeapon = mainWeapon;
         this.armor = armor;
         this.loot = loot;
+
+    }
+    public String getStats() {
+        return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
+                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength);
+
     }
 
     public int getAttack() {
@@ -41,7 +47,11 @@ public class Monster extends GameEntity {
     }
 
     public void damage(int damageValue) {
-        int actuallDamageValue = damageValue - this.armor.damageReduction < 0 ? 0 : damageValue - this.armor.damageReduction;
+        int damageReduction = 0;
+        if (this.armor != null) {
+            damageReduction = this.armor.damageReduction;
+        }
+        int actuallDamageValue = damageValue - damageReduction < 0 ? 0 : damageValue - damageReduction;
         // int actuallDamageValue = damageValue - this.mainArmor.damageReduction;
         this.currentHp = this.currentHp - actuallDamageValue;
         if(this.currentHp <=0 ){
