@@ -31,24 +31,19 @@ public class Monster extends GameEntity {
 
     public List<Item> dropItems() {
         List<Item> dropedItems = new ArrayList<Item>();
-        System.out.println(this.mainWeapon.description);
-        if(this.loot != null || this.mainWeapon != null || this.armor != null) {
-            if (this.loot != null) {
-                dropedItems.addAll(this.loot);
-                this.loot.clear();
-            }
-            if (this.mainWeapon != null) {
-                dropedItems.add(this.mainWeapon);
-                this.mainWeapon = null;
-            }
-            if (this.armor != null) {
-                dropedItems.add(this.armor);
-                this.armor = null;
-            }
-            return dropedItems;
+        if (this.loot != null) {
+            dropedItems.addAll(this.loot);
+            this.loot.clear();
         }
-
-        return null;
+        if (this.mainWeapon != null) {
+            dropedItems.add(this.mainWeapon);
+            this.mainWeapon = null;
+        }
+        if (this.armor != null) {
+            dropedItems.add(this.armor);
+            this.armor = null;
+        }
+        return dropedItems;
     }
 
 
