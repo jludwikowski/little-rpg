@@ -11,6 +11,7 @@ public class MonsterGenerator extends Generator<Monster> {
 
     ArmorGenerator armorGenerator = new ArmorGenerator();
     WeaponGenerator weaponGenerator = new WeaponGenerator();
+    ItemGenerator itemGenerator = new ItemGenerator();
 
     public MonsterGenerator() {
         AdjectivesTable sizeAdjectives = new AdjectivesTable(60, new String[] {"big","small","huge","enormous"});
@@ -72,13 +73,15 @@ public class MonsterGenerator extends Generator<Monster> {
         String name = mosterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(mosterType) {
             case goblin:
-                return new Monster(name, "green goblin",5,5,30,3,weaponGenerator.getEntity(), armorGenerator.getEntity(), null);
+                return new Monster(name, "green goblin",5,5,30,3,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
             case slime:
-                return new Monster(name, "foul smelling gelatinous mass",20,20,15,1,null, null, null);
+                return new Monster(name, "foul smelling gelatinous mass",20,20,15,1,null, null, itemGenerator.getEntities(30));
             case orc:
-                return new Monster(name, "orc",20,20,25,5,weaponGenerator.getEntity(), armorGenerator.getEntity(), null);
+                return new Monster(name, "orc",20,20,25,5,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
         }
         return null;
     }
+
+
 
 }

@@ -1,13 +1,10 @@
 package org.littleRpg.engine;
 
-import org.littleRpg.model.Biome;
-import org.littleRpg.model.Human;
-import org.littleRpg.model.MapPlace;
-import org.littleRpg.model.Place;
+import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
 
 
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Runner {
@@ -18,7 +15,7 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",30,30,40,4,null,null,null);
+        Human player = new Human("player","player",100,30,90,10,null,null, new ArrayList<Item>());
 
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
@@ -28,9 +25,11 @@ public class Runner {
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);
         }
+
         System.out.println("GAME OVER");
 
     }
+
 
     public static void mapPrinter(Place[][][] world, int[] location) {
 
@@ -80,6 +79,10 @@ public class Runner {
 
         System.out.println("What Do you do?");
 
+        if(location.items != null && !location.items.isEmpty()) {
+            System.out.println("If you want pick up Items press p");
+        }
+
         if(!location.monsters.isEmpty()) {
             System.out.println("You encountered monster!!! press a to attack");
         }
@@ -92,6 +95,10 @@ public class Runner {
                     if (player.location[1] > 0) {
                         player.location[1] = player.location[1] - 1;
                     }
+                    break;
+                case "p":
+                    player.pickUpItems(location.items);
+                    location.items.clear();
                     break;
                 case "s":
                     if (player.location[1] < 19) {
@@ -113,18 +120,25 @@ public class Runner {
                     break;
                 case "a":
                     if (!location.monsters.isEmpty()) {
-                        location.monsters = Judge.combat(player, location.monsters);
+                        location.monsters = Judge.combat(player, location);
                     }
                     break;
+                case "l":
+                    player.showItems(player.loot);
+                    break;
+
                 default:
                     System.out.println("i don't recognize this try again");
             }
         }catch (Exception e) {
-            System.out.println("Not a correct command!");
+            e.printStackTrace();
+            System.out.println("error");
         }
 
         return player.location;
     }
+
+
 
 
 

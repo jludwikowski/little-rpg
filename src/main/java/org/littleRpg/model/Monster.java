@@ -1,20 +1,21 @@
 package org.littleRpg.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+
+import org.littleRpg.model.*;
 
 public class Monster extends GameEntity {
 
     public int maxHp = 1;
     public int currentHp = 1;
     public int attack = 0;
-
     public int strength = 0;
-
     public Weapon mainWeapon = null;
-
     public Armor armor = null;
-
     public List<Item> loot;
+
 
     public Monster(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot) {
         super(name, description);
@@ -27,6 +28,33 @@ public class Monster extends GameEntity {
         this.loot = loot;
 
     }
+
+    public List<Item> dropItems() {
+        List<Item> dropedItems = new ArrayList<Item>();
+        System.out.println(this.mainWeapon.description);
+        if(this.loot != null || this.mainWeapon != null || this.armor != null) {
+            if (this.loot != null) {
+                dropedItems.addAll(this.loot);
+                this.loot.clear();
+            }
+            if (this.mainWeapon != null) {
+                dropedItems.add(this.mainWeapon);
+                this.mainWeapon = null;
+            }
+            if (this.armor != null) {
+                dropedItems.add(this.armor);
+                this.armor = null;
+            }
+            return dropedItems;
+        }
+
+        return null;
+    }
+
+
+
+
+
     public String getStats() {
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength);

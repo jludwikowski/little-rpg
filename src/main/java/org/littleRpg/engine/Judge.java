@@ -1,6 +1,7 @@
 package org.littleRpg.engine;
 
 import org.littleRpg.model.Monster;
+import org.littleRpg.model.Place;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -19,17 +20,21 @@ public class Judge {
         }
     }
 
-    public static List<Monster> combat(Monster attacker, List<Monster> defenders){
-        Judge.attack(attacker, defenders.get(0));
-        if(defenders.get(0).currentHp <=0) {
-            defenders.remove(0);
+    public static List<Monster> combat(Monster attacker, Place location){
+        Monster firstMonster = location.monsters.get(0);
+        Judge.attack(attacker, firstMonster);
+        if(firstMonster.currentHp <=0) {
+            if(firstMonster.loot != null && !firstMonster.loot.isEmpty()) {
+                location.items.addAll(firstMonster.dropItems());
+            }
+            location.monsters.remove(0);
         }
-        ListIterator<Monster> i = defenders.listIterator();
+        ListIterator<Monster> i = location.monsters.listIterator();
         while(i.hasNext()) {
             Monster nextMonster = i.next();
             Judge.attack(nextMonster, attacker);
         }
-        return defenders;
+        return location.monsters;
     }
 
 }
