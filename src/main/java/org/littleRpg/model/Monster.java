@@ -3,6 +3,7 @@ package org.littleRpg.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 import org.littleRpg.model.*;
 
@@ -95,6 +96,26 @@ public class Monster extends GameEntity {
         this.strength += adjust.strength;
         this.mainWeapon = adjust.mainWeapon != null ? adjust.mainWeapon: this.mainWeapon;
         this.armor = adjust.armor != null ? adjust.armor: this.armor;
+    }
+
+    public static void showEquipItems(Weapon mainWeapon, Armor armor){
+        if(mainWeapon != null){
+            System.out.println("Equiped Weapon - " + mainWeapon.description);
+        }
+        if(armor != null){
+            System.out.println("Equiped armor - " + armor.description);
+        }
+        if(mainWeapon == null && armor == null){
+            System.out.println("No equip Weapon or armor");
+        }
+
+    }
+
+    public String getDescription() {
+        String monsterDescription = description +
+                ((mainWeapon != null) ? "\n armed with " + mainWeapon.description: "") +
+                ((armor != null) ? "\n wearing " + armor.description : "");
+        return monsterDescription;
     }
 
 }

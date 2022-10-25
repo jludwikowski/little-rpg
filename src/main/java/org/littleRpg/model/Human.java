@@ -2,6 +2,7 @@ package org.littleRpg.model;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 public class Human extends Monster{
 
@@ -38,6 +39,45 @@ public class Human extends Monster{
         }
     }
 
+
+    public void wear() {
+        showItems(loot);
+        System.out.println("w tym momencie nosisz: " + mainWeapon + armor);
+        System.out.println("Wybierz item który chcesz zalozyc");
+        Scanner scanner = new Scanner(System.in);
+        int itemIndex = scanner.nextInt();
+        Item wearItem = loot.get(itemIndex);
+        if(wearItem instanceof Armor) {
+            Item dropArmor = armor;
+            System.out.println("ściągasz: " + dropArmor.description );
+            armor = (Armor) wearItem;
+            loot.remove(itemIndex);
+            if(dropArmor != null) {
+                loot.add(dropArmor);
+            }
+            System.out.println("Założyłeś: " + this.armor.description);
+
+        }
+        if(wearItem instanceof Weapon) {
+            Item dropMainWeapon = mainWeapon;
+            if(mainWeapon != null) {
+                System.out.println("ściągasz: " + dropMainWeapon.description);
+            }
+            mainWeapon = (Weapon) wearItem;
+            loot.remove(itemIndex);
+            if(dropMainWeapon != null) {
+                loot.add(dropMainWeapon);
+            }
+            System.out.println("Założyłeś: " + this.mainWeapon.description);
+        }
+        if(!(wearItem instanceof Armor) && !(wearItem instanceof Weapon)) {
+            System.out.println("Nie mozesz tego uzyc!");
+        }
+
+       // System.out.println("w tym momencie nosisz: " + mainWeapon.description + armor.description);
+
+
+    }
 
 
 }

@@ -27,13 +27,35 @@ public class Place extends GameEntity {
 
     }
 
-     public void describeLocation() {
+    public String getDescription() {
+        String describeLocation = this.description + "\n";
+        ListIterator<Monster> i = this.monsters.listIterator();
+
+        while(i.hasNext()) {
+            Monster nextMonster = i.next();
+            describeLocation += "Here is standing: " + nextMonster.getDescription() +"\n";
+        }
+
+        if (items != null) {
+            ListIterator<Item> k = this.items.listIterator();
+            while (k.hasNext()) {
+                Item nextItem = k.next();
+                describeLocation += "Here you can find: " + nextItem.getDescription() + "\n";
+
+            }
+        }
+
+        return describeLocation;
+    }
+
+
+  /*   public void describeLocation() {
         System.out.println(this.description);
         ListIterator<Monster> i = this.monsters.listIterator();
 
         while(i.hasNext()) {
             Monster nextMonster = i.next();
-            System.out.println("Here is standing: " + nextMonster.description);
+            System.out.println("Here is standing: " + nextMonster.getDescription());
         }
 
         if (items != null) {
@@ -53,6 +75,6 @@ public class Place extends GameEntity {
             }
         }
 
-    }
+    }*/
 
 }

@@ -5,6 +5,7 @@ import org.littleRpg.generator.WorldGenerator;
 
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Runner {
@@ -22,6 +23,7 @@ public class Runner {
         player.name = keyboard.nextLine();
         player.location = new int[]{0,5,5};
 
+        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0));
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);
         }
@@ -73,8 +75,7 @@ public class Runner {
 
     public static int[] locationActions(Place[][][] world, Human player, Scanner keyboard) {
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        location.describeLocation();
-
+        System.out.println(location.getDescription());
         System.out.println("If you want print the Map press m");
 
         System.out.println("What Do you do?");
@@ -105,6 +106,12 @@ public class Runner {
                         player.location[1] = player.location[1] + 1;
                     }
                     break;
+                case "h":
+                    System.out.println("stats - player stats \n\nn - move to north \ns - move to south\n" +
+                            "e - move to east\nw - move to west\n\np - pickup items\na - atack for monster\n" +
+                            "l - show player items\nf - show equip items\ny - show wear items\n" +
+                            "o - show monster items\nm - print map");
+                    break;
                 case "e":
                     if (player.location[2] > 0) {
                         player.location[2] = player.location[2] - 1;
@@ -126,7 +133,23 @@ public class Runner {
                 case "l":
                     player.showItems(player.loot);
                     break;
-
+                case "f":
+                    player.showEquipItems(player.mainWeapon, player.armor);
+                    break;
+                case "y":
+                    player.wear();
+                    break;
+                case "o":
+                    if (!location.monsters.isEmpty()) {
+                        ListIterator<Monster> o = location.monsters.listIterator();
+                        while(o.hasNext()) {
+                            Monster nextMonster = o.next();
+                            System.out.println(nextMonster.description);
+                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor);
+                            System.out.println("~~~~~~~~~~~~~~");
+                        }
+                    }
+                    break;
                 default:
                     System.out.println("i don't recognize this try again");
             }
