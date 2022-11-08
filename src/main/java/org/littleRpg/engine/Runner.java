@@ -24,6 +24,8 @@ public class Runner {
         player.location = new int[]{0,5,5};
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0));
+        Place location = world[player.location[0]][player.location[1]][player.location[2]];
+        System.out.println(location.getDescription());
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);
         }
@@ -74,17 +76,13 @@ public class Runner {
     }
 
     public static int[] locationActions(Place[][][] world, Human player, Scanner keyboard) {
-        Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        System.out.println(location.getDescription());
-        System.out.println("If you want print the Map press m");
+        Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+        //System.out.println(thisPlace.getDescription());
+        //player.thisPlace = new int[]{0,5,5};
+        
 
         System.out.println("What Do you do?");
-
-        if(location.items != null && !location.items.isEmpty()) {
-            System.out.println("If you want pick up Items press p");
-        }
-
-        if(!location.monsters.isEmpty()) {
+        if(!thisPlace.monsters.isEmpty()) {
             System.out.println("You encountered monster!!! press a to attack");
         }
         try {
@@ -92,56 +90,71 @@ public class Runner {
             switch (command) {
                 case "stats":
                     System.out.println(player.getStats());
-                case "n":
+                break;
+                case "north":
                     if (player.location[1] > 0) {
                         player.location[1] = player.location[1] - 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
                     }
                     break;
-                case "p":
-                    player.pickUpItems(location.items);
-                    location.items.clear();
+                case "pickup":
+                    player.pickUpItems(thisPlace.items);
+                    thisPlace.items.clear();
                     break;
-                case "s":
+                case "south":
                     if (player.location[1] < 19) {
                         player.location[1] = player.location[1] + 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
                     }
                     break;
-                case "h":
-                    System.out.println("stats - player stats \n\nn - move to north \ns - move to south\n" +
-                            "e - move to east\nw - move to west\n\np - pickup items\na - atack for monster\n" +
-                            "l - show player items\nf - show equip items\ny - show wear items\n" +
-                            "o - show monster items\nm - print map");
+                case "help":
+                    System.out.println("stats - player stats \n\nnorth - move to north \nsouth - move to south\n" +
+                            "east - move to east\nwest - move to west\n\npickup - pickup items\natack - atack for monster\n" + "special - special atack for monster\n" +
+                            "loot - show player items\nmyitems - show equip items\nwear - show wear items\n" +
+                            "monsteritems - show monster items\nmap - print map\ncheckmonster - check monster items");
                     break;
-                case "e":
+                case "east":
                     if (player.location[2] > 0) {
                         player.location[2] = player.location[2] - 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
                     }
                     break;
-                case "w":
+                case "west":
                     if (player.location[2] < 19) {
                         player.location[2] = player.location[2] + 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
                     }
                     break;
-                case "m":
+                case "map":
                     mapPrinter(world, player.location);
                     break;
-                case "a":
-                    if (!location.monsters.isEmpty()) {
-                        location.monsters = Judge.combat(player, location);
+                case "attack":
+                    if (!thisPlace.monsters.isEmpty()) {
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0);
                     }
                     break;
-                case "l":
+
+                case "loot":
                     player.showItems(player.loot);
                     break;
-                case "f":
+                case "myitems":
                     player.showEquipItems(player.mainWeapon, player.armor);
                     break;
-                case "y":
+                case "special":
+                    if (!thisPlace.monsters.isEmpty()) {
+                        thisPlace.monsters = Judge.specialCombat(player, thisPlace);
+                    }
+                    break;
+                case "wear":
                     player.wear();
                     break;
-                case "o":
-                    if (!location.monsters.isEmpty()) {
-                        ListIterator<Monster> o = location.monsters.listIterator();
+                case "checkmonster":
+                    if (!thisPlace.monsters.isEmpty()) {
+                        ListIterator<Monster> o = thisPlace.monsters.listIterator();
                         while(o.hasNext()) {
                             Monster nextMonster = o.next();
                             System.out.println(nextMonster.description);

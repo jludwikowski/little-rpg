@@ -5,6 +5,7 @@ import org.littleRpg.model.Place;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 public class Judge {
 
@@ -20,8 +21,8 @@ public class Judge {
         }
     }
 
-    public static List<Monster> combat(Monster attacker, Place location){
-        Monster firstMonster = location.monsters.get(0);
+    public static List<Monster> combat(Monster attacker, Place location, int monsterIndex){
+        Monster firstMonster = location.monsters.get(monsterIndex);
         Judge.attack(attacker, firstMonster);
         if(firstMonster.currentHp <=0) {
             if(firstMonster.loot != null && !firstMonster.loot.isEmpty()) {
@@ -35,6 +36,18 @@ public class Judge {
             Judge.attack(nextMonster, attacker);
         }
         return location.monsters;
+    }
+
+    public static List<Monster> specialCombat(Monster attacker, Place location){
+        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
+        while (monsterListIterator.hasNext()) {
+            Monster nextMonster = monsterListIterator.next();
+            System.out.println("w zasiegu wzroku masz: " + nextMonster.description);
+        }
+        System.out.println("Wybierz ktorego potwora chcesz zaatakowac");
+        Scanner target = new Scanner(System.in);
+        int monsterIndex = target.nextInt();
+        return combat(attacker, location, monsterIndex);
     }
 
 }

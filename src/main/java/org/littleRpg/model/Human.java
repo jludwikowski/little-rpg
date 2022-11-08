@@ -22,6 +22,11 @@ public class Human extends Monster{
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {
             this.loot.addAll(itemsOntheGround);
+            ListIterator<Item> groundItemIterator = itemsOntheGround.listIterator();
+            while (groundItemIterator.hasNext()) {
+                Item nextOnTheGround = groundItemIterator.next();
+                System.out.println("podniosles: " + nextOnTheGround.description);
+            }
             showItems(this.loot);
         }
     }
@@ -38,7 +43,6 @@ public class Human extends Monster{
             }
         }
     }
-
 
     public void wear() {
         showItems(loot);
@@ -73,10 +77,6 @@ public class Human extends Monster{
         if(!(wearItem instanceof Armor) && !(wearItem instanceof Weapon)) {
             System.out.println("Nie mozesz tego uzyc!");
         }
-
-       // System.out.println("w tym momencie nosisz: " + mainWeapon.description + armor.description);
-
-
     }
 
 
