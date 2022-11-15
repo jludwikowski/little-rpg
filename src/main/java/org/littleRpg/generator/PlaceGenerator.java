@@ -13,8 +13,7 @@ public class PlaceGenerator extends Generator<MapPlace> {
     MonsterGenerator monsterGenerator = new MonsterGenerator();
     ItemGenerator itemGenerator = new ItemGenerator();
     int lastId = 0;
-    public Biome lastBiome;
-    public Biome newBiome;
+
 
 
     public PlaceGenerator() {
@@ -42,42 +41,101 @@ public class PlaceGenerator extends Generator<MapPlace> {
     }
 
 
-    public MapPlace getEntity(MapPlace lastPlace) {
-        Biome biome = biomeGenerator(lastPlace);
+    public MapPlace getEntity(MapPlace lastPlaceX, MapPlace lastPlaceY) {
+        Biome biome = biomeGenerator(lastPlaceX, lastPlaceY);
         MapPlace place = this.getBaseByType(biome);
         place = this.finalizeEntity(place);
         return place;
     }
 
-    public Biome biomeGenerator (Place place) {
+    public Biome biomeGenerator (Place placeX, Place placeY) {
+        Biome newBiome = null;
+        Biome lastBiomeX;
+        Biome lastBiomeY;
 
-       if (place == null){
-            this.newBiome = Biome.values()[Roller.pickNumberFrom(Biome.values().length)];
+       if (placeX == null && placeY == null){
+            newBiome = Biome.values()[Roller.pickNumberFrom(Biome.values().length)];
         }
        else {
-           this.lastBiome = place.biome;
-           int index = Arrays.binarySearch(Biome.values(), lastBiome);
-           double roll = Math.random()*100;
+           if(placeX != null) {
+               lastBiomeX = placeX.biome;
+               int index1 = Arrays.binarySearch(Biome.values(), lastBiomeX);
 
-           if (roll <50) {
-               this.newBiome = lastBiome;
+               double roll = Math.random()*100;
+
+               if (roll <50) {
+                   newBiome = lastBiomeX;
+               }
+
+               if (roll > 50 && roll < 75 && index1 != Biome.values().length - 1){
+                   newBiome = Biome.values()[index1 + 1];
+               }
+               if(roll >= 75 && index1 != 0) {
+                   newBiome = Biome.values()[index1 - 1];
+               }
+               if(roll > 50 && roll < 75 && index1 == Biome.values().length - 1) {
+                   newBiome = Biome.values()[0];
+               }
+               if(roll >= 75 && index1 == 0) {
+                   newBiome = Biome.values()[Biome.values().length-1];
+               }
+
+           }
+           if(placeY != null){
+               lastBiomeY = placeY.biome;
+               int index2 = Arrays.binarySearch(Biome.values(), lastBiomeY);
+               double roll = Math.random()*100;
+
+               if (roll <50) {
+                   newBiome = lastBiomeY;
+               }
+
+               if (roll > 50 && roll < 75 && index2 != Biome.values().length - 1){
+                   newBiome = Biome.values()[index2 + 1];
+               }
+               if(roll >= 75 && index2 != 0) {
+                   newBiome = Biome.values()[index2 - 1];
+               }
+               if(roll > 50 && roll < 75 && index2 == Biome.values().length - 1) {
+                   newBiome = Biome.values()[0];
+               }
+               if(roll >= 75 && index2 == 0) {
+                   newBiome = Biome.values()[Biome.values().length-1];
+               }
+
            }
 
-           if (roll > 50 && roll < 75 && index != Biome.values().length - 1){
-               this.newBiome = Biome.values()[index + 1];
-           }
-           if(roll >= 75 && index != 0) {
-               this.newBiome = Biome.values()[index - 1];
-           }
-           if(roll > 50 && roll < 75 && index == Biome.values().length - 1) {
-               this.newBiome = Biome.values()[0];
-           }
-           if(roll >= 75 && index == 0) {
-               this.newBiome = Biome.values()[Biome.values().length-1];
+           if(placeX != null && placeY != null) {
+               double roll = Math.random() * 100;
+               lastBiomeX = placeX.biome;
+               int index1 = Arrays.binarySearch(Biome.values(), lastBiomeX);
+               lastBiomeY = placeY.biome;
+               int index2 = Arrays.binarySearch(Biome.values(), lastBiomeY);
+
+               if (roll <= 30) {
+                   newBiome = lastBiomeX;
+               }
+               if (roll > 30 && roll <= 60) {
+                   newBiome = lastBiomeY;
+               }
+
+               if (roll > 60 && roll <= 70 && index1 != Biome.values().length - 1) {
+                   newBiome = Biome.values()[index1 + 1];
+               }
+               if (roll > 70 && roll <= 80 && index2 != Biome.values().length - 1) {
+                   newBiome = Biome.values()[index2 + 1];
+               }
+               if (roll > 80 && roll <= 90 && index1 != 0) {
+                   newBiome = Biome.values()[index1 - 1];
+               }
+               if (roll > 90 && roll <= 100 && index2 != 0) {
+                   newBiome = Biome.values()[index2 - 1];
+               }
+
            }
 
-        }
-        return this.newBiome;
+       }
+        return newBiome;
     }
 
 
