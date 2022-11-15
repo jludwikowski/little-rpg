@@ -77,13 +77,13 @@ public class WeaponGenerator extends Generator<Weapon>{
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case stick:
-                return new Weapon(name, type.toString(), 3, 2,2);
+                return new Weapon(name, type.toString(), 3, 2,2, false);
             case axe:
-                return new Weapon(name, type.toString(), 10, 10, 7);
+                return new Weapon(name, type.toString(), 10, 10, 7, false);
             case sword:
-                return new Weapon(name, type.toString(), 8, 9, 6);
+                return new Weapon(name, type.toString(), 8, 9, 6, false);
             case bow:
-                return new Weapon(name, type.toString(), 5, 6,5);
+                return new Weapon(name, type.toString(), 5, 6,5, true);
 
 
         }

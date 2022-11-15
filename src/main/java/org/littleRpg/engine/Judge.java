@@ -21,6 +21,24 @@ public class Judge {
         }
     }
 
+
+    public static List<Monster> monsterAttack(Monster attacker, Place location){
+        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
+        while (monsterListIterator.hasNext()) {
+            Monster nextMonster = monsterListIterator.next();
+            System.out.println("w zasiegu wzroku masz: " + nextMonster.description);
+        }
+        System.out.println("gdy sie poruszyles potwory cie zauwazyly i zaczely atackowac");
+
+        ListIterator<Monster> j = location.monsters.listIterator();
+        while(j.hasNext()) {
+            Monster nextMonster = j.next();
+            Judge.attack(nextMonster, attacker);
+        }
+
+        return location.monsters;
+    }
+
     public static List<Monster> combat(Monster attacker, Place location, int monsterIndex){
         Monster firstMonster = location.monsters.get(monsterIndex);
         Judge.attack(attacker, firstMonster);
@@ -30,12 +48,8 @@ public class Judge {
             }
             location.monsters.remove(0);
         }
-        ListIterator<Monster> i = location.monsters.listIterator();
-        while(i.hasNext()) {
-            Monster nextMonster = i.next();
-            Judge.attack(nextMonster, attacker);
-        }
-        return location.monsters;
+
+        return monsterAttack(attacker, location);
     }
 
     public static List<Monster> specialCombat(Monster attacker, Place location){

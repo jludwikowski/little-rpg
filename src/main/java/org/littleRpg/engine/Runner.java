@@ -23,7 +23,7 @@ public class Runner {
         player.name = keyboard.nextLine();
         player.location = new int[]{0,5,5};
 
-        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0));
+        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
@@ -99,6 +99,9 @@ public class Runner {
                     }
                     break;
                 case "pickup":
+                    if (!thisPlace.monsters.isEmpty()) {
+                        thisPlace.monsters = Judge.monsterAttack(player, thisPlace);
+                    }
                     player.pickUpItems(thisPlace.items);
                     thisPlace.items.clear();
                     break;
@@ -145,11 +148,14 @@ public class Runner {
                     player.showEquipItems(player.mainWeapon, player.armor);
                     break;
                 case "special":
-                    if (!thisPlace.monsters.isEmpty()) {
+                    if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
                         thisPlace.monsters = Judge.specialCombat(player, thisPlace);
                     }
                     break;
                 case "wear":
+                    if (!thisPlace.monsters.isEmpty()) {
+                        thisPlace.monsters = Judge.monsterAttack(player, thisPlace);
+                    }
                     player.wear();
                     break;
                 case "checkmonster":

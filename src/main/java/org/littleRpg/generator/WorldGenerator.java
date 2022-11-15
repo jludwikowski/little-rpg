@@ -28,7 +28,7 @@ public class WorldGenerator {
 
     private static Place createStartLocation(Place location) {
         location.monsters = null;
-        location.items.add(new Weapon("sword","old sword",2,5,2));
+        location.items.add(new Weapon("sword","old sword",2,5,2,false));
         return location;
     }
 
