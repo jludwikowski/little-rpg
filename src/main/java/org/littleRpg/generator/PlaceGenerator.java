@@ -58,8 +58,7 @@ public class PlaceGenerator extends Generator<MapPlace> {
             newBiome = Biome.values()[Roller.pickNumberFrom(Biome.values().length)];
         }
        else {
-           lastBiome = placeX != null ? placeX.biome : null;
-           lastBiome = placeY != null && lastBiome == null ? placeY.biome : lastBiome;
+           lastBiome = placeX != null ? placeX.biome : placeY.biome;
            int index1 = Arrays.binarySearch(Biome.values(), lastBiome);
            double roll = Math.random()*100;
 
