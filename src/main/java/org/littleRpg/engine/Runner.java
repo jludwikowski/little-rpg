@@ -9,8 +9,15 @@ import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Runner {
-
-
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PURPLE = "\u001B[35m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001B[37m";
     public static void main(String[] args) {
 
         WorldGenerator worldGenerator = new WorldGenerator();
@@ -18,7 +25,7 @@ public class Runner {
 
         Human player = new Human("player","player",100,30,90,10,null,null, new ArrayList<Item>());
 
-        System.out.println("What is you name?");
+        System.out.println(ANSI_RED + "What is you name?" + ANSI_RESET);
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
         player.location = new int[]{0,5,5};
@@ -43,26 +50,26 @@ public class Runner {
                 for (int k=0; k < world[0][0].length; k++){
                     Biome biome = world[i][j][k].biome;
                     if (location[0]==i && location[1]==j && location[2]==k){
-                        System.out.print("00");
+                        System.out.print(ANSI_BLUE + "00" + ANSI_RESET);
                     }else {
                         switch (biome) {
                             case desert:
-                                System.out.print("~~");
+                                System.out.print(ANSI_YELLOW + "~~" + ANSI_RESET);
                                 break;
                             case mountain:
-                                System.out.print("^^");
+                                System.out.print(ANSI_WHITE + "^^" + ANSI_RESET);
                                 break;
                             case hill:
-                                System.out.print("hh");
+                                System.out.print(ANSI_CYAN + "hh" + ANSI_RESET);
                                 break;
                             case forest:
-                                System.out.print("##");
+                                System.out.print(ANSI_GREEN + "##" + ANSI_RESET);
                                 break;
                             case meadow:
-                                System.out.print("mm");
+                                System.out.print(ANSI_BLACK + "mm" + ANSI_RESET);
                                 break;
                             case swamp:
-                                System.out.print("ss");
+                                System.out.print(ANSI_PURPLE + "ss" + ANSI_RESET);
                                 break;
                         }
                     }
@@ -81,9 +88,9 @@ public class Runner {
         //player.thisPlace = new int[]{0,5,5};
         
 
-        System.out.println("What Do you do?");
+        System.out.println(ANSI_RED + "What Do you do?"+ ANSI_RESET);
         if(!thisPlace.monsters.isEmpty()) {
-            System.out.println("You encountered monster!!! press a to attack");
+            System.out.println(ANSI_PURPLE + "You encountered monster!!! press a to attack" + ANSI_RESET);
         }
         try {
             String command = keyboard.nextLine();
@@ -170,7 +177,7 @@ public class Runner {
                     }
                     break;
                 default:
-                    System.out.println("i don't recognize this try again");
+                    System.out.println(ANSI_YELLOW + "i don't recognize this try again" + ANSI_RESET);
             }
         }catch (Exception e) {
             e.printStackTrace();

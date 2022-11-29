@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PlaceGenerator extends Generator<MapPlace> {
 
+
     MonsterGenerator monsterGenerator = new MonsterGenerator();
     ItemGenerator itemGenerator = new ItemGenerator();
     int lastId = 0;

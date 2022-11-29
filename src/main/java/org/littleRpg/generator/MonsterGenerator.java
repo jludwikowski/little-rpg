@@ -78,6 +78,19 @@ public class MonsterGenerator extends Generator<Monster> {
                 return new Monster(name, "foul smelling gelatinous mass",20,20,15,1,null, null, itemGenerator.getEntities(30));
             case orc:
                 return new Monster(name, "orc",20,20,25,5,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
+            case ghul:
+                return new Monster(name, "ghul",15,15,20,5,null, null, itemGenerator.getEntities(90));
+            case demon:
+                return new Monster(name, "demon",22,22,25,10,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
+            case ogr:
+                return new Monster(name, "ogr",30,30,25,20,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
+            case giant:
+                return new Monster(name, "giant",35,35,20,20,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
+            case werewolf:
+                return new Monster(name, "werewolf",30,30,15,10,null, null, itemGenerator.getEntities(90));
+            case vampire:
+                return new Monster(name, "vampire",30,30,20,10,weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90));
+
         }
         return null;
     }
