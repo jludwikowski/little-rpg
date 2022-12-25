@@ -19,7 +19,7 @@ public class ItemGenerator extends Generator<Item>{
 
     @Override
     public Item getEntity() {
-        ItemTypes type = ItemTypes.values()[Roller.pickNumberFrom(ItemTypes.values().length)];
+        ItemTypes type = ItemTypes.values()[Roller.pickNumberFrom(ItemTypes.values().length-2)];
         Item item = this.getBaseByType(type);
         item = this.finalizeEntity(item);
         return item;
@@ -67,17 +67,16 @@ public class ItemGenerator extends Generator<Item>{
     private Item getBaseByType(ItemTypes type) {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
-            case bottle:
-                return new Item(name, type.toString(), 0.8);
+            case bottleOfWater:
+                return new Item(name, type, type.toString(), 0.8);
             case cup:
-                return new Item(name, type.toString(), 0.5);
+                return new Item(name, type, type.toString(), 0.5);
             case skull:
-                return new Item(name, type.toString(), 1.5);
+                return new Item(name, type, type.toString(), 1.5);
             case bone:
-                return new Item(name, type.toString(), 1);
+                return new Item(name, type, type.toString(), 1);
             case hide:
-                return new Item(name, type.toString(), 3);
-
+                return new Item(name, type, type.toString(), 3);
         }
         return null;
     }

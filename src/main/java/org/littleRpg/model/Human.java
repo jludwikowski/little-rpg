@@ -1,5 +1,7 @@
 package org.littleRpg.model;
 
+import org.littleRpg.generator.TextColorGenerator;
+
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
@@ -8,8 +10,9 @@ public class Human extends Monster{
 
     public int gamerId;
     public int[] location;
+    public int actualThirst;
     //public Item items;
-    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot) {
+    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, int actualThirst) {
         super(name, description,maxHp, currentHp, attack, strength, mainWeapon, armor, loot);
     }
 
@@ -47,9 +50,7 @@ public class Human extends Monster{
     public void wear() {
         showItems(loot);
         System.out.println("w tym momencie nosisz: " + mainWeapon + armor);
-        System.out.println("Wybierz item który chcesz zalozyc");
-        Scanner scanner = new Scanner(System.in);
-        int itemIndex = scanner.nextInt();
+        int itemIndex = itemChoice("Wybierz item który chcesz zalozyc");
         Item wearItem = loot.get(itemIndex);
         if(wearItem instanceof Armor) {
             Item dropArmor = armor;
@@ -77,6 +78,33 @@ public class Human extends Monster{
         if(!(wearItem instanceof Armor) && !(wearItem instanceof Weapon)) {
             System.out.println("Nie mozesz tego uzyc!");
         }
+
+    }
+
+    public int itemChoice(String prompt){
+        System.out.println(prompt);
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt();
+    }
+
+    public void useItem() {
+        showItems(loot);
+        int itemIndex = itemChoice("Wybierz item który chcesz uzyc");
+        if (loot.get(itemIndex).type == ItemTypes.bottleOfWater){
+            System.out.println("wypijasz: " + loot.get(itemIndex).description );
+            changeThirst(30);
+            loot.remove(itemIndex);
+        }
+
+    }
+
+    public void changeThirst(int value) {
+        TextColorGenerator. purpleText("Your actual Thirst: " + actualThirst);
+        actualThirst =+ value;
+        if (actualThirst > 100){
+            actualThirst =100;
+        }
+
     }
 
 

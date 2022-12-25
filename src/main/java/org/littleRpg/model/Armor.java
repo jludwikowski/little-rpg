@@ -4,8 +4,8 @@ public class Armor extends Item
 {
     public int damageReduction = 0;
 
-    public Armor(String name,String description, double weight, int damageReduction){
-        super(name, description, weight);
+    public Armor(String name, String description, double weight, int damageReduction){
+        super(name, ItemTypes.armor, description, weight);
         this.damageReduction = damageReduction;
     }
 

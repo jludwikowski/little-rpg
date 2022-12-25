@@ -1,5 +1,6 @@
 package org.littleRpg.engine;
 
+import org.littleRpg.generator.TextColorGenerator;
 import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
 
@@ -9,23 +10,15 @@ import java.util.ListIterator;
 import java.util.Scanner;
 
 public class Runner {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+
     public static void main(String[] args) {
 
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",100,30,90,10,null,null, new ArrayList<Item>());
+        Human player = new Human("player","player",100,30,90,10,null,null, new ArrayList<Item>(),100);
 
-        System.out.println(ANSI_RED + "What is you name?" + ANSI_RESET);
+        System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
         player.location = new int[]{0,5,5};
@@ -50,26 +43,26 @@ public class Runner {
                 for (int k=0; k < world[0][0].length; k++){
                     Biome biome = world[i][j][k].biome;
                     if (location[0]==i && location[1]==j && location[2]==k){
-                        System.out.print(ANSI_BLUE + "00" + ANSI_RESET);
+                        TextColorGenerator.purpleText("00");
                     }else {
                         switch (biome) {
                             case desert:
-                                System.out.print(ANSI_YELLOW + "~~" + ANSI_RESET);
+                                TextColorGenerator.yellowText("~~");
                                 break;
                             case mountain:
-                                System.out.print(ANSI_WHITE + "^^" + ANSI_RESET);
+                                TextColorGenerator.whiteText("^^");
                                 break;
                             case hill:
-                                System.out.print(ANSI_CYAN + "hh" + ANSI_RESET);
+                                TextColorGenerator.greenText("hh");
                                 break;
                             case forest:
-                                System.out.print(ANSI_GREEN + "##" + ANSI_RESET);
+                                TextColorGenerator.greenText("##");
                                 break;
                             case meadow:
-                                System.out.print(ANSI_BLACK + "mm" + ANSI_RESET);
+                                TextColorGenerator.cyanText("mm");
                                 break;
                             case swamp:
-                                System.out.print(ANSI_PURPLE + "ss" + ANSI_RESET);
+                                TextColorGenerator.blueText("ss");
                                 break;
                         }
                     }
@@ -88,9 +81,9 @@ public class Runner {
         //player.thisPlace = new int[]{0,5,5};
         
 
-        System.out.println(ANSI_RED + "What Do you do?"+ ANSI_RESET);
+        System.out.println("What Do you do?");
         if(!thisPlace.monsters.isEmpty()) {
-            System.out.println(ANSI_PURPLE + "You encountered monster!!! press a to attack" + ANSI_RESET);
+            System.out.println("You encountered monster!!! press a to attack");
         }
         try {
             String command = keyboard.nextLine();
@@ -99,10 +92,16 @@ public class Runner {
                     System.out.println(player.getStats());
                 break;
                 case "north":
-                    if (player.location[1] > 0) {
-                        player.location[1] = player.location[1] - 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
+                    if (player.actualThirst > 5) {
+                        if (player.location[1] > 0) {
+                            player.location[1] = player.location[1] - 1;
+                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                            System.out.println(thisPlace.getDescription());
+                            player.changeThirst(-5);
+                        }
+                    }
+                    else {
+                        TextColorGenerator.purpleText("If you want move drink water");
                     }
                     break;
                 case "pickup":
@@ -176,8 +175,10 @@ public class Runner {
                         }
                     }
                     break;
+                case "useitem":
+                    player.useItem();
                 default:
-                    System.out.println(ANSI_YELLOW + "i don't recognize this try again" + ANSI_RESET);
+                    System.out.println("i don't recognize this try again");
             }
         }catch (Exception e) {
             e.printStackTrace();

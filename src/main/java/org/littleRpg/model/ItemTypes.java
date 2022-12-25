@@ -1,10 +1,12 @@
 package org.littleRpg.model;
 
 public enum ItemTypes {
-    bottle,
+    bottleOfWater,
     cup,
     skull,
     bone,
-    hide
+    hide,
+    armor,
+    weapon
 
 }

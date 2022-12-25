@@ -3,6 +3,7 @@ package org.littleRpg.generator;
 import org.littleRpg.model.*;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 public class WorldGenerator {
