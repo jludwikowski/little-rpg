@@ -2,19 +2,19 @@ package org.littleRpg.model;
 
 import org.littleRpg.generator.TextColorGenerator;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Human extends Monster{
 
     public int gamerId;
     public int[] location;
-    public static int actualThirst;
-    public static int actualSatiety;
+    public List<SurvivalAttribute> survivalAttributes = new ArrayList<>();
+
     //public Item items;
     public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, int actualThirst) {
         super(name, description,maxHp, currentHp, attack, strength, mainWeapon, armor, loot);
+        survivalAttributes.add(new SurvivalAttribute("thirst"));
+        survivalAttributes.add(new SurvivalAttribute("hunger",2,100));
     }
 
     public void adjust(Human adjust){
@@ -22,6 +22,16 @@ public class Human extends Monster{
         this.location = adjust.location;
     }
 
+    public SurvivalAttribute getSurvivalAttributeByName(String name){
+        ListIterator<SurvivalAttribute> survivalAttributesIterator = survivalAttributes.listIterator();
+        while(survivalAttributesIterator.hasNext()){
+            SurvivalAttribute att = survivalAttributesIterator.next();
+            if(att.name.equalsIgnoreCase(name)){
+                return att;
+            }
+        }
+        return null;
+    }
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {
@@ -29,13 +39,29 @@ public class Human extends Monster{
             ListIterator<Item> groundItemIterator = itemsOntheGround.listIterator();
             while (groundItemIterator.hasNext()) {
                 Item nextOnTheGround = groundItemIterator.next();
-                System.out.println("podniosles: " + nextOnTheGround.description);
+                System.out.println("podniosłeś: " + nextOnTheGround.description);
             }
             showItems(this.loot);
         }
     }
 
+    public void timePasses(){
+        Iterator<SurvivalAttribute> iterator = this.survivalAttributes.listIterator();
+        while(iterator.hasNext()){
+            SurvivalAttribute survivalAttribute = iterator.next();
+            survivalAttribute.change(survivalAttribute.defaultStep);
+        }
+    }
 
+    public boolean isExausted() {
+        Iterator<SurvivalAttribute> iterator = this.survivalAttributes.listIterator();
+        while(iterator.hasNext()){
+            if(iterator.next().isMax()){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void showItems(List<Item> items ) {
         if(items != null) {
@@ -93,27 +119,11 @@ public class Human extends Monster{
         int itemIndex = itemChoice("Wybierz item który chcesz uzyc");
         if (loot.get(itemIndex).type == ItemTypes.bottleOfWater){
             System.out.println("wypijasz: " + loot.get(itemIndex).description );
-            changeThirst(30);
             loot.remove(itemIndex);
+            SurvivalAttribute thirst = getSurvivalAttributeByName("thirst");
+            thirst.change(-30);
+            loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3));
         }
-
-    }
-
-    public static void changeThirst(int value) {
-        TextColorGenerator. purpleText("Your actual Thirst: " + actualThirst);
-        actualThirst =+ value;
-        if (actualThirst > 100){
-            actualThirst =100;
-        }
-
-    }
-    public static void changeSatiety(int value) {
-        TextColorGenerator. purpleText("Your actual Satiety: " + actualSatiety;
-        actualSatiety =+ value;
-        if (actualSatiety > 100){
-            actualSatiety =100;
-        }
-
     }
 
 

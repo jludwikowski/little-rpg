@@ -69,6 +69,8 @@ public class ItemGenerator extends Generator<Item>{
         switch(type) {
             case bottleOfWater:
                 return new Item(name, type, type.toString(), 0.8);
+            case emptyBottle:
+                return new Item(name, type, type.toString(), 0.2);
             case cup:
                 return new Item(name, type, type.toString(), 0.5);
             case skull:

@@ -92,12 +92,12 @@ public class Runner {
                     System.out.println(player.getStats());
                 break;
                 case "north":
-                    if (player.actualThirst > 5) {
+                    if (!player.isExausted()) {
                         if (player.location[1] > 0) {
                             player.location[1] = player.location[1] - 1;
                             thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
                             System.out.println(thisPlace.getDescription());
-                            player.changeThirst(-5);
+                            player.timePasses();
                         }
                     }
                     else {
