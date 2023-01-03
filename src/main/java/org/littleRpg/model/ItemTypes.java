@@ -6,6 +6,7 @@ public enum ItemTypes {
     skull,
     bone,
     hide,
+    meat,
     armor,
     weapon
 

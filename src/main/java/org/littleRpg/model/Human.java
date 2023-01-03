@@ -10,7 +10,8 @@ public class Human extends Monster{
 
     public int gamerId;
     public int[] location;
-    public int actualThirst;
+    public static int actualThirst;
+    public static int actualSatiety;
     //public Item items;
     public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, int actualThirst) {
         super(name, description,maxHp, currentHp, attack, strength, mainWeapon, armor, loot);
@@ -36,7 +37,7 @@ public class Human extends Monster{
 
 
 
-    public void showItems(List<Item> items ) {
+    public static void showItems(List<Item> items ) {
         if(items != null) {
             ListIterator<Item> itemIterator = items.listIterator();
             while (itemIterator.hasNext()) {
@@ -81,7 +82,7 @@ public class Human extends Monster{
 
     }
 
-    public int itemChoice(String prompt){
+    public static int itemChoice(String prompt){
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
@@ -98,11 +99,19 @@ public class Human extends Monster{
 
     }
 
-    public void changeThirst(int value) {
+    public static void changeThirst(int value) {
         TextColorGenerator. purpleText("Your actual Thirst: " + actualThirst);
         actualThirst =+ value;
         if (actualThirst > 100){
             actualThirst =100;
+        }
+
+    }
+    public static void changeSatiety(int value) {
+        TextColorGenerator. purpleText("Your actual Satiety: " + actualSatiety;
+        actualSatiety =+ value;
+        if (actualSatiety > 100){
+            actualSatiety =100;
         }
 
     }
