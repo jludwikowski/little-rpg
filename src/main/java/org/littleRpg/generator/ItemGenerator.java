@@ -26,8 +26,10 @@ public class ItemGenerator extends Generator<Item>{
     }
 
     public Item adjust(Item entity, String adj) {
-        entity.name = adj + " " + entity.name;
-        entity.description = adj + " " + entity.description;
+        if (entity != null) {
+            entity.name = adj + " " + entity.name;
+            entity.description = adj + " " + entity.description;
+        }
 
         switch(adj) {
             case "ornate":
@@ -76,9 +78,11 @@ public class ItemGenerator extends Generator<Item>{
             case skull:
                 return new Item(name, type, type.toString(), 1.5);
             case bone:
-                return new Item(name, type, type.toString(), 1);
+                return new Item(name, type, type.toString(), 1.1);
             case hide:
-                return new Item(name, type, type.toString(), 3);
+                return new Item(name, type, type.toString(), 3.1);
+            case meat:
+                return new Item(name, type, type.toString(), 1.3);
         }
         return null;
     }

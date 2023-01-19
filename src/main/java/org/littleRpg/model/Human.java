@@ -1,5 +1,6 @@
 package org.littleRpg.model;
 
+
 import org.littleRpg.generator.TextColorGenerator;
 
 import java.util.*;
@@ -8,13 +9,29 @@ public class Human extends Monster{
 
     public int gamerId;
     public int[] location;
-    public List<SurvivalAttribute> survivalAttributes = new ArrayList<>();
+   // public List<SurvivalAttribute> survivalAttributes = new ArrayList<>();
+    Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
     //public Item items;
     public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, int actualThirst) {
         super(name, description,maxHp, currentHp, attack, strength, mainWeapon, armor, loot);
-        survivalAttributes.add(new SurvivalAttribute("thirst"));
-        survivalAttributes.add(new SurvivalAttribute("hunger",2,100));
+       // survivalAttributes.add(new SurvivalAttribute("thirst"));
+       // survivalAttributes.add(new SurvivalAttribute("hunger",2,100));
+
+        survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
+        survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
+
+    }
+
+
+
+    @Override
+    public String getStats() {
+        String description = super.getStats();
+        for (String attributeName: survivalAttributes.keySet()){
+            description += survivalAttributes.get(attributeName).getDescription();
+        }
+        return description;
     }
 
     public void adjust(Human adjust){
@@ -22,16 +39,7 @@ public class Human extends Monster{
         this.location = adjust.location;
     }
 
-    public SurvivalAttribute getSurvivalAttributeByName(String name){
-        ListIterator<SurvivalAttribute> survivalAttributesIterator = survivalAttributes.listIterator();
-        while(survivalAttributesIterator.hasNext()){
-            SurvivalAttribute att = survivalAttributesIterator.next();
-            if(att.name.equalsIgnoreCase(name)){
-                return att;
-            }
-        }
-        return null;
-    }
+
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {
@@ -46,19 +54,12 @@ public class Human extends Monster{
     }
 
     public void timePasses(){
-        Iterator<SurvivalAttribute> iterator = this.survivalAttributes.listIterator();
-        while(iterator.hasNext()){
-            SurvivalAttribute survivalAttribute = iterator.next();
-            survivalAttribute.change(survivalAttribute.defaultStep);
-        }
+        survivalAttributes.forEach((key,value)->value.change(value.defaultStep));
     }
 
     public boolean isExausted() {
-        Iterator<SurvivalAttribute> iterator = this.survivalAttributes.listIterator();
-        while(iterator.hasNext()){
-            if(iterator.next().isMax()){
-                return true;
-            }
+        if (survivalAttributes.entrySet().stream().filter(entry->entry.getValue().isMax()).count() > 0){
+            return true;
         }
         return false;
     }
@@ -118,11 +119,16 @@ public class Human extends Monster{
         showItems(loot);
         int itemIndex = itemChoice("Wybierz item który chcesz uzyc");
         if (loot.get(itemIndex).type == ItemTypes.bottleOfWater){
-            System.out.println("wypijasz: " + loot.get(itemIndex).description );
+            System.out.println("you drink: " + loot.get(itemIndex).description );
             loot.remove(itemIndex);
-            SurvivalAttribute thirst = getSurvivalAttributeByName("thirst");
-            thirst.change(-30);
+            survivalAttributes.get("thirst").change(-30);
             loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3));
+        }
+        if (loot.get(itemIndex).type == ItemTypes.meat){
+            System.out.println("you eat: " + loot.get(itemIndex).description );
+            loot.remove(itemIndex);
+            survivalAttributes.get("hunger").change(-10);
+            System.out.println("Meat was good, but cooked is better");
         }
     }
 

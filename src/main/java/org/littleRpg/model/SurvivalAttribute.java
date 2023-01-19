@@ -37,4 +37,8 @@ public class SurvivalAttribute {
         return false;
     }
 
+    public String getDescription(){
+        return  this.name + ": " + this.value + "/" + this.max;
+    }
+
 }
