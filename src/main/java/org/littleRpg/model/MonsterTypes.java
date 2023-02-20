@@ -1,6 +1,8 @@
 package org.littleRpg.model;
 
 public enum MonsterTypes {
+    human,
+    elf,
     goblin,
     orc,
     slime,

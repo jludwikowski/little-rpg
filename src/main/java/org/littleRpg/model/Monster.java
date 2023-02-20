@@ -1,11 +1,6 @@
 package org.littleRpg.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
-
-import org.littleRpg.model.*;
+import java.util.*;
 
 public class Monster extends GameEntity {
 
@@ -15,26 +10,30 @@ public class Monster extends GameEntity {
     public int strength = 0;
     public Weapon mainWeapon = null;
     public Armor armor = null;
-    public List<Item> loot;
+    public EntityList loot;
+    public MonsterTypes type;
 
 
-    public Monster(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot) {
+    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
         super(name, description);
+        this.type = type;
         this.maxHp = maxHp;
         this.currentHp = currentHp;
         this.attack = attack;
         this.strength = strength;
         this.mainWeapon = mainWeapon;
         this.armor = armor;
-        this.loot = loot;
+        this.loot = new EntityList();
+        List<GameEntity> helperList = new ArrayList<>(loot);
+        this.loot.addAll(helperList);
 
     }
 
     public List<Item> dropItems() {
-        List<Item> dropedItems = new ArrayList<Item>();
+        List<GameEntity> dropedItems = new ArrayList<>();
         if (this.loot != null) {
-            dropedItems.addAll(this.loot);
-            this.loot.clear();
+            dropedItems.addAll(this.loot.list);
+            this.loot.list.clear();
         }
         if (this.mainWeapon != null) {
             dropedItems.add(this.mainWeapon);
@@ -44,7 +43,13 @@ public class Monster extends GameEntity {
             dropedItems.add(this.armor);
             this.armor = null;
         }
-        return dropedItems;
+        List<Item> finalItems = new ArrayList<>();
+        Iterator<GameEntity>iterator = dropedItems.listIterator();
+        while(iterator.hasNext()){
+            GameEntity entity = iterator.next();
+            finalItems.add((Item)entity);
+        }
+        return finalItems;
     }
 
 
@@ -53,7 +58,7 @@ public class Monster extends GameEntity {
 
     public String getStats() {
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
-                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength);
+                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n";
 
     }
 
@@ -63,6 +68,7 @@ public class Monster extends GameEntity {
         }
         return this.attack;
     }
+
     public int getDamage() {
         if(this.mainWeapon != null) {
             return this.mainWeapon.baseDamageValue + this.strength;
@@ -81,6 +87,11 @@ public class Monster extends GameEntity {
         if(this.currentHp <=0 ){
             System.out.println("DEAD");
         }
+    }
+
+    public int getSkillDamage(Skill chosenskill) {
+        int skillAttack = chosenskill.power;
+        return skillAttack;
     }
 
     public void heal(int healValue) {

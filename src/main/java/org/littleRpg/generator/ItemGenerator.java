@@ -83,6 +83,26 @@ public class ItemGenerator extends Generator<Item>{
                 return new Item(name, type, type.toString(), 3.1);
             case meat:
                 return new Item(name, type, type.toString(), 1.3);
+            case cookedMeat:
+                return new Item(name, type, type.toString(), 1.3);
+            case scrollOfFire:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfThunderbolt:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfBlessing:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfStoneWarrior:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfLight:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfFireball:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfStoneDefend:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfBlessingArmor:
+                return new Item(name, type, type.toString(), 0.1);
+            case scrollOfLightPunch:
+                return new Item(name, type, type.toString(), 0.1);
         }
         return null;
     }

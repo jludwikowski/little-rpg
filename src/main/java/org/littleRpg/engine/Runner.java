@@ -6,6 +6,7 @@ import org.littleRpg.generator.WorldGenerator;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -16,11 +17,12 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",100,30,90,10,null,null, new ArrayList<Item>(),100);
-
+        Human player = new Human("player","player",0,0,0,0,null,null, new ArrayList<Item>(), new ArrayList<Skill>());
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
+        player.chooseRace();
+        player.chooseClass();
         player.location = new int[]{0,5,5};
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
@@ -148,7 +150,7 @@ public class Runner {
                     break;
 
                 case "loot":
-                    player.showItems(player.loot);
+                    player.loot.showList("in loot you have: ");
                     break;
                 case "myitems":
                     player.showEquipItems(player.mainWeapon, player.armor);
@@ -177,6 +179,15 @@ public class Runner {
                     break;
                 case "useitem":
                     player.useItem();
+                    break;
+                case "learn":
+                    player.learnSkill();
+                    break;
+               case "useskill":
+                    if (!thisPlace.monsters.isEmpty()) {
+                       player.useSkill(player, thisPlace);
+                    }
+                    break;
                 default:
                     System.out.println("i don't recognize this try again");
             }

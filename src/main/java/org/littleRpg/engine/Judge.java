@@ -2,6 +2,7 @@ package org.littleRpg.engine;
 
 import org.littleRpg.model.Monster;
 import org.littleRpg.model.Place;
+import org.littleRpg.model.Skill;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -22,13 +23,14 @@ public class Judge {
     }
 
 
+
     public static List<Monster> monsterAttack(Monster attacker, Place location){
         ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
         while (monsterListIterator.hasNext()) {
             Monster nextMonster = monsterListIterator.next();
-            System.out.println("w zasiegu wzroku masz: " + nextMonster.description);
+            System.out.println("You see around: " + nextMonster.description);
         }
-        System.out.println("gdy sie poruszyles potwory cie zauwazyly i zaczely atackowac");
+        System.out.println("When you moved, the monsters noticed you and started attacking you");
 
         ListIterator<Monster> j = location.monsters.listIterator();
         while(j.hasNext()) {
@@ -56,12 +58,23 @@ public class Judge {
         ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
         while (monsterListIterator.hasNext()) {
             Monster nextMonster = monsterListIterator.next();
-            System.out.println("w zasiegu wzroku masz: " + nextMonster.description);
+            System.out.println("You see: " + nextMonster.description);
         }
-        System.out.println("Wybierz ktorego potwora chcesz zaatakowac");
+        System.out.println("Choose monster for attack");
         Scanner target = new Scanner(System.in);
         int monsterIndex = target.nextInt();
         return combat(attacker, location, monsterIndex);
+    }
+    public static List<Monster> skillAttackAll(Monster attacker, Place location, Skill damage){
+        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
+        System.out.println("You attack and shocked all Monsters");
+        while (monsterListIterator.hasNext()) {
+            Monster nextMonster = monsterListIterator.next();
+            int damageValue = (int) Math.floor(Math.random()*10) + attacker.getSkillDamage(damage);
+            System.out.println(attacker.getName() + " hitted " + nextMonster.getName() + " for " + damageValue + "HP!");
+            nextMonster.damage(damageValue);
+        }
+        return location.monsters;
     }
 
 }

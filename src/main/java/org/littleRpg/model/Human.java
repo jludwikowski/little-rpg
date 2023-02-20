@@ -1,36 +1,68 @@
 package org.littleRpg.model;
 
 
+import org.littleRpg.generator.MonsterGenerator;
 import org.littleRpg.generator.TextColorGenerator;
 
 import java.util.*;
 
-public class Human extends Monster{
+public class Human extends AdventurerClass{
 
     public int gamerId;
     public int[] location;
-   // public List<SurvivalAttribute> survivalAttributes = new ArrayList<>();
+    public PlayerClasses adventureClass;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
-    //public Item items;
-    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, int actualThirst) {
-        super(name, description,maxHp, currentHp, attack, strength, mainWeapon, armor, loot);
-       // survivalAttributes.add(new SurvivalAttribute("thirst"));
-       // survivalAttributes.add(new SurvivalAttribute("hunger",2,100));
+    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, attack, strength, mainWeapon, armor, loot, skills);
 
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
-
     }
 
+    public void chooseRace() {
+        List <MonsterTypes> playerRaces = Arrays.asList(MonsterTypes.elf, MonsterTypes.human, MonsterTypes.orc, MonsterTypes.goblin);
+        playerRaces.forEach(race -> System.out.println(race));
+        MonsterGenerator monsterGenerator = new MonsterGenerator();
+        while(true){
+            try {
+                type = playerRaces.get(readChoice("Choose your playerRace: "));
+                System.out.println(type);
+                Monster playerBaseType = monsterGenerator.getBaseByType(type);
+                this.adjust(playerBaseType);
+                this.mainWeapon = null;
+                this.armor = null;
+                this.loot = new EntityList();
+                return;
+            }catch (Exception e){
+                System.out.println("i don't recognize this, try again");
+            }
+        }
+    }
 
+    public void chooseClass() {
+        List <PlayerClasses> playerClasses = Arrays.asList(PlayerClasses.mage, PlayerClasses.paladin, PlayerClasses.warrior, PlayerClasses.priest);
+        playerClasses.forEach(playerClass -> System.out.println(playerClass));
+        while(true){
+            try {
+                this.adventureClass = playerClasses.get(readChoice("Choose your playerClass: "));
+                System.out.println(adventureClass);
+                Human playerBaseClass = this.getBaseByClass(adventureClass);
+                this.adjust(playerBaseClass);
+                return;
+            }catch (Exception e){
+                System.out.println("i don't recognize this, try again");
+            }
+        }
+    }
 
     @Override
     public String getStats() {
         String description = super.getStats();
         for (String attributeName: survivalAttributes.keySet()){
-            description += survivalAttributes.get(attributeName).getDescription();
+            description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
+        description += "race " + type;
         return description;
     }
 
@@ -43,13 +75,14 @@ public class Human extends Monster{
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {
-            this.loot.addAll(itemsOntheGround);
-            ListIterator<Item> groundItemIterator = itemsOntheGround.listIterator();
+            List<GameEntity> helpList = new ArrayList<>(itemsOntheGround);
+            loot.list.addAll(helpList);
+            ListIterator<GameEntity> groundItemIterator = loot.list.listIterator();
             while (groundItemIterator.hasNext()) {
-                Item nextOnTheGround = groundItemIterator.next();
+                GameEntity nextOnTheGround = groundItemIterator.next();
                 System.out.println("podniosłeś: " + nextOnTheGround.description);
             }
-            showItems(this.loot);
+            this.loot.showList("You have in inventory: ");
         }
     }
 
@@ -64,7 +97,7 @@ public class Human extends Monster{
         return false;
     }
 
-    public static void showItems(List<Item> items ) {
+  /*  public static void showItems(List<Item> items ) {
         if(items != null) {
             ListIterator<Item> itemIterator = items.listIterator();
             while (itemIterator.hasNext()) {
@@ -73,13 +106,14 @@ public class Human extends Monster{
 
             }
         }
-    }
+    }*/
+
 
     public void wear() {
-        showItems(loot);
+        loot.showList("You have in loot: ");
         System.out.println("w tym momencie nosisz: " + mainWeapon + armor);
-        int itemIndex = itemChoice("Wybierz item który chcesz zalozyc");
-        Item wearItem = loot.get(itemIndex);
+        int itemIndex = readChoice("Wybierz item który chcesz zalozyc");
+        Item wearItem = (Item) loot.get(itemIndex);
         if(wearItem instanceof Armor) {
             Item dropArmor = armor;
             System.out.println("ściągasz: " + dropArmor.description );
@@ -109,28 +143,53 @@ public class Human extends Monster{
 
     }
 
-    public static int itemChoice(String prompt){
+    public static int readChoice(String prompt){
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
     }
 
+
     public void useItem() {
-        showItems(loot);
-        int itemIndex = itemChoice("Wybierz item który chcesz uzyc");
-        if (loot.get(itemIndex).type == ItemTypes.bottleOfWater){
+        loot.showList("In loot you have: ");
+        int itemIndex = readChoice("Wybierz item który chcesz uzyc");
+        Item chosenItem = (Item) loot.get(itemIndex);
+        if (chosenItem.type == ItemTypes.bottleOfWater){
             System.out.println("you drink: " + loot.get(itemIndex).description );
             loot.remove(itemIndex);
             survivalAttributes.get("thirst").change(-30);
             loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3));
         }
-        if (loot.get(itemIndex).type == ItemTypes.meat){
+        if (chosenItem.type == ItemTypes.cookedMeat){
             System.out.println("you eat: " + loot.get(itemIndex).description );
             loot.remove(itemIndex);
             survivalAttributes.get("hunger").change(-10);
-            System.out.println("Meat was good, but cooked is better");
+            System.out.println("Meat was good");
+        }
+        if (chosenItem.type == ItemTypes.scrollOfFire) {
+            System.out.println("You used: " + loot.get(itemIndex).description);
+            loot.remove(itemIndex);
+            cookItem();
         }
     }
+
+    public void cookItem() {
+        System.out.println("You can put in fire your item. Choose item");
+        loot.showList("In loot you have: ");
+        int itemIndex2 = readChoice("Wybierz item który chcesz uzyc");
+        Item chosenItem = (Item) loot.get(itemIndex2);
+        if (chosenItem.type == ItemTypes.meat) {
+            System.out.println("You cooked " + loot.get(itemIndex2).description);
+            loot.remove(itemIndex2);
+            loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3));
+        }
+        if (chosenItem.type != ItemTypes.meat) {
+            System.out.println("You burned " + loot.get(itemIndex2).description);
+            loot.remove(itemIndex2);
+        }
+    }
+
+
 
 
 }
