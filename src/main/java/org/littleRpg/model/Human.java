@@ -1,6 +1,7 @@
 package org.littleRpg.model;
 
 
+import org.littleRpg.engine.ListHelper;
 import org.littleRpg.generator.MonsterGenerator;
 import org.littleRpg.generator.TextColorGenerator;
 
@@ -31,7 +32,7 @@ public class Human extends AdventurerClass{
                 this.adjust(playerBaseType);
                 this.mainWeapon = null;
                 this.armor = null;
-                this.loot = new EntityList();
+                this.loot = new ArrayList<Item>();
                 return;
             }catch (Exception e){
                 System.out.println("i don't recognize this, try again");
@@ -57,9 +58,9 @@ public class Human extends AdventurerClass{
 
     @Override
     public void damage(int damageValue) {
-        ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+        ListIterator <Skill> activeSkill = activeSkills.listIterator();
         while(activeSkill.hasNext()){
-            Skill skill = (Skill) activeSkill.next();
+            Skill skill = activeSkill.next();
             monsterDamageReduction += skill.damageReduction;
         }
         if (this.armor != null) {
@@ -78,9 +79,9 @@ public class Human extends AdventurerClass{
     @Override
     public String getStats() {
         int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
-        ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+        ListIterator <Skill> activeSkill = activeSkills.listIterator();
         while(activeSkill.hasNext()){
-            Skill skill = (Skill) activeSkill.next();
+            Skill skill = activeSkill.next();
             finalDamageReduction += skill.damageReduction;
         }
         String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
@@ -101,10 +102,10 @@ public class Human extends AdventurerClass{
     public void skillTurnCounter () {
 
         if (activeSkills != null){
-            activeSkills.showList("active Skills: ");
-            ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+            ListHelper.showList("Active Skills: ",activeSkills);
+            ListIterator <Skill> activeSkill = activeSkills.listIterator();
             while(activeSkill.hasNext()){
-                Skill skill = (Skill) activeSkill.next();
+                Skill skill = activeSkill.next();
                 skill.activationLength -= 1;
                 System.out.println("skill kończy się za: " + skill.activationLength);
                 if (skill.activationLength == 0){
@@ -118,14 +119,13 @@ public class Human extends AdventurerClass{
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {
-            List<GameEntity> helpList = new ArrayList<>(itemsOntheGround);
-            loot.list.addAll(helpList);
-            ListIterator<GameEntity> groundItemIterator = loot.list.listIterator();
+            loot.addAll(itemsOntheGround);
+            ListIterator<Item> groundItemIterator = loot.listIterator();
             while (groundItemIterator.hasNext()) {
                 GameEntity nextOnTheGround = groundItemIterator.next();
                 System.out.println("podniosłeś: " + nextOnTheGround.description);
             }
-            this.loot.showList("You have in inventory: ");
+            ListHelper.showList("You have in inventory: ",this.loot);
         }
     }
 
@@ -153,7 +153,7 @@ public class Human extends AdventurerClass{
 
 
     public void wear() {
-        loot.showList("You have in loot: ");
+        ListHelper.showList("You have in inventory: ",this.loot);
         if (mainWeapon != null) {
             System.out.println("Your equip Weapon: " + mainWeapon.description);
         }
@@ -205,7 +205,7 @@ public class Human extends AdventurerClass{
 
 
     public void useItem() {
-        loot.showList("In loot you have: ");
+        ListHelper.showList("You have in inventory: ",this.loot);
         int itemIndex = readChoice("Choose item to use");
         Item chosenItem = (Item) loot.get(itemIndex);
         if (chosenItem.type == ItemTypes.bottleOfWater){
@@ -229,7 +229,7 @@ public class Human extends AdventurerClass{
 
     public void cookItem() {
         System.out.println("You can put in fire your item. Choose item");
-        loot.showList("In loot you have: ");
+        ListHelper.showList("You have in inventory: ",this.loot);
         int itemIndex2 = readChoice("Wybierz item który chcesz uzyc");
         Item chosenItem = (Item) loot.get(itemIndex2);
         if (chosenItem.type == ItemTypes.meat) {

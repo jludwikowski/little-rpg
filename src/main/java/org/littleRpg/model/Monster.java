@@ -11,7 +11,7 @@ public class Monster extends GameEntity {
     public int monsterDamageReduction = 0;
     public Weapon mainWeapon = null;
     public Armor armor = null;
-    public EntityList loot;
+    public List<Item> loot = new ArrayList<>();
     public MonsterTypes type;
 
 
@@ -25,17 +25,15 @@ public class Monster extends GameEntity {
         this.monsterDamageReduction = monsterDamageReduction;
         this.mainWeapon = mainWeapon;
         this.armor = armor;
-        this.loot = new EntityList();
-        List<GameEntity> helperList = new ArrayList<>(loot);
-        this.loot.addAll(helperList);
+        this.loot = loot;
 
     }
 
     public List<Item> dropItems() {
-        List<GameEntity> dropedItems = new ArrayList<>();
+        List<Item> dropedItems = new ArrayList<>();
         if (this.loot != null) {
-            dropedItems.addAll(this.loot.list);
-            this.loot.list.clear();
+            dropedItems.addAll(this.loot);
+            this.loot.clear();
         }
         if (this.mainWeapon != null) {
             dropedItems.add(this.mainWeapon);
@@ -45,18 +43,8 @@ public class Monster extends GameEntity {
             dropedItems.add(this.armor);
             this.armor = null;
         }
-        List<Item> finalItems = new ArrayList<>();
-        Iterator<GameEntity>iterator = dropedItems.listIterator();
-        while(iterator.hasNext()){
-            GameEntity entity = iterator.next();
-            finalItems.add((Item)entity);
-        }
-        return finalItems;
+        return dropedItems;
     }
-
-
-
-
 
     public String getStats() {
         int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;

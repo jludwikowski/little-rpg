@@ -1,6 +1,7 @@
 package org.littleRpg.model;
 
 import org.littleRpg.engine.Judge;
+import org.littleRpg.engine.ListHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.ListIterator;
 public class AdventurerClass extends Monster{
 
     public PlayerClasses className;
-    public EntityList skills = new EntityList();
-    public EntityList activeSkills = new EntityList();
+    public List<Skill> skills = new ArrayList<>();
+    public List<Skill> activeSkills = new ArrayList<>();
 
 
 
@@ -35,7 +36,7 @@ public class AdventurerClass extends Monster{
 
     public void learnSkill() {
         System.out.println("You can learn new skill. Choose item");
-        this.loot.showList("In loot you have: ");
+        ListHelper.showList("In loot you have: ",this.loot);
         int itemIndex3 = Human.readChoice("Choose item to use: ");
         Item chosenItem = (Item)loot.get(itemIndex3);
         System.out.println(chosenItem.type);
@@ -74,14 +75,14 @@ public class AdventurerClass extends Monster{
             System.out.println("You learned " + loot.get(itemIndex3).description);
             loot.remove(itemIndex3);
             this.skills.add(new Skill("StoneArmor", 1, 0,0,8,2,false, false, true, false,true));
-            skills.showList("skill");
+            ListHelper.showList("Skill: ",this.skills);
             System.out.println("You learned StoneArmor");
         }
-        if (chosenItem.type == ItemTypes.scrollOfBlessingDeath && className == PlayerClasses.priest) {
+        if (chosenItem.type == ItemTypes.scrollOfBlessing && className == PlayerClasses.priest) {
             System.out.println("You learned " + loot.get(itemIndex3).description);
             loot.remove(itemIndex3);
-            this.skills.add(new Skill("scrollOfBlessingDeath", 1, 5,5,0,0,false, true, false, true, false));
-            System.out.println("You learned BlessingDeath");
+            this.skills.add(new Skill("scrollOfBlessing", 1, 5,5,0,0,false, true, false, true, false));
+            System.out.println("You learned Blessing");
         }
         if (chosenItem.type == ItemTypes.scrollOfLightPunch && className == PlayerClasses.paladin) {
             System.out.println("You learned " + loot.get(itemIndex3).description);
@@ -89,7 +90,7 @@ public class AdventurerClass extends Monster{
             this.skills.add(new Skill("LightPunch", 1, 5,5,0,2,false, true, false, true, false));
             System.out.println("You learned LightPunch");
         }
-System.out.println(this.skills.list.size());
+        System.out.println(this.skills.size());
         /*else {
             System.out.println("you should learn special attack for your class");
         }*/
@@ -99,17 +100,17 @@ System.out.println(this.skills.list.size());
 
     public void useSkill(Monster attacker, Place location){
         if (!skills.isEmpty()) {
-            skills.showList("Your learned skills: ");
+            ListHelper.showList("Your learned skills: ",this.skills);
             int skillIndex = Human.readChoice("Choose skill to use: ");
-            Skill chosenskill = (Skill) skills.get(skillIndex);
-            if (chosenskill.attackSkill) {
-                if (chosenskill.isAttackAll) {
-                    Judge.attackAll(attacker, location, chosenskill);
-                } else if (chosenskill.isAttackRange) {
-                    Judge.rangeAttack(attacker, location, chosenskill);
+            Skill chosenSkill = skills.get(skillIndex);
+            if (chosenSkill.attackSkill) {
+                if (chosenSkill.isAttackAll) {
+                    Judge.attackAll(attacker, location, chosenSkill);
+                } else if (chosenSkill.isAttackRange) {
+                    Judge.rangeAttack(attacker, location, chosenSkill);
                 }
-            }else if(chosenskill.deffendSkill){
-                this.activeSkills.add(chosenskill);
+            }else if(chosenSkill.deffendSkill){
+                this.activeSkills.add(chosenSkill);
             }
         }
         else {
