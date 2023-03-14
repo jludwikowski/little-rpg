@@ -165,7 +165,7 @@ public class Runner {
                     break;
 
                 case "loot":
-                    player.loot.showList("in loot you have: ");
+                    ListHelper.showList("In loot you have: ",player.loot);
                     break;
                 case "myitems":
                     player.showEquipItems(player.mainWeapon, player.armor);
