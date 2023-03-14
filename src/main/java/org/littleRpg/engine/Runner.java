@@ -17,7 +17,7 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",0,0,0,0,null,null, new ArrayList<Item>(), new ArrayList<Skill>());
+        Human player = new Human("player","player",0,0,0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
@@ -27,6 +27,8 @@ public class Runner {
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
+        location.items.add(new Item("scrollOfStoneDefend",ItemTypes.scrollOfStoneDefend, "scrollOfStoneDefend",0));
+        location.items.add(new Armor("shield", "shield", 5,2));
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);
@@ -81,7 +83,7 @@ public class Runner {
         Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
         //System.out.println(thisPlace.getDescription());
         //player.thisPlace = new int[]{0,5,5};
-        
+
 
         System.out.println("What Do you do?");
         if(!thisPlace.monsters.isEmpty()) {
@@ -95,6 +97,7 @@ public class Runner {
                 break;
                 case "north":
                     if (!player.isExausted()) {
+                        player.skillTurnCounter();
                         if (player.location[1] > 0) {
                             player.location[1] = player.location[1] - 1;
                             thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
@@ -114,10 +117,13 @@ public class Runner {
                     thisPlace.items.clear();
                     break;
                 case "south":
-                    if (player.location[1] < 19) {
-                        player.location[1] = player.location[1] + 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
+                    if (!player.isExausted()) {
+                        player.skillTurnCounter();
+                        if (player.location[1] < 19) {
+                            player.location[1] = player.location[1] + 1;
+                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                            System.out.println(thisPlace.getDescription());
+                        }
                     }
                     break;
                 case "help":
@@ -127,25 +133,34 @@ public class Runner {
                             "monsteritems - show monster items\nmap - print map\ncheckmonster - check monster items");
                     break;
                 case "east":
-                    if (player.location[2] > 0) {
-                        player.location[2] = player.location[2] - 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
+                    if (!player.isExausted()) {
+                        player.skillTurnCounter();
+                        if (player.location[2] > 0) {
+                            player.location[2] = player.location[2] - 1;
+                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                            System.out.println(thisPlace.getDescription());
+                        }
                     }
                     break;
                 case "west":
-                    if (player.location[2] < 19) {
-                        player.location[2] = player.location[2] + 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
+                    if (!player.isExausted()) {
+                        player.skillTurnCounter();
+
+                        if (player.location[2] < 19) {
+                            player.location[2] = player.location[2] + 1;
+                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                            System.out.println(thisPlace.getDescription());
+                        }
                     }
                     break;
                 case "map":
                     mapPrinter(world, player.location);
                     break;
                 case "attack":
+
                     if (!thisPlace.monsters.isEmpty()) {
-                        thisPlace.monsters = Judge.combat(player, thisPlace, 0);
+                        player.skillTurnCounter();
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null);
                     }
                     break;
 
@@ -157,7 +172,8 @@ public class Runner {
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
-                        thisPlace.monsters = Judge.specialCombat(player, thisPlace);
+                        player.skillTurnCounter();
+                        thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null);
                     }
                     break;
                 case "wear":

@@ -99,7 +99,7 @@ public class ItemGenerator extends Generator<Item>{
                 return new Item(name, type, type.toString(), 0.1);
             case scrollOfStoneDefend:
                 return new Item(name, type, type.toString(), 0.1);
-            case scrollOfBlessingArmor:
+            case scrollOfBlessingDeath:
                 return new Item(name, type, type.toString(), 0.1);
             case scrollOfLightPunch:
                 return new Item(name, type, type.toString(), 0.1);

@@ -1,10 +1,11 @@
 package org.littleRpg.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
 public class EntityList {
-    public List<GameEntity> list;
+    public List<GameEntity> list = new ArrayList<>();
 
     public void showList(String text){
         if(list != null) {

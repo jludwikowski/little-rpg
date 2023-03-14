@@ -8,19 +8,21 @@ public class Monster extends GameEntity {
     public int currentHp = 1;
     public int attack = 0;
     public int strength = 0;
+    public int monsterDamageReduction = 0;
     public Weapon mainWeapon = null;
     public Armor armor = null;
     public EntityList loot;
     public MonsterTypes type;
 
 
-    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
         super(name, description);
         this.type = type;
         this.maxHp = maxHp;
         this.currentHp = currentHp;
         this.attack = attack;
         this.strength = strength;
+        this.monsterDamageReduction = monsterDamageReduction;
         this.mainWeapon = mainWeapon;
         this.armor = armor;
         this.loot = new EntityList();
@@ -57,8 +59,10 @@ public class Monster extends GameEntity {
 
 
     public String getStats() {
+        int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
-                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n";
+                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
+                "damageReduction" + String.valueOf(finalDamageReduction);
 
     }
 
@@ -77,11 +81,10 @@ public class Monster extends GameEntity {
     }
 
     public void damage(int damageValue) {
-        int damageReduction = 0;
         if (this.armor != null) {
-            damageReduction = this.armor.damageReduction;
+            monsterDamageReduction += this.armor.damageReduction;
         }
-        int actuallDamageValue = damageValue - damageReduction < 0 ? 0 : damageValue - damageReduction;
+        int actuallDamageValue = damageValue - monsterDamageReduction < 0 ? 0 : damageValue - monsterDamageReduction;
         // int actuallDamageValue = damageValue - this.mainArmor.damageReduction;
         this.currentHp = this.currentHp - actuallDamageValue;
         if(this.currentHp <=0 ){
@@ -89,10 +92,7 @@ public class Monster extends GameEntity {
         }
     }
 
-    public int getSkillDamage(Skill chosenskill) {
-        int skillAttack = chosenskill.power;
-        return skillAttack;
-    }
+
 
     public void heal(int healValue) {
         this.currentHp = this.currentHp + healValue > this.maxHp ? this.maxHp : this.currentHp + healValue;
@@ -105,6 +105,7 @@ public class Monster extends GameEntity {
         this.maxHp += adjust.maxHp;
         this.attack += adjust.attack;
         this.strength += adjust.strength;
+        this.monsterDamageReduction += adjust.monsterDamageReduction;
         this.mainWeapon = adjust.mainWeapon != null ? adjust.mainWeapon: this.mainWeapon;
         this.armor = adjust.armor != null ? adjust.armor: this.armor;
     }

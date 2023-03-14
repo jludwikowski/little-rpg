@@ -16,7 +16,7 @@ public enum ItemTypes {
     scrollOfLight,
     scrollOfFireball,
     scrollOfStoneDefend,
-    scrollOfBlessingArmor,
+    scrollOfBlessingDeath,
     scrollOfLightPunch,
     armor,
     weapon

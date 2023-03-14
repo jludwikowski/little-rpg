@@ -10,11 +10,10 @@ public class Human extends AdventurerClass{
 
     public int gamerId;
     public int[] location;
-    public PlayerClasses adventureClass;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
-    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, attack, strength, mainWeapon, armor, loot, skills);
+    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, attack, strength, damageReduction,  mainWeapon, armor, loot, skills);
 
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
@@ -45,9 +44,9 @@ public class Human extends AdventurerClass{
         playerClasses.forEach(playerClass -> System.out.println(playerClass));
         while(true){
             try {
-                this.adventureClass = playerClasses.get(readChoice("Choose your playerClass: "));
-                System.out.println(adventureClass);
-                Human playerBaseClass = this.getBaseByClass(adventureClass);
+                this.className = playerClasses.get(readChoice("Choose your playerClass: "));
+                System.out.println(className);
+                Human playerBaseClass = this.getBaseByClass(className);
                 this.adjust(playerBaseClass);
                 return;
             }catch (Exception e){
@@ -57,8 +56,36 @@ public class Human extends AdventurerClass{
     }
 
     @Override
+    public void damage(int damageValue) {
+        ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+        while(activeSkill.hasNext()){
+            Skill skill = (Skill) activeSkill.next();
+            monsterDamageReduction += skill.damageReduction;
+        }
+        if (this.armor != null) {
+            monsterDamageReduction += this.armor.damageReduction;
+        }
+        System.out.println("Human damage");
+        int actuallDamageValue = damageValue - monsterDamageReduction < 0 ? 0 : damageValue - monsterDamageReduction;
+        // int actuallDamageValue = damageValue - this.mainArmor.damageReduction;
+        this.currentHp = this.currentHp - actuallDamageValue;
+        if(this.currentHp <=0 ){
+            System.out.println("DEAD");
+        }
+
+    }
+
+    @Override
     public String getStats() {
-        String description = super.getStats();
+        int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
+        ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+        while(activeSkill.hasNext()){
+            Skill skill = (Skill) activeSkill.next();
+            finalDamageReduction += skill.damageReduction;
+        }
+        String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
+                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
+                "damageReduction" + String.valueOf(finalDamageReduction);
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
@@ -69,6 +96,22 @@ public class Human extends AdventurerClass{
     public void adjust(Human adjust){
         super.adjust(adjust);
         this.location = adjust.location;
+    }
+
+    public void skillTurnCounter () {
+
+        if (activeSkills != null){
+            activeSkills.showList("active Skills: ");
+            ListIterator <GameEntity> activeSkill = activeSkills.list.listIterator();
+            while(activeSkill.hasNext()){
+                Skill skill = (Skill) activeSkill.next();
+                skill.activationLength -= 1;
+                System.out.println("skill kończy się za: " + skill.activationLength);
+                if (skill.activationLength == 0){
+                    activeSkill.remove();
+                }
+            }
+        }
     }
 
 
@@ -111,34 +154,45 @@ public class Human extends AdventurerClass{
 
     public void wear() {
         loot.showList("You have in loot: ");
-        System.out.println("w tym momencie nosisz: " + mainWeapon + armor);
-        int itemIndex = readChoice("Wybierz item który chcesz zalozyc");
+        if (mainWeapon != null) {
+            System.out.println("Your equip Weapon: " + mainWeapon.description);
+        }
+        if (armor != null){
+            System.out.println("Your equip armor: " + armor.description);
+        }
+        if (mainWeapon == null && armor == null) {
+            System.out.println("You don't have equipped equipment");
+        }
+        int itemIndex = readChoice("Choose item to wear");
         Item wearItem = (Item) loot.get(itemIndex);
         if(wearItem instanceof Armor) {
-            Item dropArmor = armor;
-            System.out.println("ściągasz: " + dropArmor.description );
+            Item dropArmor = null;
+            if (armor != null) {
+                dropArmor = armor;
+                System.out.println("you take of: " + dropArmor.description);
+            }
             armor = (Armor) wearItem;
             loot.remove(itemIndex);
             if(dropArmor != null) {
                 loot.add(dropArmor);
             }
-            System.out.println("Założyłeś: " + this.armor.description);
+            System.out.println("you take of: " + this.armor.description);
 
         }
         if(wearItem instanceof Weapon) {
             Item dropMainWeapon = mainWeapon;
             if(mainWeapon != null) {
-                System.out.println("ściągasz: " + dropMainWeapon.description);
+                System.out.println("you take of: " + dropMainWeapon.description);
             }
             mainWeapon = (Weapon) wearItem;
             loot.remove(itemIndex);
             if(dropMainWeapon != null) {
                 loot.add(dropMainWeapon);
             }
-            System.out.println("Założyłeś: " + this.mainWeapon.description);
+            System.out.println("You equiped: " + this.mainWeapon.description);
         }
         if(!(wearItem instanceof Armor) && !(wearItem instanceof Weapon)) {
-            System.out.println("Nie mozesz tego uzyc!");
+            System.out.println("You cannot use this!");
         }
 
     }
@@ -152,7 +206,7 @@ public class Human extends AdventurerClass{
 
     public void useItem() {
         loot.showList("In loot you have: ");
-        int itemIndex = readChoice("Wybierz item który chcesz uzyc");
+        int itemIndex = readChoice("Choose item to use");
         Item chosenItem = (Item) loot.get(itemIndex);
         if (chosenItem.type == ItemTypes.bottleOfWater){
             System.out.println("you drink: " + loot.get(itemIndex).description );
