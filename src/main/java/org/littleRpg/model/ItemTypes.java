@@ -9,15 +9,8 @@ public enum ItemTypes {
     hide,
     meat,
     cookedMeat,
-    scrollOfFire,
-    scrollOfThunderbolt,
-    scrollOfBlessing,
-    scrollOfStoneWarrior,
-    scrollOfLight,
-    scrollOfFireball,
-    scrollOfStoneDefend,
-    scrollOfBlessingDeath,
-    scrollOfLightPunch,
+    scroll,
+    flint,
     armor,
     weapon
 

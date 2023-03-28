@@ -57,36 +57,10 @@ public class Human extends AdventurerClass{
     }
 
     @Override
-    public void damage(int damageValue) {
-        ListIterator <Skill> activeSkill = activeSkills.listIterator();
-        while(activeSkill.hasNext()){
-            Skill skill = activeSkill.next();
-            monsterDamageReduction += skill.damageReduction;
-        }
-        if (this.armor != null) {
-            monsterDamageReduction += this.armor.damageReduction;
-        }
-        System.out.println("Human damage");
-        int actuallDamageValue = damageValue - monsterDamageReduction < 0 ? 0 : damageValue - monsterDamageReduction;
-        // int actuallDamageValue = damageValue - this.mainArmor.damageReduction;
-        this.currentHp = this.currentHp - actuallDamageValue;
-        if(this.currentHp <=0 ){
-            System.out.println("DEAD");
-        }
-
-    }
-
-    @Override
     public String getStats() {
-        int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
-        ListIterator <Skill> activeSkill = activeSkills.listIterator();
-        while(activeSkill.hasNext()){
-            Skill skill = activeSkill.next();
-            finalDamageReduction += skill.damageReduction;
-        }
         String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
-                "damageReduction" + String.valueOf(finalDamageReduction);
+                "damageReduction" + String.valueOf(getAttribute(Attribute.monsterDamageReduction));
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
@@ -164,7 +138,7 @@ public class Human extends AdventurerClass{
             System.out.println("You don't have equipped equipment");
         }
         int itemIndex = readChoice("Choose item to wear");
-        Item wearItem = (Item) loot.get(itemIndex);
+        Item wearItem = loot.get(itemIndex);
         if(wearItem instanceof Armor) {
             Item dropArmor = null;
             if (armor != null) {
@@ -207,22 +181,21 @@ public class Human extends AdventurerClass{
     public void useItem() {
         ListHelper.showList("You have in inventory: ",this.loot);
         int itemIndex = readChoice("Choose item to use");
-        Item chosenItem = (Item) loot.get(itemIndex);
+        Item chosenItem = loot.get(itemIndex);
         if (chosenItem.type == ItemTypes.bottleOfWater){
-            System.out.println("you drink: " + loot.get(itemIndex).description );
+            System.out.println("you drink: " + chosenItem.description );
             loot.remove(itemIndex);
             survivalAttributes.get("thirst").change(-30);
             loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3));
         }
         if (chosenItem.type == ItemTypes.cookedMeat){
-            System.out.println("you eat: " + loot.get(itemIndex).description );
+            System.out.println("you eat: " + chosenItem.description );
             loot.remove(itemIndex);
             survivalAttributes.get("hunger").change(-10);
             System.out.println("Meat was good");
         }
-        if (chosenItem.type == ItemTypes.scrollOfFire) {
-            System.out.println("You used: " + loot.get(itemIndex).description);
-            loot.remove(itemIndex);
+        if (chosenItem.type == ItemTypes.flint) {
+            System.out.println("You used: " + chosenItem.description);
             cookItem();
         }
     }
@@ -231,14 +204,14 @@ public class Human extends AdventurerClass{
         System.out.println("You can put in fire your item. Choose item");
         ListHelper.showList("You have in inventory: ",this.loot);
         int itemIndex2 = readChoice("Wybierz item który chcesz uzyc");
-        Item chosenItem = (Item) loot.get(itemIndex2);
+        Item chosenItem = loot.get(itemIndex2);
         if (chosenItem.type == ItemTypes.meat) {
-            System.out.println("You cooked " + loot.get(itemIndex2).description);
+            System.out.println("You cooked " + chosenItem.description);
             loot.remove(itemIndex2);
             loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3));
         }
         if (chosenItem.type != ItemTypes.meat) {
-            System.out.println("You burned " + loot.get(itemIndex2).description);
+            System.out.println("You burned " + chosenItem.description);
             loot.remove(itemIndex2);
         }
     }

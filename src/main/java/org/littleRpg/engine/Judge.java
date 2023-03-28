@@ -1,5 +1,6 @@
 package org.littleRpg.engine;
 
+import org.littleRpg.model.Attribute;
 import org.littleRpg.model.Monster;
 import org.littleRpg.model.Place;
 import org.littleRpg.model.Skill;
@@ -12,8 +13,8 @@ public class Judge {
 
     public static void attack(Monster monster1, Monster monster2, Skill skill) {
         double roll =  Math.random()*100;
-        System.out.println("Attack is: " + monster1.getAttack() + " Roll is:" + String.valueOf(roll));
-        if(monster1.getAttack() > roll) {
+        System.out.println("Attack is: " + monster1.getAttribute(Attribute.attack) + " Roll is:" + String.valueOf(roll));
+        if(monster1.getAttribute(Attribute.attack) > roll) {
             int damageValue = (int) Math.floor(Math.random()*10);
             if(skill != null){
                 damageValue += skill.power;

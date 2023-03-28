@@ -54,13 +54,6 @@ public class Monster extends GameEntity {
 
     }
 
-    public int getAttack() {
-        if(this.mainWeapon != null) {
-            return this.mainWeapon.bonusAttack + this.attack;
-        }
-        return this.attack;
-    }
-
     public int getDamage() {
         if(this.mainWeapon != null) {
             return this.mainWeapon.baseDamageValue + this.strength;
@@ -68,22 +61,42 @@ public class Monster extends GameEntity {
         return this.strength;
     }
 
-    public void damage(int damageValue) {
-        if (this.armor != null) {
-            monsterDamageReduction += this.armor.damageReduction;
+    public int getBaseAttribute(Attribute attribute){
+        switch (attribute) {
+            case monsterDamageReduction:
+                if (this.armor == null) {
+                    return this.monsterDamageReduction;
+                }
+                return armor.damageReduction + monsterDamageReduction;
+            case Strength:
+                return strength;
+            case maxHp:
+                return maxHp;
+            case attack:
+                if(mainWeapon != null) {
+                    return mainWeapon.bonusAttack + attack;
+                }
+                return attack;
         }
-        int actuallDamageValue = damageValue - monsterDamageReduction < 0 ? 0 : damageValue - monsterDamageReduction;
-        // int actuallDamageValue = damageValue - this.mainArmor.damageReduction;
+        return 0;
+    }
+
+
+    public int getAttribute(Attribute attribute){
+        return getBaseAttribute(attribute);
+    }
+
+    public void damage(int damageValue) {
+        int damageReduction = getAttribute(Attribute.monsterDamageReduction);
+        int actuallDamageValue = damageValue - damageReduction < 0 ? 0 : damageValue - damageReduction;
         this.currentHp = this.currentHp - actuallDamageValue;
         if(this.currentHp <=0 ){
             System.out.println("DEAD");
         }
     }
 
-
-
     public void heal(int healValue) {
-        this.currentHp = this.currentHp + healValue > this.maxHp ? this.maxHp : this.currentHp + healValue;
+        this.currentHp = this.currentHp + healValue > getAttribute(Attribute.maxHp) ? getAttribute(Attribute.maxHp) : this.currentHp + healValue;
     }
 
     public void adjust(Monster adjust){

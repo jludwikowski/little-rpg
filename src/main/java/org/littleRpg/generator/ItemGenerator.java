@@ -1,6 +1,7 @@
 package org.littleRpg.generator;
 
 import org.littleRpg.engine.Roller;
+import org.littleRpg.engine.SkillManager;
 import org.littleRpg.model.AdjectivesTable;
 import org.littleRpg.model.Item;
 import org.littleRpg.model.ItemTypes;
@@ -9,10 +10,12 @@ import java.util.Arrays;
 
 public class ItemGenerator extends Generator<Item>{
 
+    SkillManager skillManager;
+
     public ItemGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","sturdy","ugly","strange","exceptional","elf-crafted"});
         AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient"});
-
+        this.skillManager = new SkillManager();
         this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
         this.exclusives = null;
     }
@@ -85,24 +88,11 @@ public class ItemGenerator extends Generator<Item>{
                 return new Item(name, type, type.toString(), 1.3);
             case cookedMeat:
                 return new Item(name, type, type.toString(), 1.3);
-            case scrollOfFire:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfThunderbolt:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfBlessing:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfStoneWarrior:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfLight:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfFireball:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfStoneDefend:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfBlessingDeath:
-                return new Item(name, type, type.toString(), 0.1);
-            case scrollOfLightPunch:
-                return new Item(name, type, type.toString(), 0.1);
+            case flint:
+                return new Item(name, type, type.toString(), 0.3);
+            case scroll:
+                return new Item(name, type, type.toString(), 0.1, skillManager.getRandomSkillName());
+
         }
         return null;
     }

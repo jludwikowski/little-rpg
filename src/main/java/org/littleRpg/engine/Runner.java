@@ -27,8 +27,9 @@ public class Runner {
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        location.items.add(new Item("scrollOfStoneDefend",ItemTypes.scrollOfStoneDefend, "scrollOfStoneDefend",0));
+        location.items.add(new Item("StoneDefend",ItemTypes.scroll, "StoneDefend",0, "StoneDefend"));
         location.items.add(new Armor("shield", "shield", 5,2));
+        location.items.add(new Item("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, "Thunderbolt"));
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);
@@ -214,9 +215,4 @@ public class Runner {
 
         return player.location;
     }
-
-
-
-
-
 }

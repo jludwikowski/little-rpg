@@ -2,29 +2,30 @@ package org.littleRpg.model;
 
 public class Skill extends GameEntity {
 
-
+    public PlayerClasses adventurerClass;
     public int value;
     public int attack;
     public int power;
-    public int damageReduction;
+    public Attribute buffAttribute;
     public int activationLength;
     public boolean isAttackRange = false;
     public boolean isAttackAll = false;
-    public boolean isDeffendUp = false;
+    public boolean isBuff = false;
     public boolean attackSkill = false;
-    public boolean deffendSkill = false;
 
-    public Skill(String name, int value, int attack, int power, int damageReduction, int activationLength, boolean isAttackRange, boolean isAttackAll, boolean isDeffendUp, boolean attackSkill, boolean deffendSkill) {
+
+    public Skill(String name, PlayerClasses adventurerClass, int value, int attack, int power, Attribute buffAttribute, int activationLength, boolean isAttackRange, boolean isAttackAll, boolean isBuff, boolean attackSkill) {
         super(name, name);
+        this.adventurerClass = adventurerClass;
         this.value = value;
         this.attack = attack;
         this.power = power;
-        this.damageReduction = damageReduction;
+        this.buffAttribute = buffAttribute;
         this.activationLength = activationLength;
         this.isAttackRange = isAttackRange;
         this.isAttackAll = isAttackAll;
-        this.isDeffendUp = isDeffendUp;
+        this.isBuff = isBuff;
         this.attackSkill = attackSkill;
-        this.deffendSkill = deffendSkill;
     }
+
 }
