@@ -5,6 +5,7 @@ import org.littleRpg.engine.ListHelper;
 import org.littleRpg.generator.MonsterGenerator;
 import org.littleRpg.generator.TextColorGenerator;
 
+
 import java.util.*;
 
 public class Human extends AdventurerClass{
@@ -13,8 +14,8 @@ public class Human extends AdventurerClass{
     public int[] location;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
-    public Human(String name, String description,int maxHp, int currentHp, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, attack, strength, damageReduction,  mainWeapon, armor, loot, skills);
+    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, armor, loot, skills);
 
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
@@ -59,13 +60,38 @@ public class Human extends AdventurerClass{
     @Override
     public String getStats() {
         String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
-                "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
-                "damageReduction" + String.valueOf(getAttribute(Attribute.monsterDamageReduction));
+                "actualHp: " + String.valueOf(getPercentStats(this.currentHp, this.maxHp)+"%") + "\n" + getBar(Attribute.maxHp) + "\n" +
+                "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" +
+                "attack: " + String.valueOf(this.attack) + "\n" +
+                "strength: " + String.valueOf(this.strength) + "\n" +
+                "damageReduction" + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n");
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
         description += "race " + type;
         return description;
+    }
+
+    private int getPercentStats (int a, int b){
+        if(b > 0) {
+            int result = a * 100 / b;
+            return result;
+        }
+        return 0;
+    }
+
+    private String getBar(Attribute attribute){
+        String fullAttribute = "*";
+        String emptyAttribute = "-";
+        int currentAttributeValue = 0;
+        if(attribute == Attribute.maxHp){
+            currentAttributeValue = this.currentHp;
+        }
+        int percentAttribute = getPercentStats(currentAttributeValue, getAttribute(attribute));
+        String fullChars = fullAttribute.repeat(percentAttribute);
+        String emptyChars = emptyAttribute.repeat(100 - percentAttribute);
+
+        return "[" + fullChars + emptyChars + ']';
     }
 
     public void adjust(Human adjust){
@@ -80,6 +106,10 @@ public class Human extends AdventurerClass{
             ListIterator <Skill> activeSkill = activeSkills.listIterator();
             while(activeSkill.hasNext()){
                 Skill skill = activeSkill.next();
+                if(skill.type == SkillType.heal){
+                    this.heal(skill.power);
+                    System.out.println("You are healed for " + skill.power);
+                }
                 skill.activationLength -= 1;
                 System.out.println("skill kończy się za: " + skill.activationLength);
                 if (skill.activationLength == 0){
@@ -205,15 +235,19 @@ public class Human extends AdventurerClass{
         ListHelper.showList("You have in inventory: ",this.loot);
         int itemIndex2 = readChoice("Wybierz item który chcesz uzyc");
         Item chosenItem = loot.get(itemIndex2);
-        if (chosenItem.type == ItemTypes.meat) {
-            System.out.println("You cooked " + chosenItem.description);
-            loot.remove(itemIndex2);
-            loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3));
+        switch (chosenItem.type){
+            case meat:
+                System.out.println("You cooked " + chosenItem.description);
+                loot.remove(itemIndex2);
+                loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3));
+                break;
+            default:
+                System.out.println("You burned " + chosenItem.description);
+                loot.remove(itemIndex2);
+                break;
+
         }
-        if (chosenItem.type != ItemTypes.meat) {
-            System.out.println("You burned " + chosenItem.description);
-            loot.remove(itemIndex2);
-        }
+
     }
 
 

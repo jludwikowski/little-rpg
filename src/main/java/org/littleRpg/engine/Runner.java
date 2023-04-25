@@ -17,7 +17,7 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",0,0,0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
+        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
@@ -30,6 +30,8 @@ public class Runner {
         location.items.add(new Item("StoneDefend",ItemTypes.scroll, "StoneDefend",0, "StoneDefend"));
         location.items.add(new Armor("shield", "shield", 5,2));
         location.items.add(new Item("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, "Thunderbolt"));
+        location.items.add(new Item("Heal", ItemTypes.scroll, "Heal", 0.1, "Heal"));
+
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
             player.location = locationActions(world, player, keyboard);

@@ -2,38 +2,37 @@ package org.littleRpg.engine;
 
 import org.littleRpg.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Random;
+import java.util.*;
 
 public class SkillManager {
     private List<Skill> skillList = new ArrayList<>();
 
 
     public SkillManager(){
-        skillList.add(new Skill("Thunderbolt", PlayerClasses.mage,1, 5,5,null,0,
-                false, true, false, true));
-        skillList.add(new Skill("Fireball", PlayerClasses.mage,1, 5,5,null,0,
-                false, true, false, true));
-        skillList.add(new Skill("LightPunch", PlayerClasses.paladin,1, 5,5,null,0,
-                false, true, false, true));
-        skillList.add(new Skill("BlessingDeath", PlayerClasses.priest,1, 5,5,0,null,
-                false, true, false, true));
-        skillList.add(new Skill("StoneWarrior", PlayerClasses.warrior,1, 0,3,Attribute.monsterDamageReduction,3,
-                false, false, true, false));
-        skillList.add(new Skill("Light", PlayerClasses.warrior,1, 0,3,Attribute.monsterDamageReduction,3,
-                false, false, true, false));
-        skillList.add(new Skill("StoneDefend", PlayerClasses.warrior,1, 0,3,Attribute.monsterDamageReduction,3,
-                false, false, true, false));
-        skillList.add(new Skill("Blessing", PlayerClasses.priest,1, 0,0, Attribute.monsterDamageReduction,2,
-                false, false, true, false));
-        skillList.add(new Skill("Enrage", PlayerClasses.warrior,1, 0,3, Attribute.Strength,3,
-                false, false, true, false));
-        skillList.add(new Skill("Rage", PlayerClasses.warrior,1, 0,5, Attribute.attack,2,
-                false, false, true, false));
-        skillList.add(new Skill("BattleStance", PlayerClasses.warrior,1, 0,5, Attribute.maxHp,3,
-                false, false, true, false));
+        skillList.add(new Skill("Thunderbolt", Arrays.asList(PlayerClasses.mage),1, 5,5,5,null,0,
+                false, true, SkillType.attack));
+        skillList.add(new Skill("Fireball", Arrays.asList(PlayerClasses.mage),1, 5,5,5,null,0,
+                false, true, SkillType.attack));
+        skillList.add(new Skill("LightPunch", Arrays.asList(PlayerClasses.paladin),1, 5,5,5,null,0,
+                false, true, SkillType.attack));
+        skillList.add(new Skill("BlessingDeath", Arrays.asList(PlayerClasses.priest), 1, 5,5,5,null,0,
+                false, true, SkillType.attack));
+        skillList.add(new Skill("StoneWarrior", Arrays.asList(PlayerClasses.warrior),1, 0,3,5,Attribute.monsterDamageReduction,3,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("Light", Arrays.asList(PlayerClasses.warrior),1, 0,3,5,Attribute.monsterDamageReduction,3,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("StoneDefend", Arrays.asList(PlayerClasses.warrior),1, 0,3,5,Attribute.monsterDamageReduction,3,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("Blessing", Arrays.asList(PlayerClasses.priest),1, 0,0,5, Attribute.monsterDamageReduction,2,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("Enrage", Arrays.asList(PlayerClasses.warrior),1, 0,3,5, Attribute.Strength,3,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("Rage", Arrays.asList(PlayerClasses.warrior),1, 0,5,5, Attribute.attack,2,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("BattleStance", Arrays.asList(PlayerClasses.warrior),1, 0,5,5, Attribute.maxHp,3,
+                false, false, SkillType.buff));
+        skillList.add(new Skill("Heal", null,1, 0,10,5, null,3,
+                false, false, SkillType.heal));
 
     }
 

@@ -6,6 +6,8 @@ public class Monster extends GameEntity {
 
     public int maxHp = 1;
     public int currentHp = 1;
+    public int maxMana = 1;
+    public int currentMana = 1;
     public int attack = 0;
     public int strength = 0;
     public int monsterDamageReduction = 0;
@@ -13,13 +15,16 @@ public class Monster extends GameEntity {
     public Armor armor = null;
     public List<Item> loot = new ArrayList<>();
     public MonsterTypes type;
+    public int healValue = 0;
 
 
-    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
         super(name, description);
         this.type = type;
         this.maxHp = maxHp;
         this.currentHp = currentHp;
+        this.maxMana = maxMana;
+        this.currentMana = currentMana;
         this.attack = attack;
         this.strength = strength;
         this.monsterDamageReduction = monsterDamageReduction;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class AdventurerClass extends Monster{
+public class AdventurerClass extends Monster {
 
     public PlayerClasses className;
     public List<Skill> skills = new ArrayList<>();
@@ -16,40 +16,39 @@ public class AdventurerClass extends Monster{
     private SkillManager skillManager = new SkillManager();
 
 
-
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
-        super(type, name, description, maxHp, currentHp, attack, strength, damageReduction, mainWeapon, armor, loot, skills);
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills);
     }
 
 
     public Human getBaseByClass(PlayerClasses playerClasses) {
         switch (playerClasses) {
             case mage:
-                return new Human("mage", "mage", 5, 5, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case paladin:
-                return new Human("paladin", "paladin", 20, 20, 15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case warrior:
-                return new Human("warrior", "warrior", 20, 20, 15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case priest:
-                return new Human("priest", "priest", 20, 20, 15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
         }
         return null;
     }
 
     public void learnSkill() {
         System.out.println("You can learn new skill. Choose item");
-        ListHelper.showList("In loot you have: ",this.loot);
+        ListHelper.showList("In loot you have: ", this.loot);
         int itemIndex3 = Human.readChoice("Choose item to use: ");
         Item chosenItem = loot.get(itemIndex3);
         System.out.println(chosenItem.type);
         System.out.println(className);
-        if(chosenItem.type == ItemTypes.scroll){
+        if (chosenItem.type == ItemTypes.scroll) {
             Skill skill = skillManager.findSkillByName(chosenItem.effect);
-            if (className == skill.adventurerClass) {
+            if (skill.adventurerClasses == null || skill.adventurerClasses.contains(className)) {
                 System.out.println("You learned " + skill.name);
-                loot.remove(itemIndex3);
                 this.skills.add(skill);
-            }else {
+                loot.remove(itemIndex3);
+            } else {
                 System.out.println("not your class scroll!");
             }
         }
@@ -57,12 +56,12 @@ public class AdventurerClass extends Monster{
     }
 
 
-    public int getAttribute(Attribute attribute){
+    public int getAttribute(Attribute attribute) {
         int base = getBaseAttribute(attribute);
         ListIterator<Skill> activeSkill = activeSkills.listIterator();
         while (activeSkill.hasNext()) {
             Skill skill = activeSkill.next();
-            if(attribute == skill.buffAttribute) {
+            if (attribute == skill.buffAttribute) {
                 base += skill.power;
             }
         }
@@ -70,26 +69,42 @@ public class AdventurerClass extends Monster{
     }
 
 
-    public void useSkill(Monster attacker, Place location){
+    public void useSkill(Monster attacker, Place location) {
         if (!skills.isEmpty()) {
-            ListHelper.showList("Your learned skills: ",this.skills);
+            ListHelper.showList("Your learned skills: ", this.skills);
             int skillIndex = Human.readChoice("Choose skill to use: ");
             Skill chosenSkill = skills.get(skillIndex);
-            if (chosenSkill.attackSkill) {
-                if (chosenSkill.isAttackAll) {
+            if(chosenSkill.manaCost >= currentMana){
+                System.out.println("Out of mana");
+                return;
+            }
+            currentMana = currentMana - chosenSkill.manaCost;
+            if (chosenSkill.type == SkillType.attack) {
+                if (chosenSkill.isArea) {
                     Judge.attackAll(attacker, location, chosenSkill);
-                } else if (chosenSkill.isAttackRange) {
+                } else if (chosenSkill.isRanged) {
                     Judge.rangeAttack(attacker, location, chosenSkill);
                 }
-            }else if(chosenSkill.isBuff){
-                this.activeSkills.add(chosenSkill);
+            } else if (chosenSkill.type == SkillType.buff) {
+                ListIterator<Skill> skill = activeSkills.listIterator();
+                while (skill.hasNext()) {
+                    Skill nextSkill = skill.next();
+                    if (nextSkill.buffAttribute == chosenSkill.buffAttribute) {
+                        activeSkills.add(chosenSkill);
+                        skill.remove();
+                    }
+                }
+            }else if (chosenSkill.type == SkillType.heal) {
+                if(chosenSkill.activationLength == 0) {
+                    heal(chosenSkill.power);
+                }else {
+                    activeSkills.add(chosenSkill);
+                }
+            } else {
+                System.out.println("You need to learn something");
             }
         }
-        else {
-            System.out.println("You need learned something");
-        }
+
+
     }
-
-
-
 }

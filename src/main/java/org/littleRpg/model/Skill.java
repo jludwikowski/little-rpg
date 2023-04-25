@@ -1,31 +1,34 @@
 package org.littleRpg.model;
 
+import java.util.List;
+
 public class Skill extends GameEntity {
 
-    public PlayerClasses adventurerClass;
+    public List<PlayerClasses> adventurerClasses;
     public int value;
     public int attack;
     public int power;
+    public int manaCost;
     public Attribute buffAttribute;
     public int activationLength;
-    public boolean isAttackRange = false;
-    public boolean isAttackAll = false;
-    public boolean isBuff = false;
-    public boolean attackSkill = false;
+    public boolean isRanged = false;
+    public boolean isArea = false;
+    public SkillType type;
 
 
-    public Skill(String name, PlayerClasses adventurerClass, int value, int attack, int power, Attribute buffAttribute, int activationLength, boolean isAttackRange, boolean isAttackAll, boolean isBuff, boolean attackSkill) {
+    public Skill(String name, List<PlayerClasses> adventurerClasses, int value, int attack, int power, int manaCost, Attribute buffAttribute, int activationLength, boolean isRanged, boolean isArea, SkillType type) {
         super(name, name);
-        this.adventurerClass = adventurerClass;
+        this.adventurerClasses = adventurerClasses;
         this.value = value;
         this.attack = attack;
         this.power = power;
+        this.manaCost = manaCost;
         this.buffAttribute = buffAttribute;
         this.activationLength = activationLength;
-        this.isAttackRange = isAttackRange;
-        this.isAttackAll = isAttackAll;
-        this.isBuff = isBuff;
-        this.attackSkill = attackSkill;
+        this.isRanged = isRanged;
+        this.isArea = isArea;
+        this.type = type;
+
     }
 
 }
