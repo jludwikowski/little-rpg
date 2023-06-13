@@ -1,6 +1,7 @@
 package org.littleRpg.model;
+import java.io.Serializable;
 
-public class SurvivalAttribute {
+public class SurvivalAttribute implements Serializable{
     String name;
     int defaultStep;
     int value;

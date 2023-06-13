@@ -5,6 +5,7 @@ import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -17,7 +18,7 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
+        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
@@ -30,7 +31,7 @@ public class Runner {
         location.items.add(new Item("StoneDefend",ItemTypes.scroll, "StoneDefend",0, "StoneDefend"));
         location.items.add(new Armor("shield", "shield", 5,2));
         location.items.add(new Item("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, "Thunderbolt"));
-        location.items.add(new Item("Heal", ItemTypes.scroll, "Heal", 0.1, "Heal"));
+        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, "ancientPower"));
 
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
@@ -171,7 +172,7 @@ public class Runner {
                     ListHelper.showList("In loot you have: ",player.loot);
                     break;
                 case "myitems":
-                    player.showEquipItems(player.mainWeapon, player.armor);
+                    player.showEquipItems(player.mainWeapon, player.armor, player.mainNecklace, player.mainRing);
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
@@ -191,7 +192,7 @@ public class Runner {
                         while(o.hasNext()) {
                             Monster nextMonster = o.next();
                             System.out.println(nextMonster.description);
-                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor);
+                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor, nextMonster.mainNecklace, nextMonster.mainRing);
                             System.out.println("~~~~~~~~~~~~~~");
                         }
                     }
@@ -206,6 +207,12 @@ public class Runner {
                     if (!thisPlace.monsters.isEmpty()) {
                        player.useSkill(player, thisPlace);
                     }
+                    break;
+               case "save":
+                    LoadSaveOperator.savePoint(player);
+                    break;
+               case "load":
+                    player = LoadSaveOperator.loadPoint();
                     break;
                 default:
                     System.out.println("i don't recognize this try again");

@@ -1,6 +1,6 @@
 package org.littleRpg.model;
 
-public enum ArchitectureTypes {
+public enum PlaceArchitectureTypes {
     tree,
     ruins,
     cave,

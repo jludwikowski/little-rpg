@@ -2,10 +2,12 @@ package org.littleRpg.engine;
 
 import org.littleRpg.model.*;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class SkillManager {
+public class SkillManager implements Serializable {
     private List<Skill> skillList = new ArrayList<>();
+
 
 
     public SkillManager(){
@@ -36,11 +38,15 @@ public class SkillManager {
 
     }
 
+
+
     public String getRandomSkillName() {
         Random random = new Random();
         int randomIndex = random.nextInt(skillList.size());
         return skillList.get(randomIndex).name;
     }
+
+
 
     public Skill findSkillByName(String name){
         ListIterator<Skill> skill = skillList.listIterator();

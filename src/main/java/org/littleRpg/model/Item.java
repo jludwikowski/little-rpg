@@ -4,6 +4,9 @@ public class Item extends GameEntity{
     public double weight;
     public ItemTypes type;
     public String effect;
+    public boolean attackEffect;
+    public boolean defenseEffect;
+    public int power;
 
     public Item(String name, ItemTypes type, String description, double weight, String effect) {
         super(name, description);
@@ -18,5 +21,6 @@ public class Item extends GameEntity{
         this.type = type;
 
     }
+
 
 }

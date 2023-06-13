@@ -1,5 +1,6 @@
 package org.littleRpg.generator;
 
+import org.littleRpg.engine.EffectManager;
 import org.littleRpg.engine.Roller;
 import org.littleRpg.engine.SkillManager;
 import org.littleRpg.model.AdjectivesTable;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 public class ItemGenerator extends Generator<Item>{
 
     SkillManager skillManager;
+    EffectManager effectManager;
 
     public ItemGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","sturdy","ugly","strange","exceptional","elf-crafted"});
@@ -18,6 +20,7 @@ public class ItemGenerator extends Generator<Item>{
         this.skillManager = new SkillManager();
         this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
         this.exclusives = null;
+        this.effectManager = new EffectManager();
     }
 
     @Override
@@ -92,8 +95,13 @@ public class ItemGenerator extends Generator<Item>{
                 return new Item(name, type, type.toString(), 0.3);
             case scroll:
                 return new Item(name, type, type.toString(), 0.1, skillManager.getRandomSkillName());
-
+            case necklace:
+                return new Item(name, type, type.toString(),0.3, effectManager.getRandomEffectName());
+            case ring:
+                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffectName());
         }
         return null;
     }
+
+
 }

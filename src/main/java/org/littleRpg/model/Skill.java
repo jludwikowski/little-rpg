@@ -1,8 +1,9 @@
 package org.littleRpg.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Skill extends GameEntity {
+public class Skill extends GameEntity implements Serializable {
 
     public List<PlayerClasses> adventurerClasses;
     public int value;

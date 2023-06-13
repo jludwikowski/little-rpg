@@ -1,2 +1,6 @@
-package org.littleRpg.model;public enum EffectType {
+package org.littleRpg.model;
+
+public enum EffectType {
+    attackBuff,
+    defendBuff
 }

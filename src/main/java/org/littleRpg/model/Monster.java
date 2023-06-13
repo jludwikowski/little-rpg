@@ -1,8 +1,9 @@
 package org.littleRpg.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Monster extends GameEntity {
+public class Monster extends GameEntity implements Serializable {
 
     public int maxHp = 1;
     public int currentHp = 1;
@@ -16,9 +17,12 @@ public class Monster extends GameEntity {
     public List<Item> loot = new ArrayList<>();
     public MonsterTypes type;
     public int healValue = 0;
+    public Item mainNecklace = null;
+    public Item mainRing = null;
 
 
-    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+
+    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills, Item mainNecklace, Item mainRing) {
         super(name, description);
         this.type = type;
         this.maxHp = maxHp;
@@ -31,6 +35,9 @@ public class Monster extends GameEntity {
         this.mainWeapon = mainWeapon;
         this.armor = armor;
         this.loot = loot;
+        this.mainNecklace = mainNecklace;
+        this.mainRing = mainRing;
+
 
     }
 
@@ -55,7 +62,7 @@ public class Monster extends GameEntity {
         int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
-                "damageReduction" + String.valueOf(finalDamageReduction);
+                "damageReduction: " + String.valueOf(finalDamageReduction);
 
     }
 
@@ -69,16 +76,41 @@ public class Monster extends GameEntity {
     public int getBaseAttribute(Attribute attribute){
         switch (attribute) {
             case monsterDamageReduction:
-                if (this.armor == null) {
-                    return this.monsterDamageReduction;
+                if (this.armor != null) {
+                    if (mainRing != null && mainRing.effect == "elfBlessing"){
+                        monsterDamageReduction = monsterDamageReduction + mainRing.power;
+                    }
+                    if (mainNecklace != null && mainNecklace.effect == "elfBlessing"){
+                        monsterDamageReduction = monsterDamageReduction + mainNecklace.power;
+                    }
+                    return armor.damageReduction + monsterDamageReduction;
                 }
-                return armor.damageReduction + monsterDamageReduction;
+                return this.monsterDamageReduction;
+
             case Strength:
+                if (mainRing != null && mainRing.effect == "ancientPower"){
+                    strength = strength + mainRing.power;
+                }
+                if (mainNecklace != null && mainNecklace.effect == "ancientPower"){
+                    strength = strength + mainNecklace.power;
+                }
                 return strength;
             case maxHp:
+                if (mainRing != null && mainRing.effect == "stoneGolem"){
+                    maxHp = maxHp + mainRing.power;
+                }
+                if (mainNecklace != null && mainNecklace.effect == "stoneGolem"){
+                    maxHp = maxHp + mainNecklace.power;
+                }
                 return maxHp;
             case attack:
                 if(mainWeapon != null) {
+                    if (mainRing != null && mainRing.effect == "demonicRage"){
+                        attack = attack + mainRing.power;
+                    }
+                    if (mainNecklace != null && mainNecklace.effect == "demonicRage"){
+                        attack = attack + mainNecklace.power;
+                    }
                     return mainWeapon.bonusAttack + attack;
                 }
                 return attack;
@@ -114,17 +146,29 @@ public class Monster extends GameEntity {
         this.monsterDamageReduction += adjust.monsterDamageReduction;
         this.mainWeapon = adjust.mainWeapon != null ? adjust.mainWeapon: this.mainWeapon;
         this.armor = adjust.armor != null ? adjust.armor: this.armor;
+        this.mainNecklace = adjust.mainNecklace != null ? adjust.mainNecklace: this.mainNecklace;
+        this.mainRing = adjust.mainRing != null ? adjust.mainRing: this.mainRing;
+
     }
 
-    public static void showEquipItems(Weapon mainWeapon, Armor armor){
+    public static void showEquipItems(Weapon mainWeapon, Armor armor, Item mainNecklace, Item mainRing){
         if(mainWeapon != null){
             System.out.println("Equiped Weapon - " + mainWeapon.description);
         }
         if(armor != null){
             System.out.println("Equiped armor - " + armor.description);
         }
+        if(mainNecklace != null){
+            System.out.println("Equiped necklace - " + mainNecklace.description);
+        }
+        if(mainRing != null){
+            System.out.println("Equiped ring - " + mainRing.description);
+        }
         if(mainWeapon == null && armor == null){
             System.out.println("No equip Weapon or armor");
+        }
+        if(mainNecklace == null && mainRing == null) {
+            System.out.println("No equip Item");
         }
 
     }
@@ -132,7 +176,9 @@ public class Monster extends GameEntity {
     public String getDescription() {
         String monsterDescription = description +
                 ((mainWeapon != null) ? "\n armed with " + mainWeapon.description: "") +
-                ((armor != null) ? "\n wearing " + armor.description : "");
+                ((armor != null) ? "\n wearing " + armor.description : "") +
+                ((mainNecklace != null) ? "\n wearing" + mainNecklace.description : "") +
+                ((mainRing != null) ? "\n wearing" + mainRing.description : "");
         return monsterDescription;
     }
 

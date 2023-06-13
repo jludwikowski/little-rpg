@@ -1,6 +1,8 @@
 package org.littleRpg.model;
 
-public class GameEntity
+import java.io.Serializable;
+
+public class GameEntity implements Serializable
 {
     public String name = "";
     public String description = "";

@@ -1,36 +1,41 @@
 package org.littleRpg.model;
 
+import org.littleRpg.engine.EffectManager;
 import org.littleRpg.engine.Judge;
 import org.littleRpg.engine.ListHelper;
 import org.littleRpg.engine.SkillManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class AdventurerClass extends Monster {
+public class AdventurerClass extends Monster implements Serializable {
 
     public PlayerClasses className;
     public List<Skill> skills = new ArrayList<>();
     public List<Skill> activeSkills = new ArrayList<>();
     private SkillManager skillManager = new SkillManager();
+    public List<Effect> effects = new ArrayList<>();
+    public List<Item> specialItems = new ArrayList<>();
 
 
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
-        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills);
+
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills, Item mainNecklace, Item mainRing) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills, mainNecklace, mainRing);
     }
 
 
     public Human getBaseByClass(PlayerClasses playerClasses) {
         switch (playerClasses) {
             case mage:
-                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
             case paladin:
-                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
             case warrior:
-                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
             case priest:
-                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
         }
         return null;
     }
@@ -58,6 +63,13 @@ public class AdventurerClass extends Monster {
 
     public int getAttribute(Attribute attribute) {
         int base = getBaseAttribute(attribute);
+        ListIterator<Item> specialItem = specialItems.listIterator();
+        while (specialItem.hasNext()){
+            Effect effect = EffectManager.getItemEffect(specialItem.next().name);
+            if (attribute == effect.buffAttribute) {
+                base += effect.power;
+            }
+        }
         ListIterator<Skill> activeSkill = activeSkills.listIterator();
         while (activeSkill.hasNext()) {
             Skill skill = activeSkill.next();
@@ -66,7 +78,9 @@ public class AdventurerClass extends Monster {
             }
         }
         return base;
-    }
+        }
+
+
 
 
     public void useSkill(Monster attacker, Place location) {

@@ -8,8 +8,8 @@ public class MapPlace extends Place {
     int cordY;
     int cordZ;
 
-    public MapPlace(int id, Biome biome, String shortDescription, String description, List<Place> exits, List<Monster>  monsters, List<Item> items) {
-        super(id, biome, shortDescription, description, exits, monsters, items);
+    public MapPlace(int id, Biome biome, String shortDescription, String description, List<Place> exits, List<Monster>  monsters, List<Item> items, List<PlaceArchitecture> placeArchitectures) {
+        super(id, biome, shortDescription, description, exits, monsters, items, placeArchitectures);
     }
 
 }

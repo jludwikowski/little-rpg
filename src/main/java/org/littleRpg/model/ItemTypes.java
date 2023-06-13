@@ -10,6 +10,8 @@ public enum ItemTypes {
     meat,
     cookedMeat,
     scroll,
+    necklace,
+    ring,
     flint,
     armor,
     weapon
