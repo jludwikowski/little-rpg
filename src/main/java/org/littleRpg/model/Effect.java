@@ -5,25 +5,22 @@ import java.util.List;
 
 public class Effect extends GameEntity implements Serializable {
 
-    public int value;
-    public int attack;
     public int power;
-    public boolean attackBuff = false;
-    public boolean defendBuff = false;
+    public boolean attackBuff;
+    public boolean defendBuff;
     public EffectType type;
     public Attribute buffAttribute;
+    public int activationLength;
 
 
-    public Effect(String name, int value, int attack, int power, boolean attackBuff, boolean defendBuff, EffectType type, Attribute buffAttribute) {
+    public Effect(String name, int power, EffectType type, Attribute buffAttribute, int activationLength) {
         super(name, name);
-        this.value = value;
-        this.attack = attack;
         this.power = power;
         this.type = type;
         this.attackBuff = false;
         this.defendBuff = false;
         this.buffAttribute = buffAttribute;
-
+        this.activationLength = activationLength;
 
     }
 }

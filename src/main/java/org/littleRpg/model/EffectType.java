@@ -1,6 +1,6 @@
 package org.littleRpg.model;
 
 public enum EffectType {
-    attackBuff,
-    defendBuff
+    buff,
+    heal
 }

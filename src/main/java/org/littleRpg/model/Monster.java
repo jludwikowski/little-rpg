@@ -1,5 +1,7 @@
 package org.littleRpg.model;
 
+import org.littleRpg.engine.ListHelper;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -19,6 +21,8 @@ public class Monster extends GameEntity implements Serializable {
     public int healValue = 0;
     public Item mainNecklace = null;
     public Item mainRing = null;
+
+    public List<Effect> activeEffects = null;
 
 
 
@@ -74,46 +78,29 @@ public class Monster extends GameEntity implements Serializable {
     }
 
     public int getBaseAttribute(Attribute attribute){
+        int buff = 0;
+        ListIterator<Effect> iterator = activeEffects.listIterator();
+        while (iterator.hasNext()) {
+            Effect effect = iterator.next();
+            if (effect.type == EffectType.buff && attribute == effect.buffAttribute) {
+                buff += effect.power;
+            }
+        }
         switch (attribute) {
             case monsterDamageReduction:
                 if (this.armor != null) {
-                    if (mainRing != null && mainRing.effect == "elfBlessing"){
-                        monsterDamageReduction = monsterDamageReduction + mainRing.power;
-                    }
-                    if (mainNecklace != null && mainNecklace.effect == "elfBlessing"){
-                        monsterDamageReduction = monsterDamageReduction + mainNecklace.power;
-                    }
                     return armor.damageReduction + monsterDamageReduction;
                 }
-                return this.monsterDamageReduction;
-
-            case Strength:
-                if (mainRing != null && mainRing.effect == "ancientPower"){
-                    strength = strength + mainRing.power;
-                }
-                if (mainNecklace != null && mainNecklace.effect == "ancientPower"){
-                    strength = strength + mainNecklace.power;
-                }
-                return strength;
+                return this.monsterDamageReduction + buff;
+            case strength:
+                return strength + buff;
             case maxHp:
-                if (mainRing != null && mainRing.effect == "stoneGolem"){
-                    maxHp = maxHp + mainRing.power;
-                }
-                if (mainNecklace != null && mainNecklace.effect == "stoneGolem"){
-                    maxHp = maxHp + mainNecklace.power;
-                }
-                return maxHp;
+                return maxHp + buff;
             case attack:
                 if(mainWeapon != null) {
-                    if (mainRing != null && mainRing.effect == "demonicRage"){
-                        attack = attack + mainRing.power;
-                    }
-                    if (mainNecklace != null && mainNecklace.effect == "demonicRage"){
-                        attack = attack + mainNecklace.power;
-                    }
-                    return mainWeapon.bonusAttack + attack;
+                    return mainWeapon.bonusAttack + attack + buff;
                 }
-                return attack;
+                return attack + buff;
         }
         return 0;
     }
@@ -148,7 +135,26 @@ public class Monster extends GameEntity implements Serializable {
         this.armor = adjust.armor != null ? adjust.armor: this.armor;
         this.mainNecklace = adjust.mainNecklace != null ? adjust.mainNecklace: this.mainNecklace;
         this.mainRing = adjust.mainRing != null ? adjust.mainRing: this.mainRing;
+    }
 
+    public void effectTurnCounter () {
+
+        if (activeEffects != null){
+            ListHelper.showList("Active Effects: ",activeEffects);
+            ListIterator <Effect> iterator = activeEffects.listIterator();
+            while(iterator.hasNext()){
+                Effect effect = iterator.next();
+                if(effect.type == EffectType.heal){
+                    this.heal(effect.power);
+                    System.out.println(this.getName() + " is healed for " + effect.power);
+                }
+                effect.activationLength -= 1;
+                System.out.println("skill kończy się za: " + effect.activationLength);
+                if (effect.activationLength == 0){
+                    iterator.remove();
+                }
+            }
+        }
     }
 
     public static void showEquipItems(Weapon mainWeapon, Armor armor, Item mainNecklace, Item mainRing){

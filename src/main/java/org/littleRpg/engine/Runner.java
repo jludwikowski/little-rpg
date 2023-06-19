@@ -7,7 +7,6 @@ import org.littleRpg.generator.WorldGenerator;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -28,10 +27,10 @@ public class Runner {
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        location.items.add(new Item("StoneDefend",ItemTypes.scroll, "StoneDefend",0, "StoneDefend"));
+        location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend"));
         location.items.add(new Armor("shield", "shield", 5,2));
-        location.items.add(new Item("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, "Thunderbolt"));
-        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, "ancientPower"));
+        location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt"));
+        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),WearSlot.finger));
 
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
@@ -101,7 +100,7 @@ public class Runner {
                 break;
                 case "north":
                     if (!player.isExausted()) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
                         if (player.location[1] > 0) {
                             player.location[1] = player.location[1] - 1;
                             thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
@@ -122,7 +121,7 @@ public class Runner {
                     break;
                 case "south":
                     if (!player.isExausted()) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
                         if (player.location[1] < 19) {
                             player.location[1] = player.location[1] + 1;
                             thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
@@ -138,7 +137,7 @@ public class Runner {
                     break;
                 case "east":
                     if (!player.isExausted()) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
                         if (player.location[2] > 0) {
                             player.location[2] = player.location[2] - 1;
                             thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
@@ -148,7 +147,7 @@ public class Runner {
                     break;
                 case "west":
                     if (!player.isExausted()) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
 
                         if (player.location[2] < 19) {
                             player.location[2] = player.location[2] + 1;
@@ -163,7 +162,7 @@ public class Runner {
                 case "attack":
 
                     if (!thisPlace.monsters.isEmpty()) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
                         thisPlace.monsters = Judge.combat(player, thisPlace, 0, null);
                     }
                     break;
@@ -176,7 +175,7 @@ public class Runner {
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
-                        player.skillTurnCounter();
+                        player.effectTurnCounter();
                         thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null);
                     }
                     break;

@@ -14,7 +14,6 @@ public class AdventurerClass extends Monster implements Serializable {
 
     public PlayerClasses className;
     public List<Skill> skills = new ArrayList<>();
-    public List<Skill> activeSkills = new ArrayList<>();
     private SkillManager skillManager = new SkillManager();
     public List<Effect> effects = new ArrayList<>();
     public List<Item> specialItems = new ArrayList<>();
@@ -47,8 +46,9 @@ public class AdventurerClass extends Monster implements Serializable {
         Item chosenItem = loot.get(itemIndex3);
         System.out.println(chosenItem.type);
         System.out.println(className);
-        if (chosenItem.type == ItemTypes.scroll) {
-            Skill skill = skillManager.findSkillByName(chosenItem.effect);
+        if (chosenItem.type == ItemTypes.scroll && chosenItem instanceof Scroll) {
+            Scroll scroll = (Scroll) chosenItem;
+            Skill skill = skillManager.findSkillByName(scroll.skillName);
             if (skill.adventurerClasses == null || skill.adventurerClasses.contains(className)) {
                 System.out.println("You learned " + skill.name);
                 this.skills.add(skill);

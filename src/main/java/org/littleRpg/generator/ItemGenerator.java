@@ -3,9 +3,7 @@ package org.littleRpg.generator;
 import org.littleRpg.engine.EffectManager;
 import org.littleRpg.engine.Roller;
 import org.littleRpg.engine.SkillManager;
-import org.littleRpg.model.AdjectivesTable;
-import org.littleRpg.model.Item;
-import org.littleRpg.model.ItemTypes;
+import org.littleRpg.model.*;
 
 import java.util.Arrays;
 
@@ -94,11 +92,11 @@ public class ItemGenerator extends Generator<Item>{
             case flint:
                 return new Item(name, type, type.toString(), 0.3);
             case scroll:
-                return new Item(name, type, type.toString(), 0.1, skillManager.getRandomSkillName());
+                return new Scroll(name, type, type.toString(), 0.1, null,skillManager.getRandomSkillName());
             case necklace:
-                return new Item(name, type, type.toString(),0.3, effectManager.getRandomEffectName());
+                return new Item(name, type, type.toString(),0.3,effectManager.getRandomEffect(), WearSlot.neck);
             case ring:
-                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffectName());
+                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffect(), WearSlot.finger);
         }
         return null;
     }

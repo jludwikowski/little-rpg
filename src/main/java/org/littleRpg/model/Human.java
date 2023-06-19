@@ -65,7 +65,7 @@ public class Human extends AdventurerClass implements Serializable{
                 "actualHp: " + String.valueOf(getPercentStats(this.currentHp, this.maxHp)+"%") + "\n" + getBar(Attribute.maxHp) + "\n" +
                 "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" +
                 "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
-                "strength: " + String.valueOf(getAttribute(Attribute.Strength)) + "\n" +
+                "strength: " + String.valueOf(getAttribute(Attribute.strength)) + "\n" +
                 "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n");
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
@@ -100,28 +100,6 @@ public class Human extends AdventurerClass implements Serializable{
         super.adjust(adjust);
         this.location = adjust.location;
     }
-
-    public void skillTurnCounter () {
-
-        if (activeSkills != null){
-            ListHelper.showList("Active Skills: ",activeSkills);
-            ListIterator <Skill> activeSkill = activeSkills.listIterator();
-            while(activeSkill.hasNext()){
-                Skill skill = activeSkill.next();
-                if(skill.type == SkillType.heal){
-                    this.heal(skill.power);
-                    System.out.println("You are healed for " + skill.power);
-                }
-                skill.activationLength -= 1;
-                System.out.println("skill kończy się za: " + skill.activationLength);
-                if (skill.activationLength == 0){
-                    activeSkill.remove();
-                }
-            }
-        }
-    }
-
-
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround != null) {

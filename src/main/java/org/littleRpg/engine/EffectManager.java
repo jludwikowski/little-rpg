@@ -13,10 +13,10 @@ public class EffectManager implements Serializable {
     private static List<Effect> itemEffect = new ArrayList<>();
 
     public EffectManager() {
-        itemEffect.add(new Effect("ancientPower",1, 5,5,true,false, EffectType.attackBuff, Attribute.Strength));
-        itemEffect.add(new Effect("elfBlessing",1, 5, 5,false, true, EffectType.defendBuff, Attribute.monsterDamageReduction));
-        itemEffect.add(new Effect("demonicRage",1,5,5,true,false,EffectType.attackBuff, Attribute.attack ));
-        itemEffect.add(new Effect("stoneGolem", 1,5,5, false, true, EffectType.defendBuff, Attribute.maxHp));
+        itemEffect.add(new Effect("ancientPower",5,EffectType.buff, Attribute.strength,999999));
+        itemEffect.add(new Effect("elfBlessing", 5,EffectType.buff, Attribute.monsterDamageReduction,999999));
+        itemEffect.add(new Effect("demonicRage",5,EffectType.buff, Attribute.attack, 9999999));
+        itemEffect.add(new Effect("stoneGolem", 5, EffectType.buff, Attribute.maxHp, 9999999));
 
     }
     public static Effect getItemEffect(String effectName) {
@@ -34,6 +34,12 @@ public class EffectManager implements Serializable {
         Random random = new Random();
         int randomIndex = random.nextInt(itemEffect.size());
         return itemEffect.get(randomIndex).name;
+    }
+
+    public Effect getRandomEffect() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(itemEffect.size());
+        return itemEffect.get(randomIndex);
     }
 
 }

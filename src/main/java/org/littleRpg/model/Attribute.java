@@ -1,7 +1,7 @@
 package org.littleRpg.model;
 
 public enum Attribute {
-    Strength,
+    strength,
     maxHp,
     attack,
     monsterDamageReduction,

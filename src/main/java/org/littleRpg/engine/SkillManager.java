@@ -11,15 +11,15 @@ public class SkillManager implements Serializable {
 
 
     public SkillManager(){
-        skillList.add(new Skill("Thunderbolt", Arrays.asList(PlayerClasses.mage),1, 5,5,5,null,0,
+        skillList.add(new Skill("Thunderbolt", Arrays.asList(PlayerClasses.mage),null, 5,5,5,
                 false, true, SkillType.attack));
-        skillList.add(new Skill("Fireball", Arrays.asList(PlayerClasses.mage),1, 5,5,5,null,0,
+        skillList.add(new Skill("Fireball", Arrays.asList(PlayerClasses.mage),null, 5,5,5,
                 false, true, SkillType.attack));
-        skillList.add(new Skill("LightPunch", Arrays.asList(PlayerClasses.paladin),1, 5,5,5,null,0,
+        skillList.add(new Skill("LightPunch", Arrays.asList(PlayerClasses.paladin),null, 5,5,5,
                 false, true, SkillType.attack));
-        skillList.add(new Skill("BlessingDeath", Arrays.asList(PlayerClasses.priest), 1, 5,5,5,null,0,
+        skillList.add(new Skill("BlessingDeath", Arrays.asList(PlayerClasses.priest), null, 5,5,5,
                 false, true, SkillType.attack));
-        skillList.add(new Skill("StoneWarrior", Arrays.asList(PlayerClasses.warrior),1, 0,3,5,Attribute.monsterDamageReduction,3,
+        skillList.add(new Skill("StoneWarrior", Arrays.asList(PlayerClasses.warrior),new Effect("Armor buff",3,EffectType.buff,Attribute.monsterDamageReduction,10), 0,3,5,
                 false, false, SkillType.buff));
         skillList.add(new Skill("Light", Arrays.asList(PlayerClasses.warrior),1, 0,3,5,Attribute.monsterDamageReduction,3,
                 false, false, SkillType.buff));
@@ -27,7 +27,7 @@ public class SkillManager implements Serializable {
                 false, false, SkillType.buff));
         skillList.add(new Skill("Blessing", Arrays.asList(PlayerClasses.priest),1, 0,0,5, Attribute.monsterDamageReduction,2,
                 false, false, SkillType.buff));
-        skillList.add(new Skill("Enrage", Arrays.asList(PlayerClasses.warrior),1, 0,3,5, Attribute.Strength,3,
+        skillList.add(new Skill("Enrage", Arrays.asList(PlayerClasses.warrior),1, 0,3,5, Attribute.strength,3,
                 false, false, SkillType.buff));
         skillList.add(new Skill("Rage", Arrays.asList(PlayerClasses.warrior),1, 0,5,5, Attribute.attack,2,
                 false, false, SkillType.buff));
