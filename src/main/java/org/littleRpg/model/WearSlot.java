@@ -6,5 +6,6 @@ public enum WearSlot {
     torso,
     finger,
     legs,
-    feet
+    feet,
+    mainHand
 }

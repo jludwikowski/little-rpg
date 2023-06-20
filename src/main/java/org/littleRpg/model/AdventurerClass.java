@@ -15,26 +15,25 @@ public class AdventurerClass extends Monster implements Serializable {
     public PlayerClasses className;
     public List<Skill> skills = new ArrayList<>();
     private SkillManager skillManager = new SkillManager();
-    public List<Effect> effects = new ArrayList<>();
     public List<Item> specialItems = new ArrayList<>();
 
 
 
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills, Item mainNecklace, Item mainRing) {
-        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills, mainNecklace, mainRing);
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills);
     }
 
 
     public Human getBaseByClass(PlayerClasses playerClasses) {
         switch (playerClasses) {
             case mage:
-                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
+                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case paladin:
-                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
+                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case warrior:
-                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
+                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case priest:
-                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
+                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
         }
         return null;
     }
@@ -57,7 +56,6 @@ public class AdventurerClass extends Monster implements Serializable {
                 System.out.println("not your class scroll!");
             }
         }
-
     }
 
 
@@ -70,7 +68,7 @@ public class AdventurerClass extends Monster implements Serializable {
                 base += effect.power;
             }
         }
-        ListIterator<Skill> activeSkill = activeSkills.listIterator();
+        ListIterator<Skill> activeSkill = skills.listIterator();
         while (activeSkill.hasNext()) {
             Skill skill = activeSkill.next();
             if (attribute == skill.buffAttribute) {
@@ -99,23 +97,22 @@ public class AdventurerClass extends Monster implements Serializable {
                 } else if (chosenSkill.isRanged) {
                     Judge.rangeAttack(attacker, location, chosenSkill);
                 }
-            } else if (chosenSkill.type == SkillType.buff) {
-                ListIterator<Skill> skill = activeSkills.listIterator();
-                while (skill.hasNext()) {
-                    Skill nextSkill = skill.next();
-                    if (nextSkill.buffAttribute == chosenSkill.buffAttribute) {
-                        activeSkills.add(chosenSkill);
-                        skill.remove();
-                    }
-                }
-            }else if (chosenSkill.type == SkillType.heal) {
+            } else if (chosenSkill.type == SkillType.heal) {
                 if(chosenSkill.activationLength == 0) {
                     heal(chosenSkill.power);
                 }else {
-                    activeSkills.add(chosenSkill);
+                    skills.add(chosenSkill);
                 }
-            } else {
-                System.out.println("You need to learn something");
+            }
+            if (chosenSkill.effect != null) {
+                ListIterator<Effect> effectIterator = activeEffects.listIterator();
+                while (effectIterator.hasNext()) {
+                    Effect nextEffect = effectIterator.next();
+                    if (nextEffect.buffAttribute == chosenSkill.effect.buffAttribute) {
+                        effectIterator.remove();
+                    }
+                }
+                activeEffects.add(chosenSkill.effect);
             }
         }
 

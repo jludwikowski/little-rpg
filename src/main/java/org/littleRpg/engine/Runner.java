@@ -17,7 +17,7 @@ public class Runner {
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
 
-        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(), null, null);
+        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
         System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
         player.name = keyboard.nextLine();
@@ -171,7 +171,7 @@ public class Runner {
                     ListHelper.showList("In loot you have: ",player.loot);
                     break;
                 case "myitems":
-                    player.showEquipItems(player.mainWeapon, player.armor, player.mainNecklace, player.mainRing);
+                    player.showEquipItems(player.mainWeapon, player.armor);
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
@@ -191,7 +191,7 @@ public class Runner {
                         while(o.hasNext()) {
                             Monster nextMonster = o.next();
                             System.out.println(nextMonster.description);
-                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor, nextMonster.mainNecklace, nextMonster.mainRing);
+                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor);
                             System.out.println("~~~~~~~~~~~~~~");
                         }
                     }

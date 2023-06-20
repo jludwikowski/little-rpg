@@ -14,8 +14,8 @@ public class Human extends AdventurerClass implements Serializable{
     public int[] location;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
-    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills, Item mainNecklace, Item mainRing) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, armor, loot, skills, mainNecklace, mainRing);
+    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill>skills) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, armor, loot, skills);
 
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
@@ -33,8 +33,6 @@ public class Human extends AdventurerClass implements Serializable{
                 this.adjust(playerBaseType);
                 this.mainWeapon = null;
                 this.armor = null;
-                this.mainNecklace = null;
-                this.mainRing = null;
                 this.loot = new ArrayList<Item>();
                 return;
             }catch (Exception e){
@@ -134,42 +132,11 @@ public class Human extends AdventurerClass implements Serializable{
         if (armor != null){
             System.out.println("Your equip armor: " + armor.description);
         }
-        if (mainNecklace != null){
-            System.out.println("Your equip Necklace: " + mainNecklace.description);
-        }
-        if (mainRing != null){
-            System.out.println("Your equip Ring: " + mainRing.description);
-        }
-        if (mainWeapon == null && armor == null && mainNecklace == null && mainRing == null) {
+        if (mainWeapon == null && armor == null) {
             System.out.println("You don't have equipped equipment");
         }
         int itemIndex = readChoice("Choose item to wear");
         Item wearItem = loot.get(itemIndex);
-        if(wearItem.type == ItemTypes.necklace){
-                Item dropNeckless = null;
-                if (mainNecklace != null) {
-                    dropNeckless = mainNecklace;
-                    loot.add(dropNeckless);
-                    specialItems.remove(mainNecklace);
-                }
-                specialItems.add(wearItem);
-                mainNecklace = wearItem;
-                loot.remove(itemIndex);
-                System.out.println("wear: " + this.mainNecklace.description);
-        }
-
-        if(wearItem.type == ItemTypes.ring){
-            Item dropRing = null;
-            if (mainRing != null) {
-                dropRing = mainRing;
-                loot.add(dropRing);
-                specialItems.remove(mainRing);
-            }
-            specialItems.add(wearItem);
-            mainRing = wearItem;
-            loot.remove(itemIndex);
-            System.out.println("wear: " + this.mainRing.description);
-        }
         if(wearItem instanceof Armor) {
             Item dropArmor = null;
             if (armor != null) {

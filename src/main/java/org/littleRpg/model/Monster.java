@@ -18,15 +18,12 @@ public class Monster extends GameEntity implements Serializable {
     public Armor armor = null;
     public List<Item> loot = new ArrayList<>();
     public MonsterTypes type;
-    public int healValue = 0;
-    public Item mainNecklace = null;
-    public Item mainRing = null;
-
-    public List<Effect> activeEffects = null;
+    public Map<WearSlot, Item> wormItems = new HashMap<>();
+    public List<Effect> activeEffects = new ArrayList<>();
 
 
 
-    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills, Item mainNecklace, Item mainRing) {
+    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
         super(name, description);
         this.type = type;
         this.maxHp = maxHp;
@@ -39,8 +36,6 @@ public class Monster extends GameEntity implements Serializable {
         this.mainWeapon = mainWeapon;
         this.armor = armor;
         this.loot = loot;
-        this.mainNecklace = mainNecklace;
-        this.mainRing = mainRing;
 
 
     }
@@ -84,8 +79,12 @@ public class Monster extends GameEntity implements Serializable {
             Effect effect = iterator.next();
             if (effect.type == EffectType.buff && attribute == effect.buffAttribute) {
                 buff += effect.power;
+                System.out.println(buff);
+                System.out.println(effect.power);
             }
         }
+
+
         switch (attribute) {
             case monsterDamageReduction:
                 if (this.armor != null) {
@@ -133,8 +132,6 @@ public class Monster extends GameEntity implements Serializable {
         this.monsterDamageReduction += adjust.monsterDamageReduction;
         this.mainWeapon = adjust.mainWeapon != null ? adjust.mainWeapon: this.mainWeapon;
         this.armor = adjust.armor != null ? adjust.armor: this.armor;
-        this.mainNecklace = adjust.mainNecklace != null ? adjust.mainNecklace: this.mainNecklace;
-        this.mainRing = adjust.mainRing != null ? adjust.mainRing: this.mainRing;
     }
 
     public void effectTurnCounter () {
@@ -157,24 +154,15 @@ public class Monster extends GameEntity implements Serializable {
         }
     }
 
-    public static void showEquipItems(Weapon mainWeapon, Armor armor, Item mainNecklace, Item mainRing){
+    public static void showEquipItems(Weapon mainWeapon, Armor armor){
         if(mainWeapon != null){
             System.out.println("Equiped Weapon - " + mainWeapon.description);
         }
         if(armor != null){
             System.out.println("Equiped armor - " + armor.description);
         }
-        if(mainNecklace != null){
-            System.out.println("Equiped necklace - " + mainNecklace.description);
-        }
-        if(mainRing != null){
-            System.out.println("Equiped ring - " + mainRing.description);
-        }
         if(mainWeapon == null && armor == null){
             System.out.println("No equip Weapon or armor");
-        }
-        if(mainNecklace == null && mainRing == null) {
-            System.out.println("No equip Item");
         }
 
     }
@@ -182,9 +170,7 @@ public class Monster extends GameEntity implements Serializable {
     public String getDescription() {
         String monsterDescription = description +
                 ((mainWeapon != null) ? "\n armed with " + mainWeapon.description: "") +
-                ((armor != null) ? "\n wearing " + armor.description : "") +
-                ((mainNecklace != null) ? "\n wearing" + mainNecklace.description : "") +
-                ((mainRing != null) ? "\n wearing" + mainRing.description : "");
+                ((armor != null) ? "\n wearing " + armor.description : "") ;
         return monsterDescription;
     }
 
