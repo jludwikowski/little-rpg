@@ -5,26 +5,21 @@ import org.littleRpg.engine.ListHelper;
 import java.io.Serializable;
 import java.util.*;
 
-public class Monster extends GameEntity implements Serializable {
+public class Monster extends LivingEntity implements Serializable {
 
-    public int maxHp = 1;
-    public int currentHp = 1;
+    public float maxHp = 1;
+    public float currentHp = 1;
     public int maxMana = 1;
     public int currentMana = 1;
     public int attack = 0;
     public int strength = 0;
     public int monsterDamageReduction = 0;
-    public Weapon mainWeapon = null;
-    public Armor armor = null;
-    public List<Item> loot = new ArrayList<>();
+
     public MonsterTypes type;
-    public Map<WearSlot, Item> wormItems = new HashMap<>();
     public List<Effect> activeEffects = new ArrayList<>();
 
-
-
-    public Monster(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
-        super(name, description);
+    public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
+        super(name, description, loot, mainWeapon, armor);
         this.type = type;
         this.maxHp = maxHp;
         this.currentHp = currentHp;
@@ -33,32 +28,10 @@ public class Monster extends GameEntity implements Serializable {
         this.attack = attack;
         this.strength = strength;
         this.monsterDamageReduction = monsterDamageReduction;
-        this.mainWeapon = mainWeapon;
-        this.armor = armor;
-        this.loot = loot;
-
-
-    }
-
-    public List<Item> dropItems() {
-        List<Item> dropedItems = new ArrayList<>();
-        if (this.loot != null) {
-            dropedItems.addAll(this.loot);
-            this.loot.clear();
-        }
-        if (this.mainWeapon != null) {
-            dropedItems.add(this.mainWeapon);
-            this.mainWeapon = null;
-        }
-        if (this.armor != null) {
-            dropedItems.add(this.armor);
-            this.armor = null;
-        }
-        return dropedItems;
     }
 
     public String getStats() {
-        int finalDamageReduction = this.armor != null ? this.monsterDamageReduction + armor.damageReduction : this.monsterDamageReduction;
+        int finalDamageReduction = monsterDamageReduction + getArmorValue();
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "attack: " + String.valueOf(this.attack) + "\n" + "strength: " + String.valueOf(this.strength) + "\n" +
                 "damageReduction: " + String.valueOf(finalDamageReduction);
@@ -66,8 +39,8 @@ public class Monster extends GameEntity implements Serializable {
     }
 
     public int getDamage() {
-        if(this.mainWeapon != null) {
-            return this.mainWeapon.baseDamageValue + this.strength;
+        if(this.equippedItems.get(WearSlot.mainHand) != null) {
+            return ((Weapon) this.equippedItems.get(WearSlot.mainHand)).baseDamageValue + this.strength;
         }
         return this.strength;
     }
@@ -87,17 +60,15 @@ public class Monster extends GameEntity implements Serializable {
 
         switch (attribute) {
             case monsterDamageReduction:
-                if (this.armor != null) {
-                    return armor.damageReduction + monsterDamageReduction;
-                }
-                return this.monsterDamageReduction + buff;
+                int finalDamageReduction = monsterDamageReduction + getArmorValue();
+                return finalDamageReduction + buff;
             case strength:
                 return strength + buff;
             case maxHp:
-                return maxHp + buff;
+                return (int) (maxHp + buff);
             case attack:
-                if(mainWeapon != null) {
-                    return mainWeapon.bonusAttack + attack + buff;
+                if(this.equippedItems.get(WearSlot.mainHand) != null) {
+                    return ((Weapon) this.equippedItems.get(WearSlot.mainHand)).bonusAttack + attack + buff;
                 }
                 return attack + buff;
         }
@@ -125,19 +96,21 @@ public class Monster extends GameEntity implements Serializable {
     public void adjust(Monster adjust){
         this.name = adjust.name != null ? adjust.name + " " + this.name : this.name;
         this.description = adjust.description + " " + this.description;
-        this.currentHp += adjust.currentHp;
-        this.maxHp += adjust.maxHp;
+        this.currentHp *= adjust.currentHp;
+        this.maxHp *= adjust.maxHp;
         this.attack += adjust.attack;
         this.strength += adjust.strength;
         this.monsterDamageReduction += adjust.monsterDamageReduction;
-        this.mainWeapon = adjust.mainWeapon != null ? adjust.mainWeapon: this.mainWeapon;
-        this.armor = adjust.armor != null ? adjust.armor: this.armor;
+        for (Map.Entry<WearSlot,Item> entry : equippedItems.entrySet()){
+            Item equippedItem = adjust.equippedItems.get(entry.getKey()) != null ?
+                    adjust.equippedItems.get(entry.getKey()) : entry.getValue();
+            equippedItems.replace(entry.getKey(), equippedItem);
+        }
     }
 
     public void effectTurnCounter () {
-
         if (activeEffects != null){
-            ListHelper.showList("Active Effects: ",activeEffects);
+            ListHelper.showList("Active Effects: ",activeEffects,false);
             ListIterator <Effect> iterator = activeEffects.listIterator();
             while(iterator.hasNext()){
                 Effect effect = iterator.next();
@@ -154,23 +127,12 @@ public class Monster extends GameEntity implements Serializable {
         }
     }
 
-    public static void showEquipItems(Weapon mainWeapon, Armor armor){
-        if(mainWeapon != null){
-            System.out.println("Equiped Weapon - " + mainWeapon.description);
-        }
-        if(armor != null){
-            System.out.println("Equiped armor - " + armor.description);
-        }
-        if(mainWeapon == null && armor == null){
-            System.out.println("No equip Weapon or armor");
-        }
 
-    }
 
     public String getDescription() {
         String monsterDescription = description +
-                ((mainWeapon != null) ? "\n armed with " + mainWeapon.description: "") +
-                ((armor != null) ? "\n wearing " + armor.description : "") ;
+                ((this.equippedItems.get(WearSlot.mainHand) != null) ? "\n armed with " + (this.equippedItems.get(WearSlot.mainHand)).description: "") +
+                getArmorDescription() ;
         return monsterDescription;
     }
 

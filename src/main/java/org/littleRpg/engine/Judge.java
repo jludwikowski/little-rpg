@@ -36,10 +36,12 @@ public class Judge {
             Monster nextMonster = monsterListIterator.next();
             System.out.println("You see around: " + nextMonster.description);
         }
-        System.out.println("When you moved, the monsters noticed you and started attacking you");
+
 
         ListIterator<Monster> j = location.monsters.listIterator();
         while(j.hasNext()) {
+            System.out.println("When you moved, the monsters noticed you and started attacking you");
+
             Monster nextMonster = j.next();
             Judge.attack(nextMonster, attacker, null);
         }

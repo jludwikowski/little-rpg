@@ -60,41 +60,7 @@ public class MonsterGenerator extends Generator<Monster> {
 
     @Override
     public Monster adjust(Monster entity, String adj) {
-        entity.name = adj + " " + entity.name;
-        entity.description = adj + " " + entity.description;
-
-        switch(adj) {
-            case "small":
-                entity.maxHp = new Double(Math.floor(entity.maxHp * 0.8)).intValue();
-                entity.currentHp = entity.maxHp;
-                entity.strength -= 1;
-                break;
-            case "big":
-                entity.maxHp = new Double(Math.floor(entity.maxHp * 1.2)).intValue();
-                entity.currentHp = entity.maxHp;
-                entity.strength += 1;
-                break;
-            case "huge":
-                entity.maxHp = new Double(Math.floor(entity.maxHp * 1.6)).intValue();
-                entity.currentHp = entity.maxHp;
-                entity.attack -= 5;
-                entity.strength += 2;
-                break;
-            case "enormous":
-                entity.maxHp = new Double(Math.floor(entity.maxHp * 2)).intValue();
-                entity.currentHp = entity.maxHp;
-                entity.attack -= 5;
-                entity.strength += 4;
-                break;
-            case "strange":
-                entity.attack += 5;
-                break;
-            case "dark":
-                entity.maxHp = new Double(Math.floor(entity.maxHp * 0.8)).intValue();
-                entity.currentHp = entity.maxHp;
-                entity.attack += 5;
-                break;
-        }
+        entity.adjust(this.getAdjust(adj));
         return entity;
     }
 
@@ -102,32 +68,52 @@ public class MonsterGenerator extends Generator<Monster> {
         String name = monsterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(monsterType) {
             case goblin:
-                return new Monster(monsterType, name, "green goblin",5,5, 0,0,30,3, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "green goblin",5,5, 0,0,30,3, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case slime:
                 return new Monster(monsterType, name, "foul smelling gelatinous mass",20,20,0, 0,15,1,0, null, null, itemGenerator.getEntities(30), null);
             case elf:
-                return new Monster(monsterType, name, "elf",20,20,0,0, 18,5, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "elf",20,20,0,0, 18,5, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case human:
-                return new Monster(monsterType, name, "human",20,20,0,0, 15,6, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "human",20,20,0,0, 15,6, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case orc:
-                return new Monster(monsterType, name, "orc",25,25,0,0,10,8,0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "orc",25,25,0,0,10,8,0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case ghul:
                 return new Monster(monsterType, name, "ghul",15,15,0,0,20,5,0, null, null, itemGenerator.getEntities(90), null);
             case demon:
-                return new Monster(monsterType, name, "demon",22,22,0,0,25,10,0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "demon",22,22,0,0,25,10,0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case ogr:
-                return new Monster(monsterType, name, "ogr",30,30,0,0,25,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "ogr",30,30,0,0,25,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case giant:
-                return new Monster(monsterType, name, "giant",35,35,0,0,20,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "giant",35,35,0,0,20,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
             case werewolf:
                 return new Monster(monsterType, name, "werewolf",30,30,0,0,15,10,0, null, null, itemGenerator.getEntities(90), null);
             case vampire:
-                return new Monster(monsterType, name, "vampire",30,30,0,0,20,10, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "vampire",30,30,0,0,20,10, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
 
         }
         return null;
     }
 
+    private Monster getAdjust(String adj) {
+        switch (adj) {
+            case "big":
+                return new Monster(null, adj, adj, 1.2F, 1.2F, 0, 0, 0, 1, 0, null, null, null, null);
+            case "small":
+                return new Monster(null, adj, adj, 0.8F, 0.8F, 0, 0, 3, -1, 0, null, null, null, null);
+            case "huge":
+                return new Monster(null, adj, adj, 1.5F, 1.5F, 0, 0, -5, 2, 0, null, null, null, null);
+            case "enormous":
+                return new Monster(null, adj, adj, 2F, 2F, 0, 0, 5, 2, 0, null, null, null, null);
+            case "strange":
+                return new Monster(null, adj, adj, 1F, 1F, 0, 0, 5, 0, 0, null, null, null, null);
+            case "dark":
+                return new Monster(null, adj, adj, 0.8F, 0.8F, 0, 0, 5, 0, 0, null, null, null, null);
+            case "ugly":
+                return new Monster(null, adj, adj, 1.1F, 1.1F, 0, 0, 1, 1, 0, null, null, null, null);
+            case "pale":
+                return new Monster(null, adj, adj, 0.9F, 0.9F, 0, 0, 2, 2, 0, null, null, null, null);
 
-
+        }
+        return null;
+    }
 }

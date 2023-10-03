@@ -8,7 +8,7 @@ public class Weapon extends Item {
 
 
     public Weapon(String name,String description, double weight, int bonusAttack, int baseDamageValue, boolean isRanged) {
-        super(name, ItemTypes.weapon,  description, weight);
+        super(name, ItemTypes.weapon,  description, weight, null, WearSlot.mainHand);
         this.bonusAttack = bonusAttack;
         this.baseDamageValue = baseDamageValue;
         this.isRanged = isRanged;

@@ -26,9 +26,10 @@ public class Runner {
         player.location = new int[]{0,5,5};
 
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
+        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
         location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend"));
-        location.items.add(new Armor("shield", "shield", 5,2));
+        location.items.add(new Armor("shield", "shield", 5,2, WearSlot.offHand));
         location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt"));
         location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),WearSlot.finger));
 
@@ -131,9 +132,11 @@ public class Runner {
                     break;
                 case "help":
                     System.out.println("stats - player stats \n\nnorth - move to north \nsouth - move to south\n" +
-                            "east - move to east\nwest - move to west\n\npickup - pickup items\natack - atack for monster\n" + "special - special atack for monster\n" +
+                            "east - move to east\nwest - move to west\n\npickup - pickup items\nattack - attack for monster\n" + "special - special attack for monster\n" +
                             "loot - show player items\nmyitems - show equip items\nwear - show wear items\n" +
-                            "monsteritems - show monster items\nmap - print map\ncheckmonster - check monster items");
+                            "map - print map\ncheckmonster - check monster items\ndrop - drop equiped item\n" +
+                            "useitem - use item from loot \nsave - save progress\nload - load save\nlearn - learn spell for your class\n" +
+                            "useskill - use learned skill");
                     break;
                 case "east":
                     if (!player.isExausted()) {
@@ -168,13 +171,16 @@ public class Runner {
                     break;
 
                 case "loot":
-                    ListHelper.showList("In loot you have: ",player.loot);
+                    ListHelper.showList("In loot you have: ",player.loot,false);
+                    break;
+                case "takeoff":
+                    player.takeOff();
                     break;
                 case "myitems":
-                    player.showEquipItems(player.mainWeapon, player.armor);
+                    player.showEquipItems();
                     break;
                 case "special":
-                    if (!thisPlace.monsters.isEmpty() && player.mainWeapon.isRanged) {
+                    if (!thisPlace.monsters.isEmpty() && ((Weapon) player.equippedItems.get(WearSlot.mainHand)).isRanged) {
                         player.effectTurnCounter();
                         thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null);
                     }
@@ -191,7 +197,7 @@ public class Runner {
                         while(o.hasNext()) {
                             Monster nextMonster = o.next();
                             System.out.println(nextMonster.description);
-                            Monster.showEquipItems(nextMonster.mainWeapon, nextMonster.armor);
+                            nextMonster.showEquipItems();
                             System.out.println("~~~~~~~~~~~~~~");
                         }
                     }
@@ -212,6 +218,9 @@ public class Runner {
                     break;
                case "load":
                     player = LoadSaveOperator.loadPoint();
+                    break;
+               case "drop":
+                    player.dropItems();
                     break;
                 default:
                     System.out.println("i don't recognize this try again");

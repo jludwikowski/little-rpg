@@ -29,18 +29,18 @@ public class AdventurerClass extends Monster implements Serializable {
             case mage:
                 return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case paladin:
-                return new Human("paladin", "paladin", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("paladin", "paladin", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case warrior:
                 return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
             case priest:
-                return new Human("priest", "priest", 20, 30, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
+                return new Human("priest", "priest", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>());
         }
         return null;
     }
 
     public void learnSkill() {
         System.out.println("You can learn new skill. Choose item");
-        ListHelper.showList("In loot you have: ", this.loot);
+        ListHelper.showList("In loot you have: ", this.loot, true);
         int itemIndex3 = Human.readChoice("Choose item to use: ");
         Item chosenItem = loot.get(itemIndex3);
         System.out.println(chosenItem.type);
@@ -83,9 +83,12 @@ public class AdventurerClass extends Monster implements Serializable {
 
     public void useSkill(Monster attacker, Place location) {
         if (!skills.isEmpty()) {
-            ListHelper.showList("Your learned skills: ", this.skills);
+            ListHelper.showList("Your learned skills: ", this.skills, true);
             int skillIndex = Human.readChoice("Choose skill to use: ");
-            Skill chosenSkill = skills.get(skillIndex);
+            if(skillIndex == 0){
+                return;
+            }
+            Skill chosenSkill = skills.get(skillIndex-1);
             if(chosenSkill.manaCost >= currentMana){
                 System.out.println("Out of mana");
                 return;

@@ -4,6 +4,7 @@ import org.littleRpg.engine.Roller;
 import org.littleRpg.model.Armor;
 import org.littleRpg.model.ArmorTypes;
 import org.littleRpg.model.AdjectivesTable;
+import org.littleRpg.model.WearSlot;
 
 
 import java.util.Arrays;
@@ -21,6 +22,12 @@ public class ArmorGenerator extends Generator<Armor> {
     @Override
     public Armor getEntity() {
         ArmorTypes type = ArmorTypes.values()[Roller.pickNumberFrom(ArmorTypes.values().length)];
+        Armor armor = this.getBaseByType(type);
+        armor = this.finalizeEntity(armor);
+        return armor;
+    }
+
+    public Armor getEntity(ArmorTypes type) {
         Armor armor = this.getBaseByType(type);
         armor = this.finalizeEntity(armor);
         return armor;
@@ -80,17 +87,17 @@ public class ArmorGenerator extends Generator<Armor> {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case helmet:
-                return new Armor(name, type.toString(), 5,4);
+                return new Armor(name, type.toString(), 5,4, WearSlot.head);
             case shield:
-                return new Armor(name, type.toString(), 9,6);
+                return new Armor(name, type.toString(), 9,6, WearSlot.offHand);
             case gloves:
-                return new Armor(name, type.toString(), 1, 2);
+                return new Armor(name, type.toString(), 1, 2, WearSlot.hands);
             case shoes:
-                return new Armor(name, type.toString(), 1, 2);
+                return new Armor(name, type.toString(), 1, 2, WearSlot.feet);
             case pants:
-                return new Armor(name, type.toString(), 2, 3);
+                return new Armor(name, type.toString(), 2, 3, WearSlot.legs);
             case jacket:
-                return new Armor(name, type.toString(), 3, 4);
+                return new Armor(name, type.toString(), 3, 4, WearSlot.torso);
 
         }
         return null;
