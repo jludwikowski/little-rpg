@@ -95,17 +95,17 @@ public class PlaceGenerator extends Generator<MapPlace> {
         String name = biome.toString();
         switch(biome) {
             case desert:
-                return new MapPlace(lastId++, biome, name,"scorching empty desert",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"scorching empty desert",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case mountain:
-                return new MapPlace(lastId++, biome, name,"empty windy high mountains",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"empty windy high mountains",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case hill:
-                return new MapPlace(lastId++, biome, name,"hills",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"hills",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case forest:
-                return new MapPlace(lastId++, biome, name,"dense forest",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"dense forest",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case meadow:
-                return new MapPlace(lastId++, biome, name,"long grass meadow",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"long grass meadow",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case swamp:
-                return new MapPlace(lastId++, biome, name,"treacherous swamp",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(90));
+                return new MapPlace(lastId++, biome, name,"treacherous swamp",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
         }
         return null;
     }

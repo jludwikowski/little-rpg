@@ -18,8 +18,8 @@ public class Monster extends LivingEntity implements Serializable {
     public MonsterTypes type;
     public List<Effect> activeEffects = new ArrayList<>();
 
-    public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
-        super(name, description, loot, mainWeapon, armor);
+    public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills) {
+        super(name, description, loot, mainWeapon, mainArmor);
         this.type = type;
         this.maxHp = maxHp;
         this.currentHp = currentHp;

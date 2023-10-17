@@ -7,6 +7,7 @@ import java.util.*;
 
 public class MonsterGenerator extends Generator<Monster> {
 
+    //public List<Armor> mainArmor = new ArrayList<>();
     ArmorGenerator armorGenerator = new ArmorGenerator();
     WeaponGenerator weaponGenerator = new WeaponGenerator();
     ItemGenerator itemGenerator = new ItemGenerator();
@@ -64,31 +65,32 @@ public class MonsterGenerator extends Generator<Monster> {
         return entity;
     }
 
+
     public Monster getBaseByType(MonsterTypes monsterType) {
         String name = monsterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(monsterType) {
             case goblin:
-                return new Monster(monsterType, name, "green goblin",5,5, 0,0,30,3, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "green goblin",5,5, 0,0,30,3, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(40), itemGenerator.getEntities(90), null);
             case slime:
                 return new Monster(monsterType, name, "foul smelling gelatinous mass",20,20,0, 0,15,1,0, null, null, itemGenerator.getEntities(30), null);
             case elf:
-                return new Monster(monsterType, name, "elf",20,20,0,0, 18,5, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "elf",20,20,0,0, 18,5, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(60), itemGenerator.getEntities(90), null);
             case human:
-                return new Monster(monsterType, name, "human",20,20,0,0, 15,6, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "human",20,20,0,0, 15,6, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(65), itemGenerator.getEntities(90), null);
             case orc:
-                return new Monster(monsterType, name, "orc",25,25,0,0,10,8,0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "orc",25,25,0,0,10,8,0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(90), itemGenerator.getEntities(90), null);
             case ghul:
                 return new Monster(monsterType, name, "ghul",15,15,0,0,20,5,0, null, null, itemGenerator.getEntities(90), null);
             case demon:
-                return new Monster(monsterType, name, "demon",22,22,0,0,25,10,0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "demon",22,22,0,0,25,10,0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(40), itemGenerator.getEntities(90), null);
             case ogr:
-                return new Monster(monsterType, name, "ogr",30,30,0,0,25,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "ogr",30,30,0,0,25,20, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(80), itemGenerator.getEntities(90), null);
             case giant:
-                return new Monster(monsterType, name, "giant",35,35,0,0,20,20, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "giant",35,35,0,0,20,20, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(15), itemGenerator.getEntities(90), null);
             case werewolf:
                 return new Monster(monsterType, name, "werewolf",30,30,0,0,15,10,0, null, null, itemGenerator.getEntities(90), null);
             case vampire:
-                return new Monster(monsterType, name, "vampire",30,30,0,0,20,10, 0, weaponGenerator.getEntity(), armorGenerator.getEntity(ArmorTypes.jacket), itemGenerator.getEntities(90), null);
+                return new Monster(monsterType, name, "vampire",30,30,0,0,20,10, 0, weaponGenerator.getEntity(), armorGenerator.armorMapGenerator(75), itemGenerator.getEntities(90), null);
 
         }
         return null;

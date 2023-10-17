@@ -10,11 +10,15 @@ public class LivingEntity extends GameEntity {
     //List<Item> equippedItemsToDrop = new ArrayList<>();
 
 
-    public LivingEntity(String name, String description, List<Item> loot, Weapon mainWeapon, Armor armor) {
+    public LivingEntity(String name, String description, List<Item> loot, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor) {
         super(name, description);
         this.loot = loot;
-        equippedItems.put(mainWeapon.slot, mainWeapon);
-        equippedItems.put(armor.slot, armor);
+        if (mainWeapon != null) {
+            equippedItems.put(mainWeapon.slot, mainWeapon);
+        }
+        if (mainArmor != null) {
+            equippedItems.putAll(mainArmor);
+        }
     }
 
     public List<Item> dropItems() {

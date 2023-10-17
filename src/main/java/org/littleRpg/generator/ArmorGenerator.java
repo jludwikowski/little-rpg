@@ -1,15 +1,13 @@
 package org.littleRpg.generator;
 
 import org.littleRpg.engine.Roller;
-import org.littleRpg.model.Armor;
-import org.littleRpg.model.ArmorTypes;
-import org.littleRpg.model.AdjectivesTable;
-import org.littleRpg.model.WearSlot;
+import org.littleRpg.model.*;
 
 
-import java.util.Arrays;
+import java.util.*;
 
 public class ArmorGenerator extends Generator<Armor> {
+
 
     public ArmorGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","dragon","ugly","serpent","dwarf-crafted","elf-crafted"});
@@ -17,6 +15,19 @@ public class ArmorGenerator extends Generator<Armor> {
 
         this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
         this.exclusives = null;
+    }
+    public Map<WearSlot, Armor> armorMapGenerator(int probability){
+        Map<WearSlot, Armor> mainArmor = new HashMap<>();
+        if (Math.random()*100 < probability) {
+            mainArmor.put(WearSlot.torso, getEntity(ArmorTypes.jacket));
+            if (Math.random() * 100 < 50) {
+                mainArmor.put(WearSlot.legs, getEntity(ArmorTypes.pants));
+            }
+            if (Math.random() * 100 < 15) {
+                mainArmor.put(WearSlot.head, getEntity(ArmorTypes.helmet));
+            }
+        }
+        return mainArmor;
     }
 
     @Override
@@ -82,6 +93,8 @@ public class ArmorGenerator extends Generator<Armor> {
         }
         return entity;
     }
+
+
 
     private Armor getBaseByType(ArmorTypes type) {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));

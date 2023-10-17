@@ -16,11 +16,12 @@ public class Runner {
 
         WorldGenerator worldGenerator = new WorldGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
-
-        Human player = new Human("player","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
-        System.out.println("What is you name?");
         Scanner keyboard = new Scanner(System.in);
-        player.name = keyboard.nextLine();
+        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
+        while("".equalsIgnoreCase(player.name)){
+            System.out.println("What is you name?");
+            player.name = keyboard.nextLine();
+        }
         player.chooseRace();
         player.chooseClass();
         player.location = new int[]{0,5,5};

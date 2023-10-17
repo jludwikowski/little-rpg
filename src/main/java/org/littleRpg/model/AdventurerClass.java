@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class AdventurerClass extends Monster implements Serializable {
 
@@ -19,8 +20,8 @@ public class AdventurerClass extends Monster implements Serializable {
 
 
 
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Armor armor, List<Item> loot, List<Skill> skills) {
-        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, armor, loot, skills);
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, mainArmor, loot, skills);
     }
 
 
