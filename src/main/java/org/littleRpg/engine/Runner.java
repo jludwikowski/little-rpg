@@ -7,6 +7,7 @@ import org.littleRpg.generator.WorldGenerator;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Scanner;
 
@@ -26,13 +27,14 @@ public class Runner {
         player.chooseClass();
         player.location = new int[]{0,5,5};
 
-        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false));
-        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false));
+        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand)));
+        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand)));
+        world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand)));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
         location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend"));
-        location.items.add(new Armor("shield", "shield", 5,2, WearSlot.offHand));
+        location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand)));
         location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt"));
-        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),WearSlot.finger));
+        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger)));
 
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){

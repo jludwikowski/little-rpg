@@ -7,6 +7,7 @@ import java.util.*;
 public class LivingEntity extends GameEntity {
     public Map<WearSlot, Item> equippedItems = new HashMap<>();
     public List<Item> loot = new ArrayList<>();
+    //List<Item> replacedItems = new ArrayList<>();
     //List<Item> equippedItemsToDrop = new ArrayList<>();
 
 
@@ -14,10 +15,15 @@ public class LivingEntity extends GameEntity {
         super(name, description);
         this.loot = loot;
         if (mainWeapon != null) {
-            equippedItems.put(mainWeapon.slot, mainWeapon);
+            addToWearItems(mainWeapon.wearSlots, mainWeapon);
         }
         if (mainArmor != null) {
-            equippedItems.putAll(mainArmor);
+            for (Map.Entry<WearSlot, Armor> entry : mainArmor.entrySet()) {
+                {
+                    addToWearItems(entry.getValue().wearSlots, entry.getValue());
+                }
+
+            }
         }
     }
 
@@ -63,21 +69,44 @@ public class LivingEntity extends GameEntity {
             System.out.println("Item is null");
             return;
         }
-        WearSlot wearSlot = wearItem.slot;
-        System.out.println("type" + wearSlot);
-        this.loot.remove(itemIndex);
-        if (equippedItems.get(wearSlot) != null) {
-            Item dropedItem = equippedItems.replace(wearSlot, wearItem);
-            equippedItems.replace(wearSlot, wearItem);
-            System.out.println("you take of " + dropedItem.description);
-            this.loot.add(dropedItem);
-        } else {
-            equippedItems.put(wearItem.slot, wearItem);
-            System.out.println("Was empty slot");
+        List<Item> replacedItems = addToWearItems(wearItem.wearSlots , wearItem);
+        for (Item replacedItem: replacedItems) {
+            addToInventory(replacedItem);
         }
         ListHelper.showList("You have in inventory: ", this.loot,false);
     }
 
+
+
+    public List<Item> addToWearItems(List<WearSlot> slots, Item item){
+        List<Item> replacedItems = new ArrayList<>();
+        if (item != null) {
+            for(WearSlot slot : slots) {
+                if (equippedItems.get(slot) != null) {
+                    if(!replacedItems.contains(equippedItems.get(slot))) {
+                        Item replacedItem = (equippedItems.replace(slot, item));
+                        replacedItems.add(replacedItem);
+                        for(WearSlot replacedSlot : replacedItem.wearSlots){
+                            if(equippedItems.get(replacedSlot) == replacedItem){
+                                equippedItems.remove(replacedSlot);
+                            }
+                        }
+                    }
+                } else {
+                    equippedItems.put(slot, item);
+                }
+            }
+            this.loot.remove(item);
+        }
+        return replacedItems;
+    }
+
+
+    public void addToInventory (Item item){
+        if(item != null){
+            this.loot.add(item);
+        }
+    }
     public void takeOff(){
         List<Item> equippedItemsToDrop = new ArrayList<>(equippedItems.values());
         ListHelper.showList("You have equipped: ", equippedItemsToDrop,true);
@@ -86,9 +115,10 @@ public class LivingEntity extends GameEntity {
             return;
         }
         Item dropItem = equippedItemsToDrop.get(itemIndex-1);
-        WearSlot dropSlot = dropItem.slot;
-        equippedItems.replace(dropSlot, dropItem, null);
-        this.loot.add(dropItem);
+        for(WearSlot dropItemSlot : dropItem.wearSlots) {
+            equippedItems.remove(dropItemSlot);
+        }
+        addToInventory(dropItem);
         equippedItemsToDrop.clear();
         showEquipItems();
     }
@@ -112,13 +142,7 @@ public class LivingEntity extends GameEntity {
                 armorDescription = armorDescription.concat("\n wearing " + entry.getValue().description); //tworzenie stringa
             }
         }
-        /*Iterator<Item> equippedItemsIterator = equippedItems.values().iterator();
-        while (equippedItemsIterator.hasNext()) {
-            Item equippedItem = equippedItemsIterator.next();
-            if (equippedItem instanceof Armor) {
-                armorDescription = "\n wearing " + equippedItem.description;
-            }
-        }*/
         return armorDescription;
     }
 }
+

@@ -4,6 +4,7 @@ import org.littleRpg.model.*;
 
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WorldGenerator {
@@ -29,7 +30,7 @@ public class WorldGenerator {
 
     private static Place createStartLocation(Place location) {
         location.monsters = null;
-        location.items.add(new Weapon("sword","old sword",2,5,2,false));
+        location.items.add(new Weapon("sword","old sword",2,5,2,false, false, Arrays.asList(WearSlot.mainHand)));
         return location;
     }
 

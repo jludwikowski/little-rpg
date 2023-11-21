@@ -94,9 +94,9 @@ public class ItemGenerator extends Generator<Item>{
             case scroll:
                 return new Scroll(name, type, type.toString(), 0.1, null,skillManager.getRandomSkillName());
             case necklace:
-                return new Item(name, type, type.toString(),0.3,effectManager.getRandomEffect(), WearSlot.neck);
+                return new Item(name, type, type.toString(),0.3,effectManager.getRandomEffect(), Arrays.asList(WearSlot.neck));
             case ring:
-                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffect(), WearSlot.finger);
+                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffect(), Arrays.asList(WearSlot.finger));
         }
         return null;
     }

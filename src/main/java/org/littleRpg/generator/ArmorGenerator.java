@@ -100,17 +100,17 @@ public class ArmorGenerator extends Generator<Armor> {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case helmet:
-                return new Armor(name, type.toString(), 5,4, WearSlot.head);
+                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head));
             case shield:
-                return new Armor(name, type.toString(), 9,6, WearSlot.offHand);
+                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand));
             case gloves:
-                return new Armor(name, type.toString(), 1, 2, WearSlot.hands);
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands));
             case shoes:
-                return new Armor(name, type.toString(), 1, 2, WearSlot.feet);
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet));
             case pants:
-                return new Armor(name, type.toString(), 2, 3, WearSlot.legs);
+                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs));
             case jacket:
-                return new Armor(name, type.toString(), 3, 4, WearSlot.torso);
+                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso));
 
         }
         return null;

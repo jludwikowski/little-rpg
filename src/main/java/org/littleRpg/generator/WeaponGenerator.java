@@ -4,6 +4,7 @@ import org.littleRpg.engine.Roller;
 import org.littleRpg.model.Weapon;
 import org.littleRpg.model.WeaponTypes;
 import org.littleRpg.model.AdjectivesTable;
+import org.littleRpg.model.WearSlot;
 
 import java.util.Arrays;
 
@@ -77,13 +78,13 @@ public class WeaponGenerator extends Generator<Weapon>{
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case stick:
-                return new Weapon(name, type.toString(), 3, 2,2, false);
+                return new Weapon(name, type.toString(), 3, 2,2, false,false, Arrays.asList(WearSlot.mainHand));
             case axe:
-                return new Weapon(name, type.toString(), 10, 10, 7, false);
+                return new Weapon(name, type.toString(), 10, 10, 7, false,false, Arrays.asList(WearSlot.mainHand));
             case sword:
-                return new Weapon(name, type.toString(), 8, 9, 6, false);
+                return new Weapon(name, type.toString(), 8, 9, 6, false,false, Arrays.asList(WearSlot.mainHand));
             case bow:
-                return new Weapon(name, type.toString(), 5, 6,5, true);
+                return new Weapon(name, type.toString(), 5, 6,5, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand));
 
 
         }
