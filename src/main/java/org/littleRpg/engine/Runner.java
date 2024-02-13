@@ -1,5 +1,6 @@
 package org.littleRpg.engine;
 
+import org.littleRpg.generator.PlaceGenerator;
 import org.littleRpg.generator.TextColorGenerator;
 import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
@@ -11,14 +12,17 @@ import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Scanner;
 
+import static org.littleRpg.model.PlaceArchitectureTypes.shop;
+
 public class Runner {
 
     public static void main(String[] args) {
 
         WorldGenerator worldGenerator = new WorldGenerator();
+        PlaceGenerator placeGenerator = new PlaceGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
         Scanner keyboard = new Scanner(System.in);
-        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>());
+        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100);
         while("".equalsIgnoreCase(player.name)){
             System.out.println("What is you name?");
             player.name = keyboard.nextLine();
@@ -27,14 +31,16 @@ public class Runner {
         player.chooseClass();
         player.location = new int[]{0,5,5};
 
-        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand)));
-        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand)));
-        world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand)));
+        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
+        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
+        world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend"));
-        location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand)));
-        location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt"));
-        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger)));
+        world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getShop();
+        location.placeArchitectures.add(new PlaceArchitecture(shop, "u Zdzicha", "wodka, nalewki"));
+        location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend",10));
+        location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10));
+        location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10));
+        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger), 5));
 
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
@@ -93,7 +99,7 @@ public class Runner {
 
 
         System.out.println("What Do you do?");
-        if(!thisPlace.monsters.isEmpty()) {
+        if(thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
             System.out.println("You encountered monster!!! press a to attack");
         }
         try {
@@ -140,6 +146,21 @@ public class Runner {
                             "map - print map\ncheckmonster - check monster items\ndrop - drop equiped item\n" +
                             "useitem - use item from loot \nsave - save progress\nload - load save\nlearn - learn spell for your class\n" +
                             "useskill - use learned skill");
+                    break;
+                case "enter":
+                    if(world[player.location[0]+1][player.location[1]][player.location[2]] != null
+                            && thisPlace.placeArchitectures.stream().anyMatch(p -> p.type == shop)) {
+                        player.location[0] = player.location[0] + 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
+                    }
+                    break;
+                case "exit":
+                    if(world[player.location[0]-1][player.location[1]][player.location[2]] != null) {
+                        player.location[0] = player.location[0] - 1;
+                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+                        System.out.println(thisPlace.getDescription());
+                    }
                     break;
                 case "east":
                     if (!player.isExausted()) {
@@ -203,6 +224,19 @@ public class Runner {
                             nextMonster.showEquipItems();
                             System.out.println("~~~~~~~~~~~~~~");
                         }
+                    }
+                    break;
+
+                case "buy":
+                    if(thisPlace.biome == Biome.shop){
+                        Monster seller = thisPlace.monsters.get(0);
+                        LivingEntity.tradeItem(seller, player, "buy");
+                    }
+                    break;
+                case "sell":
+                    if(thisPlace.biome == Biome.shop){
+                        Monster seller = thisPlace.monsters.get(0);
+                        LivingEntity.tradeItem(player, seller, "sell");
                     }
                     break;
                 case "useitem":

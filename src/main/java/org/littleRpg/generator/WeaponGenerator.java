@@ -35,41 +35,51 @@ public class WeaponGenerator extends Generator<Weapon>{
         switch(adj) {
             case "ornate":
                 entity.weight = new Double(Math.floor(entity.weight * 1.2)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.4)).intValue();
                 break;
             case "sturdy":
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 1.2)).intValue();
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 1.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.2)).intValue();
                 break;
             case "bloody":
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 1.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.3)).intValue();
                 break;
             case "poisoned":
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 1.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.4)).intValue();
                 break;
             case "exceptional":
                 entity.weight = new Double(Math.floor(entity.weight * 0.8)).intValue();
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 1.1)).intValue();
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 1.4)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.8)).intValue();
                 break;
             case "elf-crafted":
                 entity.weight = new Double(Math.floor(entity.weight * 0.7)).intValue();
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 1.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.6)).intValue();
                 break;
             case "old":
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 0.9)).intValue();
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 0.9)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.7)).intValue();
                 break;
             case "weathered":
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 0.9)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.8)).intValue();
                 break;
             case "new":
                 entity.weight = new Double(Math.floor(entity.weight * 1.1)).intValue();
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 1.1)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1)).intValue();
                 break;
             case "ancient":
                 entity.weight = new Double(Math.floor(entity.weight * 0.7)).intValue();
                 entity.bonusAttack = new Double(Math.floor(entity.bonusAttack * 0.8)).intValue();
                 entity.baseDamageValue = new Double(Math.floor(entity.baseDamageValue * 0.7)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.6)).intValue();
                 break;
         }
         return entity;
@@ -78,13 +88,13 @@ public class WeaponGenerator extends Generator<Weapon>{
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case stick:
-                return new Weapon(name, type.toString(), 3, 2,2, false,false, Arrays.asList(WearSlot.mainHand));
+                return new Weapon(name, type.toString(), 3, 2,2, false,false, Arrays.asList(WearSlot.mainHand),10);
             case axe:
-                return new Weapon(name, type.toString(), 10, 10, 7, false,false, Arrays.asList(WearSlot.mainHand));
+                return new Weapon(name, type.toString(), 10, 10, 7, false,false, Arrays.asList(WearSlot.mainHand),28);
             case sword:
-                return new Weapon(name, type.toString(), 8, 9, 6, false,false, Arrays.asList(WearSlot.mainHand));
+                return new Weapon(name, type.toString(), 8, 9, 6, false,false, Arrays.asList(WearSlot.mainHand),30);
             case bow:
-                return new Weapon(name, type.toString(), 5, 6,5, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand));
+                return new Weapon(name, type.toString(), 5, 6,5, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand),25);
 
 
         }

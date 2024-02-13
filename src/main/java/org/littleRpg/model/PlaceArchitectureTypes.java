@@ -4,6 +4,7 @@ public enum PlaceArchitectureTypes {
     tree,
     ruins,
     cave,
-    walls
+    walls,
+    shop
 
 }

@@ -7,10 +7,9 @@ import java.util.*;
 public class LivingEntity extends GameEntity {
     public Map<WearSlot, Item> equippedItems = new HashMap<>();
     public List<Item> loot = new ArrayList<>();
-    //List<Item> replacedItems = new ArrayList<>();
-    //List<Item> equippedItemsToDrop = new ArrayList<>();
 
 
+    
     public LivingEntity(String name, String description, List<Item> loot, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor) {
         super(name, description);
         this.loot = loot;
@@ -53,8 +52,6 @@ public class LivingEntity extends GameEntity {
                 System.out.println(name + " is wearing: " + item.description);
             });
         }
-
-
     }
 
     public void wear() {
@@ -75,8 +72,6 @@ public class LivingEntity extends GameEntity {
         }
         ListHelper.showList("You have in inventory: ", this.loot,false);
     }
-
-
 
     public List<Item> addToWearItems(List<WearSlot> slots, Item item){
         List<Item> replacedItems = new ArrayList<>();
@@ -101,10 +96,44 @@ public class LivingEntity extends GameEntity {
         return replacedItems;
     }
 
-
     public void addToInventory (Item item){
         if(item != null){
             this.loot.add(item);
+        }
+    }
+
+    public static void tradeItem(Monster seller, Monster shopper, String transactionType){
+        if(seller.loot != null){
+            ListHelper.showList("You can " + transactionType+ ":",seller.loot,false);
+            int itemIndex = Human.readChoice("Choose item to "+ transactionType + ":");
+            Item sellingItem = seller.loot.get(itemIndex-1);
+            int price = sellingItem.price;
+            if("sell".equalsIgnoreCase(transactionType) && shopper.goldCoins < sellingItem.price) {
+                System.out.println("seller don't have enough money, if you sell this you can take less money. \nDo you want sell anyway?\ny/n");
+                Scanner scanner = new Scanner(System.in);
+                scanner.nextLine();
+                if (scanner.equals("n")) {
+                    return;
+                }
+                if (scanner.equals("y")) {
+                    price = shopper.goldCoins;
+                }
+            }
+            if(shopper.goldCoins >= price) {
+                shopper.goldCoins -= price;
+                shopper.loot.add(sellingItem);
+                seller.goldCoins += price;
+                seller.loot.remove(itemIndex - 1);
+                System.out.println("You " + transactionType + " " + sellingItem.description);
+            }else {
+                System.out.println("Not enough money");
+            }
+        }else {
+            if("sell".equalsIgnoreCase(transactionType)) {
+                System.out.println("Please comeback when you find any item.");
+            }else{
+                System.out.println("Seller doesn't have any items to sell");
+            }
         }
     }
     public void takeOff(){

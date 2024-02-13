@@ -1,9 +1,6 @@
 package org.littleRpg.engine;
 
-import org.littleRpg.model.Attribute;
-import org.littleRpg.model.Monster;
-import org.littleRpg.model.Place;
-import org.littleRpg.model.Skill;
+import org.littleRpg.model.*;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -31,19 +28,21 @@ public class Judge {
 
 
     public static List<Monster> monsterAttack(Monster attacker, Place location){
-        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
-        while (monsterListIterator.hasNext()) {
-            Monster nextMonster = monsterListIterator.next();
-            System.out.println("You see around: " + nextMonster.description);
-        }
+        if(location.biome != Biome.shop) {
+            ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
+            while (monsterListIterator.hasNext()) {
+                Monster nextMonster = monsterListIterator.next();
+                System.out.println("You see around: " + nextMonster.description);
+            }
 
 
-        ListIterator<Monster> j = location.monsters.listIterator();
-        while(j.hasNext()) {
-            System.out.println("When you moved, the monsters noticed you and started attacking you");
+            ListIterator<Monster> j = location.monsters.listIterator();
+            while (j.hasNext()) {
+                System.out.println("When you moved, the monsters noticed you and started attacking you");
 
-            Monster nextMonster = j.next();
-            Judge.attack(nextMonster, attacker, null);
+                Monster nextMonster = j.next();
+                Judge.attack(nextMonster, attacker, null);
+            }
         }
 
         return location.monsters;

@@ -15,8 +15,8 @@ public class Human extends AdventurerClass implements Serializable{
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
 
-    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill>skills) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, mainArmor, loot, skills);
+    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill>skills, int goldCoins) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins);
 
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
@@ -80,7 +80,8 @@ public class Human extends AdventurerClass implements Serializable{
                 "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" +
                 "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
                 "strength: " + String.valueOf(getAttribute(Attribute.strength)) + "\n" +
-                "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n");
+                "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n"+
+                "goldCoins: " + this.goldCoins + "\n");
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
@@ -102,6 +103,8 @@ public class Human extends AdventurerClass implements Serializable{
         }
         return 0;
     }
+
+
 
     private String getBar(Attribute attribute){
         String fullAttribute = "*";
@@ -148,6 +151,8 @@ public class Human extends AdventurerClass implements Serializable{
         }
     }
 
+
+
     public void timePasses(){
         survivalAttributes.forEach((key,value)->value.change(value.defaultStep));
     }
@@ -181,7 +186,7 @@ public class Human extends AdventurerClass implements Serializable{
             System.out.println("you drink: " + chosenItem.description );
             loot.remove(itemIndex);
             survivalAttributes.get("thirst").change(-30);
-            loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3));
+            loot.add(new Item("Empty Bottle", ItemTypes.emptyBottle, ItemTypes.emptyBottle.toString(), 0.3,2));
         }
         if (chosenItem.type == ItemTypes.cookedMeat){
             System.out.println("you eat: " + chosenItem.description );
@@ -207,7 +212,7 @@ public class Human extends AdventurerClass implements Serializable{
             case meat:
                 System.out.println("You cooked " + chosenItem.description);
                 loot.remove(itemIndex2);
-                loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3));
+                loot.add(new Item("cookedMeat", ItemTypes.cookedMeat, ItemTypes.cookedMeat.toString(), 1.3,5));
                 break;
             default:
                 System.out.println("You burned " + chosenItem.description);

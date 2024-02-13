@@ -11,5 +11,5 @@ public enum MonsterTypes {
     ogr,
     giant,
     werewolf,
-    vampire,
+    vampire
 }

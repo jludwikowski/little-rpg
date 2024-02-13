@@ -53,42 +53,52 @@ public class ArmorGenerator extends Generator<Armor> {
             case "ornate":
                 entity.weight = new Double(Math.floor(entity.weight * 1.1)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.4)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.4)).intValue();
                 break;
             case "dragon":
                 entity.weight = new Double(Math.floor(entity.weight * 1.2)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.9)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 2.1)).intValue();
                 break;
             case "ugly":
                 entity.weight = new Double(Math.floor(entity.weight * 1)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.1)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.1)).intValue();
                 break;
             case "serpent":
                 entity.weight = new Double(Math.floor(entity.weight * 1.1)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.4)).intValue();
                 break;
             case "dwarf-crafted":
                 entity.weight = new Double(Math.floor(entity.weight * 0.9)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 2.1)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.6)).intValue();
                 break;
             case "elf-crafted":
                 entity.weight = new Double(Math.floor(entity.weight * 0.8)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.7)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1.3)).intValue();
                 break;
             case "old":
                 entity.weight = new Double(Math.floor(entity.weight * 0.9)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.7)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.7)).intValue();
                 break;
             case "weathered":
                 entity.weight = new Double(Math.floor(entity.weight * 0.9)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.8)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.8)).intValue();
                 break;
             case "new":
                 entity.weight = new Double(Math.floor(entity.weight * 1.1)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.2)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 1)).intValue();
                 break;
             case "ancient":
                 entity.weight = new Double(Math.floor(entity.weight * 0.8)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.1)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 0.6)).intValue();
                 break;
         }
         return entity;
@@ -100,17 +110,17 @@ public class ArmorGenerator extends Generator<Armor> {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case helmet:
-                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head));
+                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head), 10);
             case shield:
-                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand));
+                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand),18);
             case gloves:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands));
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands),7);
             case shoes:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet));
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet),10);
             case pants:
-                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs));
+                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs),12);
             case jacket:
-                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso));
+                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso),16);
 
         }
         return null;

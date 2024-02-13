@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.littleRpg.model.Biome.shop;
+
 
 public class PlaceGenerator extends Generator<MapPlace> {
 
 
     MonsterGenerator monsterGenerator = new MonsterGenerator();
     ItemGenerator itemGenerator = new ItemGenerator();
+    WeaponGenerator weaponGenerator = new WeaponGenerator();
+    ArmorGenerator armorGenerator = new ArmorGenerator();
     PlaceArchitectureGenerator placeArchitectureGenerator = new PlaceArchitectureGenerator();
+    SpecialTypeGenerator specialTypeGenerator = new SpecialTypeGenerator();
     int lastId = 0;
     public Biome lastBiome;
     public Biome newBiome;
@@ -25,10 +30,15 @@ public class PlaceGenerator extends Generator<MapPlace> {
         this.exclusives = null;
     }
 
+    public MapPlace getShop(){
+        Biome biome = shop;
+        return this.getBaseByType(biome);
+    }
+
 
     @Override
     public MapPlace getEntity() {
-        Biome biome = Biome.values()[Roller.pickNumberFrom(Biome.values().length)];
+        Biome biome = Biome.values()[Roller.pickNumberFrom(Biome.values().length-1)];
         MapPlace place = this.getBaseByType(biome);
         place = this.finalizeEntity(place);
         return place;
@@ -91,6 +101,10 @@ public class PlaceGenerator extends Generator<MapPlace> {
         return entity;
     }
 
+
+
+
+
     private MapPlace getBaseByType(Biome biome) {
         String name = biome.toString();
         switch(biome) {
@@ -106,6 +120,8 @@ public class PlaceGenerator extends Generator<MapPlace> {
                 return new MapPlace(lastId++, biome, name,"long grass meadow",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case swamp:
                 return new MapPlace(lastId++, biome, name,"treacherous swamp",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+            case shop:
+                return new MapPlace(lastId++, biome, name,"item Shop",null,Arrays.asList(specialTypeGenerator.shopkeeperGenerator(Biome.shop)), itemGenerator.getEntities(80),null );
         }
         return null;
     }

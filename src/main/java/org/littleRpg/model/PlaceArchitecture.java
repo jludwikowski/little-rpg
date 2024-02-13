@@ -13,6 +13,6 @@ public class PlaceArchitecture extends GameEntity {
      this.name = name;
      this.description = description;
 
-
     }
+
 }

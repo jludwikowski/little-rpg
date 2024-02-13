@@ -17,8 +17,9 @@ public class Monster extends LivingEntity implements Serializable {
 
     public MonsterTypes type;
     public List<Effect> activeEffects = new ArrayList<>();
+    public int goldCoins;
 
-    public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills) {
+    public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana, int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins) {
         super(name, description, loot, mainWeapon, mainArmor);
         this.type = type;
         this.maxHp = maxHp;
@@ -28,6 +29,7 @@ public class Monster extends LivingEntity implements Serializable {
         this.attack = attack;
         this.strength = strength;
         this.monsterDamageReduction = monsterDamageReduction;
+        this.goldCoins = goldCoins;
     }
 
     public String getStats() {
@@ -44,6 +46,8 @@ public class Monster extends LivingEntity implements Serializable {
         }
         return this.strength;
     }
+
+
 
     public int getBaseAttribute(Attribute attribute){
         int buff = 0;

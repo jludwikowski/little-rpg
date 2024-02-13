@@ -11,8 +11,8 @@ public class Weapon extends Item {
     public boolean bothHand = false;
 
 
-    public Weapon(String name,String description, double weight, int bonusAttack, int baseDamageValue, boolean isRanged, boolean bothHand, List<WearSlot> slots) {
-        super(name, ItemTypes.weapon,  description, weight, null, slots);
+    public Weapon(String name,String description, double weight, int bonusAttack, int baseDamageValue, boolean isRanged, boolean bothHand, List<WearSlot> slots, int price) {
+        super(name, ItemTypes.weapon,  description, weight, null, slots,price);
         this.bonusAttack = bonusAttack;
         this.baseDamageValue = baseDamageValue;
         this.isRanged = isRanged;
