@@ -20,21 +20,21 @@ public class AdventurerClass extends Monster implements Serializable {
 
 
 
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins) {
-        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, mainArmor, loot, skills, goldCoins);
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins, SpecialType specialType) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, mainArmor, loot, skills, goldCoins, specialType);
     }
 
 
     public Human getBaseByClass(PlayerClasses playerClasses) {
         switch (playerClasses) {
             case mage:
-                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), 100);
+                return new Human("mage", "mage", 5, 5, 100,100, 30, 3, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(), 100, null );
             case paladin:
-                return new Human("paladin", "paladin", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100);
+                return new Human("paladin", "paladin", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null);
             case warrior:
-                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100);
+                return new Human("warrior", "warrior", 20, 20, 30, 30,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null);
             case priest:
-                return new Human("priest", "priest", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100);
+                return new Human("priest", "priest", 20, 20, 50, 50,15, 1, 0, null, null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null);
         }
         return null;
     }

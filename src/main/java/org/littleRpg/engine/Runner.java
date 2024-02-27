@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Scanner;
 
+import static org.littleRpg.engine.Actions.TURNCOUNTERCOMMANDS;
 import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Runner {
@@ -22,7 +23,8 @@ public class Runner {
         PlaceGenerator placeGenerator = new PlaceGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
         Scanner keyboard = new Scanner(System.in);
-        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100);
+        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null);
+        Actions actions = new Actions(player);
         while("".equalsIgnoreCase(player.name)){
             System.out.println("What is you name?");
             player.name = keyboard.nextLine();
@@ -31,6 +33,18 @@ public class Runner {
         player.chooseClass();
         player.location = new int[]{0,5,5};
 
+        Place location = prepareStartingLocation(world, player, placeGenerator);
+
+        System.out.println(location.getDescription());
+        while(player.currentHp >= 0){
+            player.location = actions.locationActions(world, keyboard);
+        }
+
+        System.out.println("GAME OVER");
+
+    }
+
+    private static Place prepareStartingLocation(MapPlace[][][] world, Human player, PlaceGenerator placeGenerator) {
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
         world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
         world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10));
@@ -41,232 +55,8 @@ public class Runner {
         location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10));
         location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10));
         location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger), 5));
-
-        System.out.println(location.getDescription());
-        while(player.currentHp >= 0){
-            player.location = locationActions(world, player, keyboard);
-        }
-
-        System.out.println("GAME OVER");
-
+        return location;
     }
 
 
-    public static void mapPrinter(Place[][][] world, int[] location) {
-
-        for (int i=0; i < world.length; i++){
-            for (int j=0; j < world[0].length; j++){
-
-                for (int k=0; k < world[0][0].length; k++){
-                    Biome biome = world[i][j][k].biome;
-                    if (location[0]==i && location[1]==j && location[2]==k){
-                        TextColorGenerator.purpleText("00");
-                    }else {
-                        switch (biome) {
-                            case desert:
-                                TextColorGenerator.yellowText("~~");
-                                break;
-                            case mountain:
-                                TextColorGenerator.whiteText("^^");
-                                break;
-                            case hill:
-                                TextColorGenerator.greenText("hh");
-                                break;
-                            case forest:
-                                TextColorGenerator.greenText("##");
-                                break;
-                            case meadow:
-                                TextColorGenerator.cyanText("mm");
-                                break;
-                            case swamp:
-                                TextColorGenerator.blueText("ss");
-                                break;
-                        }
-                    }
-                }
-                System.out.print("\n");
-            }
-
-        }
-
-
-    }
-
-    public static int[] locationActions(Place[][][] world, Human player, Scanner keyboard) {
-        Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-        //System.out.println(thisPlace.getDescription());
-        //player.thisPlace = new int[]{0,5,5};
-
-
-        System.out.println("What Do you do?");
-        if(thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
-            System.out.println("You encountered monster!!! press a to attack");
-        }
-        try {
-            String command = keyboard.nextLine();
-            switch (command) {
-                case "stats":
-                    System.out.println(player.getStats());
-                break;
-                case "north":
-                    if (!player.isExausted()) {
-                        player.effectTurnCounter();
-                        if (player.location[1] > 0) {
-                            player.location[1] = player.location[1] - 1;
-                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                            System.out.println(thisPlace.getDescription());
-                            player.timePasses();
-                        }
-                    }
-                    else {
-                        TextColorGenerator.purpleText("If you want move drink water");
-                    }
-                    break;
-                case "pickup":
-                    if (!thisPlace.monsters.isEmpty()) {
-                        thisPlace.monsters = Judge.monsterAttack(player, thisPlace);
-                    }
-                    player.pickUpItems(thisPlace.items);
-                    thisPlace.items.clear();
-                    break;
-                case "south":
-                    if (!player.isExausted()) {
-                        player.effectTurnCounter();
-                        if (player.location[1] < 19) {
-                            player.location[1] = player.location[1] + 1;
-                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                            System.out.println(thisPlace.getDescription());
-                        }
-                    }
-                    break;
-                case "help":
-                    System.out.println("stats - player stats \n\nnorth - move to north \nsouth - move to south\n" +
-                            "east - move to east\nwest - move to west\n\npickup - pickup items\nattack - attack for monster\n" + "special - special attack for monster\n" +
-                            "loot - show player items\nmyitems - show equip items\nwear - show wear items\n" +
-                            "map - print map\ncheckmonster - check monster items\ndrop - drop equiped item\n" +
-                            "useitem - use item from loot \nsave - save progress\nload - load save\nlearn - learn spell for your class\n" +
-                            "useskill - use learned skill");
-                    break;
-                case "enter":
-                    if(world[player.location[0]+1][player.location[1]][player.location[2]] != null
-                            && thisPlace.placeArchitectures.stream().anyMatch(p -> p.type == shop)) {
-                        player.location[0] = player.location[0] + 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
-                    }
-                    break;
-                case "exit":
-                    if(world[player.location[0]-1][player.location[1]][player.location[2]] != null) {
-                        player.location[0] = player.location[0] - 1;
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                        System.out.println(thisPlace.getDescription());
-                    }
-                    break;
-                case "east":
-                    if (!player.isExausted()) {
-                        player.effectTurnCounter();
-                        if (player.location[2] > 0) {
-                            player.location[2] = player.location[2] - 1;
-                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                            System.out.println(thisPlace.getDescription());
-                        }
-                    }
-                    break;
-                case "west":
-                    if (!player.isExausted()) {
-                        player.effectTurnCounter();
-
-                        if (player.location[2] < 19) {
-                            player.location[2] = player.location[2] + 1;
-                            thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
-                            System.out.println(thisPlace.getDescription());
-                        }
-                    }
-                    break;
-                case "map":
-                    mapPrinter(world, player.location);
-                    break;
-                case "attack":
-
-                    if (!thisPlace.monsters.isEmpty()) {
-                        player.effectTurnCounter();
-                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null);
-                    }
-                    break;
-
-                case "loot":
-                    ListHelper.showList("In loot you have: ",player.loot,false);
-                    break;
-                case "takeoff":
-                    player.takeOff();
-                    break;
-                case "myitems":
-                    player.showEquipItems();
-                    break;
-                case "special":
-                    if (!thisPlace.monsters.isEmpty() && ((Weapon) player.equippedItems.get(WearSlot.mainHand)).isRanged) {
-                        player.effectTurnCounter();
-                        thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null);
-                    }
-                    break;
-                case "wear":
-                    if (!thisPlace.monsters.isEmpty()) {
-                        thisPlace.monsters = Judge.monsterAttack(player, thisPlace);
-                    }
-                    player.wear();
-                    break;
-                case "checkmonster":
-                    if (!thisPlace.monsters.isEmpty()) {
-                        ListIterator<Monster> o = thisPlace.monsters.listIterator();
-                        while(o.hasNext()) {
-                            Monster nextMonster = o.next();
-                            System.out.println(nextMonster.description);
-                            nextMonster.showEquipItems();
-                            System.out.println("~~~~~~~~~~~~~~");
-                        }
-                    }
-                    break;
-
-                case "buy":
-                    if(thisPlace.biome == Biome.shop){
-                        Monster seller = thisPlace.monsters.get(0);
-                        LivingEntity.tradeItem(seller, player, "buy");
-                    }
-                    break;
-                case "sell":
-                    if(thisPlace.biome == Biome.shop){
-                        Monster seller = thisPlace.monsters.get(0);
-                        LivingEntity.tradeItem(player, seller, "sell");
-                    }
-                    break;
-                case "useitem":
-                    player.useItem();
-                    break;
-                case "learn":
-                    player.learnSkill();
-                    break;
-               case "useskill":
-                    if (!thisPlace.monsters.isEmpty()) {
-                       player.useSkill(player, thisPlace);
-                    }
-                    break;
-               case "save":
-                    LoadSaveOperator.savePoint(player);
-                    break;
-               case "load":
-                    player = LoadSaveOperator.loadPoint();
-                    break;
-               case "drop":
-                    player.dropItems();
-                    break;
-                default:
-                    System.out.println("i don't recognize this try again");
-            }
-        }catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("error");
-        }
-
-        return player.location;
-    }
 }

@@ -104,7 +104,7 @@ public class LivingEntity extends GameEntity {
 
     public static void tradeItem(Monster seller, Monster shopper, String transactionType){
         if(seller.loot != null){
-            ListHelper.showList("You can " + transactionType+ ":",seller.loot,false);
+            ListHelper.showItemList("You can " + transactionType+ ":",seller.loot,false);
             int itemIndex = Human.readChoice("Choose item to "+ transactionType + ":");
             Item sellingItem = seller.loot.get(itemIndex-1);
             int price = sellingItem.price;

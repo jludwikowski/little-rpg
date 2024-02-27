@@ -121,7 +121,7 @@ public class PlaceGenerator extends Generator<MapPlace> {
             case swamp:
                 return new MapPlace(lastId++, biome, name,"treacherous swamp",null, monsterGenerator.getEntities(50, biome),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case shop:
-                return new MapPlace(lastId++, biome, name,"item Shop",null,Arrays.asList(specialTypeGenerator.shopkeeperGenerator(Biome.shop)), itemGenerator.getEntities(80),null );
+                return new MapPlace(lastId++, biome, name,"item Shop",null,specialTypeGenerator.shopMonsterGenerator(biome), itemGenerator.getEntities(80),null );
         }
         return null;
     }

@@ -28,7 +28,6 @@ public class Judge {
 
 
     public static List<Monster> monsterAttack(Monster attacker, Place location){
-        if(location.biome != Biome.shop) {
             ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
             while (monsterListIterator.hasNext()) {
                 Monster nextMonster = monsterListIterator.next();
@@ -37,13 +36,13 @@ public class Judge {
 
 
             ListIterator<Monster> j = location.monsters.listIterator();
+            System.out.println("When you moved, the monsters noticed you and started attacking you");
             while (j.hasNext()) {
-                System.out.println("When you moved, the monsters noticed you and started attacking you");
-
                 Monster nextMonster = j.next();
-                Judge.attack(nextMonster, attacker, null);
+                if(nextMonster.aggressive) {
+                    Judge.attack(nextMonster, attacker, null);
+                }
             }
-        }
 
         return location.monsters;
     }

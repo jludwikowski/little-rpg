@@ -1,8 +1,8 @@
 package org.littleRpg.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 public class Place extends GameEntity {
 
@@ -65,6 +65,10 @@ public class Place extends GameEntity {
 
 
         return describeLocation;
+    }
+
+    public List<Monster> getAggressiveMonsters(){
+        return this.monsters.stream().filter(monster -> monster.aggressive).collect(Collectors.toList());
     }
 
 }
