@@ -12,12 +12,13 @@ public class Human extends AdventurerClass implements Serializable{
 
     public int gamerId;
     public int[] location;
+    public int attributePoints;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
 
-    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill>skills, int goldCoins, SpecialType specialType) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins, specialType);
-
+    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill>skills, int goldCoins, SpecialType specialType, int exp, int monsterLevel, Archetype archetype, int attributePoints) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel, archetype);
+        this.attributePoints = attributePoints;
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
 
@@ -164,14 +165,60 @@ public class Human extends AdventurerClass implements Serializable{
         return false;
     }
 
-
-
-
-
     public static int readChoice(String prompt){
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
         return scanner.nextInt();
+    }
+
+    public int getLevel() {
+        return (int)(Math.floor(exp/300)+1);
+    }
+    public void checkLevelPoints(){
+        if(getLevel()>this.monsterLevel){
+            int difference = getLevel() - this.monsterLevel;
+            this.attributePoints += (difference * 2);
+            this.monsterLevel = getLevel();
+        }
+    }
+
+    public void attributePointsExchange(){
+        List<String> attributeList = Arrays.asList("maxHp", "maxMana", "attack", "armor", "strength");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("On your account is "+ this.attributePoints + " archetypePoints\n" +
+                "Do you want exchange archetypePoints? Y/N");
+        String choose = scanner.nextLine();
+        if (choose.equalsIgnoreCase("N")){
+            return;
+        }
+        if(choose.equalsIgnoreCase("Y")){
+            ListHelper.showList("You have in inventory: ",attributeList,false);
+            int attribute = readChoice("Choose number of attribute");
+            String attributePoints = attributeList.get(attribute-1);
+            try{
+                switch(attributePoints){
+                    case "maxHp":
+                        this.maxHp += 10;
+                        break;
+                    case "maxMana":
+                        this.maxMana += 10;
+                        break;
+                    case "attack":
+                        this.attack += 6;
+                        break;
+                    case "armor":
+                        this.monsterDamageReduction += 2;
+                        break;
+                    case "strength":
+                        this.strength += 2;
+                        break;
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("error");
+            }
+        }
     }
 
 

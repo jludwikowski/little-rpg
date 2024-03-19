@@ -20,12 +20,16 @@ public class Monster extends LivingEntity implements Serializable {
     public int goldCoins;
     public SpecialType specialType;
     public boolean aggressive = true;
+    public int exp;
+    public int monsterLevel;
+    public Archetype archetype;
+
 
 
     public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana,
                    int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon,
                    Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins,
-                   SpecialType specialType) {
+                   SpecialType specialType, int exp, int monsterLevel, Archetype archetype) {
         super(name, description, loot, mainWeapon, mainArmor);
         this.type = type;
         this.maxHp = maxHp;
@@ -37,6 +41,13 @@ public class Monster extends LivingEntity implements Serializable {
         this.monsterDamageReduction = monsterDamageReduction;
         this.goldCoins = goldCoins;
         this.specialType = specialType;
+        this.exp = exp;
+        this.monsterLevel = monsterLevel;
+        if(archetype == null){
+            this.archetype = new Archetype(1,1,1,1,1);
+        }else {
+            this.archetype = archetype;
+        }
     }
 
     public String getStats() {
@@ -52,6 +63,16 @@ public class Monster extends LivingEntity implements Serializable {
             return ((Weapon) this.equippedItems.get(WearSlot.mainHand)).baseDamageValue + this.strength;
         }
         return this.strength;
+    }
+
+
+
+    public void checkLevel(){
+         this.maxHp += (archetype.maxHp * monsterLevel);
+         this.maxMana += (archetype.maxMana * monsterLevel);
+         this.attack += (archetype.attack * monsterLevel);
+         this.monsterDamageReduction += (archetype.armor * monsterLevel);
+         this.strength += (archetype.strength * monsterLevel);
     }
 
 
