@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Scanner;
 
-import static org.littleRpg.model.PlaceArchitectureTypes.shop;
+//import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Actions {
     public static final List<String> TRAVELCOMMANDS = Arrays.asList("north", "south", "east", "west","enter", "exit");
@@ -72,8 +72,17 @@ public class Actions {
                     mapPrinter(world, player.location);
                     break;
                 case "attack":
+                    System.out.println("test");
                     if (!thisPlace.monsters.isEmpty()) {
+                        System.out.println("test2");
                         thisPlace.monsters = Judge.combat(player, thisPlace, 0, null);
+                    }
+                    break;
+                case "exchange":
+                    if(player.attributePoints > 0){
+                        player.attributePointsExchange();
+                    }else {
+                        System.out.println("You don't have enough points");
                     }
                     break;
                 case "loot":
@@ -127,6 +136,9 @@ public class Actions {
                     if (!thisPlace.monsters.isEmpty()) {
                         player.useSkill(player, thisPlace);
                     }
+                    break;
+                case "look":
+                    thisPlace.getDescription();
                     break;
                 case "save":
                     LoadSaveOperator.savePoint(player);
@@ -197,36 +209,45 @@ public class Actions {
 
     public void playerMove(String command, Place[][][] world){
         Place thisPlace = null;
+        int [] oldLocation = Arrays.copyOf(player.location, player.location.length);
         if (!player.isExausted()) {
             try {
                 switch (command) {
                     case "north":
                     case "n":
-                        thisPlace = world[player.location[0]][player.location[1]-1][player.location[2]];
+                        //thisPlace = world[player.location[0]][player.location[1]-1][player.location[2]];
+                        player.location[1] = player.location[1]-1;
                         break;
                     case "south":
                     case "s":
-                        thisPlace = world[player.location[0]][player.location[1]+1][player.location[2]];
+                        //thisPlace = world[player.location[0]][player.location[1]+1][player.location[2]];
+                        player.location[1] = player.location[1]+1;
                         break;
                     case "west":
                     case "w":
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]+1];
+                        //thisPlace = world[player.location[0]][player.location[1]][player.location[2]+1];
+                        player.location[2] = player.location[2]+1;
                         break;
                     case "east":
                     case "e":
-                        thisPlace = world[player.location[0]][player.location[1]][player.location[2]-1];
+                        //thisPlace = world[player.location[0]][player.location[1]][player.location[2]-1];
+                        player.location[2] = player.location[2]-1;
                         break;
                     case "enter":
-                        thisPlace = world[player.location[0]+1][player.location[1]][player.location[2]];
+                        //thisPlace = world[player.location[0]+1][player.location[1]][player.location[2]];
+                        player.location[0] = player.location[0]+1;
                         break;
                     case "exit":
-                        thisPlace = world[player.location[0]-1][player.location[1]][player.location[2]];
+                        //thisPlace = world[player.location[0]-1][player.location[1]][player.location[2]];
+                        player.location[0] = player.location[0]-1;
                         break;
                 }
+                thisPlace=world[player.location[0]][player.location[1]][player.location[2]];
                 System.out.println(thisPlace.getDescription());
                 player.timePasses();
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException |NullPointerException e) {
                 System.out.println("You cannot go more to " + command);
+                player.location = oldLocation;
             }
         }
 

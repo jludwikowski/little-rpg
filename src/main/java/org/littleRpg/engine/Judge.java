@@ -20,8 +20,10 @@ public class Judge {
             }
             System.out.println(monster1.getName() + " hitted " + monster2.getName() + " for " + damageValue + "HP!");
             monster2.damage(damageValue);
+            monster1.exp += (0.2F * monster2.exp);
         } else {
             System.out.println(monster1.getName() + " Missed!");
+            monster1.exp += (0.1F * monster2.exp);
         }
     }
 
@@ -62,20 +64,26 @@ public class Judge {
             int damageValue = (int) Math.floor(Math.random()*10) + skill.power;
             System.out.println(attacker.getName() + " hitted " + nextMonster.getName() + " for " + damageValue + "HP!");
             nextMonster.damage(damageValue);
-            checkIfDead(location, nextMonster);
+            if(checkIfDead(location, nextMonster)){
+                attacker.exp += nextMonster.exp;
+            }
+
         }
 
 
         return location.monsters;
     }
 
-    private static void checkIfDead(Place location, Monster nextMonster) {
+    private static boolean checkIfDead(Place location, Monster nextMonster) {
         if (nextMonster.currentHp <= 0) {
             if (nextMonster.loot != null && !nextMonster.loot.isEmpty()) {
                 location.items.addAll(nextMonster.dropItems());
+                System.out.println("You gained " + (int) Math.floor(nextMonster.exp) + " exp points");
             }
             location.monsters.remove(0);
+            return true;
         }
+        return false;
     }
 
     public static List<Monster> rangeAttack(Monster attacker, Place location, Skill skill){

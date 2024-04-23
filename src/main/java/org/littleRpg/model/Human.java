@@ -82,7 +82,8 @@ public class Human extends AdventurerClass implements Serializable{
                 "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
                 "strength: " + String.valueOf(getAttribute(Attribute.strength)) + "\n" +
                 "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n"+
-                "goldCoins: " + this.goldCoins + "\n");
+                "goldCoins: " + this.goldCoins + "\n"+
+                "exp: " + (int) Math.floor(this.exp) + "\n");
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
@@ -140,6 +141,9 @@ public class Human extends AdventurerClass implements Serializable{
     }
 
     public void pickUpItems(List <Item> itemsOntheGround) {
+        if(itemsOntheGround == null || itemsOntheGround.isEmpty()){
+            System.out.println("there is nothing on the ground");
+        }
         if(itemsOntheGround != null) {
             loot.addAll(itemsOntheGround);
             ListIterator<Item> groundItemIterator = itemsOntheGround.listIterator();

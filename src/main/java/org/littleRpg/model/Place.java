@@ -30,35 +30,40 @@ public class Place extends GameEntity {
     }
 
     public String getDescription() {
-        String describeLocation = this.description + "\n" + "In this place you can visit " + "\n";
+        String describeLocation = "You are in: \n" + this.description + "\n";
         if(placeArchitectures != null) {
+            describeLocation += "\nIn this place you have: \n";
             ListIterator<PlaceArchitecture> j = this.placeArchitectures.listIterator();
             while (j.hasNext()) {
                 PlaceArchitecture nextPlaceArchitecture = j.next();
-                describeLocation += nextPlaceArchitecture.getDescription() + "\n";
+                describeLocation += "-" + nextPlaceArchitecture.getDescription() + " - " +
+                        nextPlaceArchitecture.type.toString() +  "\n";
             }
         }
-        if(monsters != null){
-        ListIterator<Monster> i = this.monsters.listIterator();
+        if(monsters != null && !monsters.isEmpty()){
+            describeLocation += "\nHere is standing: \n";
+            ListIterator<Monster> i = this.monsters.listIterator();
             while(i.hasNext()) {
                 Monster nextMonster = i.next();
-                describeLocation += "Here is standing: " + nextMonster.getDescription() +"\n";
+                describeLocation +=  "-" + nextMonster.getDescription() +"\n";
             }
         }
 
-        if (items != null && biome != Biome.shop) {
+        if (items != null && biome != Biome.shop && !items.isEmpty()) {
+            describeLocation += "\nHere you can find items: \n";
             ListIterator<Item> k = this.items.listIterator();
             while (k.hasNext()) {
                 Item nextItem = k.next();
-                describeLocation += "Here you can find: " + nextItem.getDescription() + "\n";
+                describeLocation += "-" + nextItem.getDescription() + "\n";
 
             }
         }
-        if (items != null && biome == Biome.shop) {
+        if (items != null && biome == Biome.shop && !items.isEmpty()) {
+            describeLocation += "\nHere you can buy: \n";
             ListIterator<Item> k = this.items.listIterator();
             while (k.hasNext()) {
                 Item nextItem = k.next();
-                describeLocation += "Here you can buy: " + nextItem.getDescription() + "\n";
+                describeLocation +=  "-" + nextItem.getDescription() + "\n";
 
             }
         }

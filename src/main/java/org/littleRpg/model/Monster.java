@@ -20,7 +20,7 @@ public class Monster extends LivingEntity implements Serializable {
     public int goldCoins;
     public SpecialType specialType;
     public boolean aggressive = true;
-    public int exp;
+    public float exp;
     public int monsterLevel;
     public Archetype archetype;
 
@@ -29,7 +29,7 @@ public class Monster extends LivingEntity implements Serializable {
     public Monster(MonsterTypes type, String name, String description, float maxHp, float currentHp, int maxMana,
                    int currentMana, int attack, int strength, int monsterDamageReduction, Weapon mainWeapon,
                    Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins,
-                   SpecialType specialType, int exp, int monsterLevel, Archetype archetype) {
+                   SpecialType specialType, float exp, int monsterLevel, Archetype archetype) {
         super(name, description, loot, mainWeapon, mainArmor);
         this.type = type;
         this.maxHp = maxHp;
@@ -132,6 +132,7 @@ public class Monster extends LivingEntity implements Serializable {
         this.maxHp *= adjust.maxHp;
         this.attack += adjust.attack;
         this.strength += adjust.strength;
+        this.exp += adjust.exp * this.exp;
         this.monsterDamageReduction += adjust.monsterDamageReduction;
         for (Map.Entry<WearSlot,Item> entry : equippedItems.entrySet()){
             Item equippedItem = adjust.equippedItems.get(entry.getKey()) != null ?

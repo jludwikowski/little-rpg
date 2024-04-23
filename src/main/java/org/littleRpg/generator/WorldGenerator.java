@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.littleRpg.model.PlaceArchitectureTypes.shop;
+import static org.littleRpg.model.PlaceArchitectureTypes.smallBuilding;
+
+//import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class WorldGenerator {
     MapPlace lastPlace =  null;
@@ -20,10 +22,11 @@ public class WorldGenerator {
         int i=0;
         for(int j=0;j<MAX_Y;j++) {
             for(int k=0;k<MAX_X;k++) {
-                MapPlace place = placeGenerator.getEntity(lastPlace);
+                int [] actualLocation = {i,j,k};
+                MapPlace place = placeGenerator.getEntity(lastPlace, actualLocation);
                 if(place.placeArchitectures != null){
-                    if(place.placeArchitectures.stream().anyMatch(p -> p.type == shop)){
-                        MapPlace shop = placeGenerator.getShop();
+                    if(place.placeArchitectures.stream().anyMatch(p -> p.type == smallBuilding)){
+                        MapPlace shop = placeGenerator.getShop(actualLocation);
                         this.world[i+1][j][k] = shop;
                     }
                 }

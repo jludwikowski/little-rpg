@@ -5,6 +5,6 @@ public enum PlaceArchitectureTypes {
     ruins,
     cave,
     walls,
-    shop
+    smallBuilding
 
 }

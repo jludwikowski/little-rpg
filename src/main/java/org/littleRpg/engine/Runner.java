@@ -6,17 +6,14 @@ import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
 
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.littleRpg.engine.Actions.TURNCOUNTERCOMMANDS;
-import static org.littleRpg.model.PlaceArchitectureTypes.shop;
+import static org.littleRpg.model.PlaceArchitectureTypes.smallBuilding;
+//import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Runner {
-
+    public static int [] startLocation = {0,5,5};
     public static void main(String[] args) {
 
         WorldGenerator worldGenerator = new WorldGenerator();
@@ -31,7 +28,7 @@ public class Runner {
         }
         player.chooseRace();
         player.chooseClass();
-        player.location = new int[]{0,5,5};
+        player.location = startLocation;
 
         Place location = prepareStartingLocation(world, player, placeGenerator);
 
@@ -49,8 +46,9 @@ public class Runner {
         world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
         world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getShop();
-        location.placeArchitectures.add(new PlaceArchitecture(shop, "u Zdzicha", "wodka, nalewki"));
+        world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getShop(player.location);
+        location.placeArchitectures = new ArrayList<>();
+        location.placeArchitectures.add(new PlaceArchitecture(smallBuilding, "u Zdzicha", "wodka, nalewki"));
         location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend",10));
         location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10));
         location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10));

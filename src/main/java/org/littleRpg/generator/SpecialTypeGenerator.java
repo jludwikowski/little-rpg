@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialTypeGenerator extends MonsterGenerator{
-    public Monster shopkeeperGenerator(Biome biome){
-        Monster baseMonster = this.getEntity(biome);
+    public Monster shopkeeperGenerator(Biome biome,int [] location){
+        Monster baseMonster = this.getEntity(biome,location);
         baseMonster.goldCoins += 1000;
         baseMonster.maxHp += 1000;
         baseMonster.currentHp += 1000;
@@ -20,8 +20,8 @@ public class SpecialTypeGenerator extends MonsterGenerator{
         baseMonster.aggressive = false;
         return baseMonster;
     }
-    public Monster guardsGenerator(Biome biome){
-        Monster baseMonster = this.getEntity(biome);
+    public Monster guardsGenerator(Biome biome, int [] location){
+        Monster baseMonster = this.getEntity(biome, location);
         baseMonster.maxHp += 500;
         baseMonster.currentHp += 500;
         baseMonster.monsterDamageReduction += 30;
@@ -31,10 +31,10 @@ public class SpecialTypeGenerator extends MonsterGenerator{
         return baseMonster;
     }
 
-    public List<Monster> shopMonsterGenerator(Biome biome){
+    public List<Monster> shopMonsterGenerator(Biome biome, int [] location){
         List<Monster> shopMonsters = new ArrayList<>();
-        shopMonsters.add(shopkeeperGenerator(biome));
-        shopMonsters.add((guardsGenerator(biome)));
+        shopMonsters.add(shopkeeperGenerator(biome,location));
+        shopMonsters.add((guardsGenerator(biome,location)));
         return shopMonsters;
 
     }

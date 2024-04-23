@@ -1,12 +1,12 @@
 package org.littleRpg.model;
 
 public class Archetype {
-    public int maxHp;
-    public int maxMana;
-    public int attack;
-    public int armor;
-    public int strength;
-    public Archetype(int maxHp, int maxMana, int attack, int armor, int strength) {
+    public float maxHp;
+    public float maxMana;
+    public float attack;
+    public float armor;
+    public float strength;
+    public Archetype(float maxHp, float maxMana, float attack, float armor, float strength) {
         this.maxHp = maxHp;
         this.maxMana = maxMana;
         this.attack = attack;
