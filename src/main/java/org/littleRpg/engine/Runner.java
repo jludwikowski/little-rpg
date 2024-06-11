@@ -1,15 +1,13 @@
 package org.littleRpg.engine;
 
 import org.littleRpg.generator.PlaceGenerator;
-import org.littleRpg.generator.TextColorGenerator;
 import org.littleRpg.model.*;
 import org.littleRpg.generator.WorldGenerator;
 
 
 import java.util.*;
 
-import static org.littleRpg.engine.Actions.TURNCOUNTERCOMMANDS;
-import static org.littleRpg.model.PlaceArchitectureTypes.smallBuilding;
+import static org.littleRpg.model.PlaceFeatureType.smallBuilding;
 //import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Runner {
@@ -42,17 +40,16 @@ public class Runner {
     }
 
     private static Place prepareStartingLocation(MapPlace[][][] world, Human player, PlaceGenerator placeGenerator) {
-        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
-        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10));
-        world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10));
+        world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10,1));
+        world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10,1));
+        world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10,1));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
         world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getShop(player.location);
-        location.placeArchitectures = new ArrayList<>();
-        location.placeArchitectures.add(new PlaceArchitecture(smallBuilding, "u Zdzicha", "wodka, nalewki"));
-        location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend",10));
-        location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10));
-        location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10));
-        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger), 5));
+        location.placeFeature = new PlaceFeature("u Zdzicha", "wodka, nalewki",smallBuilding);
+        location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend",10,1));
+        location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10, 1));
+        location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10,1));
+        location.items.add(new Item("ancientPower", ItemTypes.ring, "ancientPower", 0.1, new Effect("Strength boost",7,EffectType.buff,Attribute.strength,9999999),Arrays.asList(WearSlot.finger), 5,1));
         return location;
     }
 

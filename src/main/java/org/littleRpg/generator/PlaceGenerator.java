@@ -7,8 +7,9 @@ import org.littleRpg.model.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-import static org.littleRpg.model.Biome.shop;
+import static org.littleRpg.model.Biome.*;
 
 
 public class PlaceGenerator extends Generator<MapPlace> {
@@ -18,12 +19,13 @@ public class PlaceGenerator extends Generator<MapPlace> {
     ItemGenerator itemGenerator = new ItemGenerator();
     WeaponGenerator weaponGenerator = new WeaponGenerator();
     ArmorGenerator armorGenerator = new ArmorGenerator();
-    PlaceArchitectureGenerator placeArchitectureGenerator = new PlaceArchitectureGenerator();
+    PlaceFeatureGenerator placeArchitectureGenerator = new PlaceFeatureGenerator();
     SpecialTypeGenerator specialTypeGenerator = new SpecialTypeGenerator();
     int lastId = 0;
     public Biome lastBiome;
     public Biome newBiome;
-
+    private static String[] weatherTypes = {"sunny", "stormy", "rainy","foggy"};
+    public static String [] sceneryElements = {"a river", "a small cave", "many ancient signs on the ground", "a ruined castle", "strangely twisted statues"};
 
     public PlaceGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"cheerful","strange","dark","foreboding","quiet"});
@@ -33,7 +35,11 @@ public class PlaceGenerator extends Generator<MapPlace> {
 
     public MapPlace getShop(int [] location){
         Biome biome = shop;
-        return this.getBaseByType(biome, location);
+        if(Roller.pickNumberFrom(100) <10){
+             biome = smithy;
+        }
+        MapPlace myShop = this.getBaseByType(biome, location);
+        return myShop;
     }
 
     public MapPlace getEntity(int [] location) {
@@ -105,7 +111,14 @@ public class PlaceGenerator extends Generator<MapPlace> {
         return entity;
     }
 
+    private Random random = new Random();
 
+    public String generateDescription(Biome biome) {
+        String weather = weatherTypes[random.nextInt(weatherTypes.length)];
+        String sceneryElement = sceneryElements[random.nextInt(sceneryElements.length)];
+
+        return String.format("You find yourself in a %s. The weather is %s. Nearby, there is %s.",biome, weather, sceneryElement);
+    }
 
 
 
@@ -113,19 +126,21 @@ public class PlaceGenerator extends Generator<MapPlace> {
         String name = biome.toString();
         switch(biome) {
             case desert:
-                return new MapPlace(lastId++, biome, name,"scorching empty desert",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(desert),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case mountain:
-                return new MapPlace(lastId++, biome, name,"empty windy high mountains",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(mountain),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case hill:
-                return new MapPlace(lastId++, biome, name,"hills",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(hill),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case forest:
-                return new MapPlace(lastId++, biome, name,"dense forest",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(forest),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case meadow:
-                return new MapPlace(lastId++, biome, name,"long grass meadow",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(meadow),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case swamp:
-                return new MapPlace(lastId++, biome, name,"treacherous swamp",null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
+                return new MapPlace(lastId++, biome, name,generateDescription(swamp),null, monsterGenerator.getEntities(50, biome, location),itemGenerator.getEntities(30),placeArchitectureGenerator.getEntities(50));
             case shop:
-                return new MapPlace(lastId++, biome, name,"item Shop",null,specialTypeGenerator.shopMonsterGenerator(biome, location), itemGenerator.getEntities(80),null );
+                return new MapPlace(lastId++, biome, name,generateDescription(shop),null,specialTypeGenerator.shopMonsterGenerator(biome, location), itemGenerator.getEntities(80),null );
+            case smithy:
+                return new MapPlace(lastId++, biome, name,generateDescription(smithy),null,specialTypeGenerator.shopMonsterGenerator(biome, location), null,null );
         }
         return null;
     }

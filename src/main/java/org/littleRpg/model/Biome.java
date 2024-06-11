@@ -7,5 +7,6 @@ public enum Biome {
     forest,
     swamp,
     meadow,
-    shop
+    shop,
+    smithy
 }

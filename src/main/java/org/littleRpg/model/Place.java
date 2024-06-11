@@ -11,12 +11,12 @@ public class Place extends GameEntity {
     public List<Place> exits;
     public List<Monster> monsters;
     public List<Item> items;
-    public List<PlaceArchitecture> placeArchitectures;
+    public PlaceFeature placeFeature;
     public Biome biome;
 
 
 
-    public Place(int id, Biome biome, String shortDescription, String description, List<Place> exits, List<Monster> monsters, List<Item> items, List<PlaceArchitecture> placeArchitectures) {
+    public Place(int id, Biome biome, String shortDescription, String description, List<Place> exits, List<Monster> monsters, List<Item> items, PlaceFeature placeFeature) {
         super(shortDescription,description);
         this.id = id;
         this.biome = biome;
@@ -25,27 +25,21 @@ public class Place extends GameEntity {
         this.monsters = monsters;
         this.shortDescription = shortDescription;
         this.items = items;
-        this.placeArchitectures = placeArchitectures;
+        this.placeFeature = placeFeature;
 
     }
 
     public String getDescription() {
         String describeLocation = "You are in: \n" + this.description + "\n";
-        if(placeArchitectures != null) {
-            describeLocation += "\nIn this place you have: \n";
-            ListIterator<PlaceArchitecture> j = this.placeArchitectures.listIterator();
-            while (j.hasNext()) {
-                PlaceArchitecture nextPlaceArchitecture = j.next();
-                describeLocation += "-" + nextPlaceArchitecture.getDescription() + " - " +
-                        nextPlaceArchitecture.type.toString() +  "\n";
-            }
+        if(placeFeature != null) {
+            describeLocation += "\nIn this place you have " + placeFeature.description;
         }
         if(monsters != null && !monsters.isEmpty()){
             describeLocation += "\nHere is standing: \n";
             ListIterator<Monster> i = this.monsters.listIterator();
             while(i.hasNext()) {
                 Monster nextMonster = i.next();
-                describeLocation +=  "-" + nextMonster.getDescription() +"\n";
+                describeLocation +=  "-" + nextMonster.getDescription() + nextMonster.monsterLevel+"\n";
             }
         }
 

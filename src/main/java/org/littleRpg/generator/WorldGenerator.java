@@ -2,14 +2,10 @@ package org.littleRpg.generator;
 
 import org.littleRpg.model.*;
 
-import java.util.ArrayList;
-
 import java.util.Arrays;
-import java.util.List;
 
-import static org.littleRpg.model.PlaceArchitectureTypes.smallBuilding;
+import static org.littleRpg.model.PlaceFeatureType.smallBuilding;
 
-//import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class WorldGenerator {
     MapPlace lastPlace =  null;
@@ -24,8 +20,8 @@ public class WorldGenerator {
             for(int k=0;k<MAX_X;k++) {
                 int [] actualLocation = {i,j,k};
                 MapPlace place = placeGenerator.getEntity(lastPlace, actualLocation);
-                if(place.placeArchitectures != null){
-                    if(place.placeArchitectures.stream().anyMatch(p -> p.type == smallBuilding)){
+                if(place.placeFeature != null){
+                    if(place.placeFeature.type == smallBuilding){
                         MapPlace shop = placeGenerator.getShop(actualLocation);
                         this.world[i+1][j][k] = shop;
                     }
@@ -39,7 +35,7 @@ public class WorldGenerator {
 
     private static Place createStartLocation(Place location) {
         location.monsters = null;
-        location.items.add(new Weapon("sword","old sword",2,5,2,false, false, Arrays.asList(WearSlot.mainHand),10));
+        location.items.add(new Weapon("sword","old sword",2,5,2,false, false, Arrays.asList(WearSlot.mainHand),10,1));
         return location;
     }
 

@@ -10,8 +10,8 @@ public class ArmorGenerator extends Generator<Armor> {
 
 
     public ArmorGenerator() {
-        AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","dragon","ugly","serpent","dwarf-crafted","elf-crafted"});
-        AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient"});
+        AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","dragon","ugly","serpent","dwarf-crafted","elf-crafted","legendary"});
+        AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient", "mystic"});
 
         this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
         this.exclusives = null;
@@ -80,6 +80,10 @@ public class ArmorGenerator extends Generator<Armor> {
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 1.7)).intValue();
                 entity.price = new Double(Math.floor(entity.price * 1.3)).intValue();
                 break;
+            case "legendary":
+                entity.damageReduction = new Double(Math.floor(entity.damageReduction * 2.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 2.3)).intValue();
+                break;
             case "old":
                 entity.weight = new Double(Math.floor(entity.weight * 0.9)).intValue();
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.7)).intValue();
@@ -100,6 +104,10 @@ public class ArmorGenerator extends Generator<Armor> {
                 entity.damageReduction = new Double(Math.floor(entity.damageReduction * 0.1)).intValue();
                 entity.price = new Double(Math.floor(entity.price * 0.6)).intValue();
                 break;
+            case "mystic":
+                entity.damageReduction = new Double(Math.floor(entity.damageReduction * 2.3)).intValue();
+                entity.price = new Double(Math.floor(entity.price * 2.3)).intValue();
+                break;
         }
         return entity;
     }
@@ -110,17 +118,17 @@ public class ArmorGenerator extends Generator<Armor> {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case helmet:
-                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head), 10);
+                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head), 10,1);
             case shield:
-                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand),18);
+                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand),18,1);
             case gloves:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands),7);
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands),7,1);
             case shoes:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet),10);
+                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet),10,1);
             case pants:
-                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs),12);
+                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs),12,1);
             case jacket:
-                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso),16);
+                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso),16,1);
 
         }
         return null;

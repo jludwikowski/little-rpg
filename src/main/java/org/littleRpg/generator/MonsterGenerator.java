@@ -25,7 +25,8 @@ public class MonsterGenerator extends Generator<Monster> {
             Biome.forest, forestMonsters,
             Biome.meadow, meadowMonsters,
             Biome.swamp, swampMonsters,
-            Biome.shop, shopMonsters));
+            Biome.shop, shopMonsters,
+            Biome.smithy, shopMonsters));
 
     Random random =new Random();
 

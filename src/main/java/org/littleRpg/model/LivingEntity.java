@@ -136,6 +136,30 @@ public class LivingEntity extends GameEntity {
             }
         }
     }
+
+    public  void upgradeItem(Monster player, Monster blacksmith){
+        ListHelper.showItemList("You have in loot: ", this.loot, false);
+        int itemIndex = Human.readChoice("Choose item to upgrade");
+        Item choosenItem = this.loot.get(itemIndex-1);
+        double upgradeCost = choosenItem.price * 0.5 * choosenItem.itemLevel;
+        System.out.println("Upgrading this item will cost " + upgradeCost + " Do you want upgrade this y/n?");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        if (scanner.equals("n")) {
+             System.out.println("Please comeback later");
+        }
+        if (scanner.equals("y")) {
+            if (player.goldCoins >= upgradeCost) {
+                player.goldCoins -= upgradeCost;
+                blacksmith.goldCoins += upgradeCost;
+                choosenItem.upgradeItemLevel();
+                System.out.println("You upgrade Item");
+            }
+        } else {
+            System.out.println("Not enough money");
+        }
+    }
+
     public void takeOff(){
         List<Item> equippedItemsToDrop = new ArrayList<>(equippedItems.values());
         ListHelper.showList("You have equipped: ", equippedItemsToDrop,true);

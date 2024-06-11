@@ -31,10 +31,28 @@ public class SpecialTypeGenerator extends MonsterGenerator{
         return baseMonster;
     }
 
+    public Monster blacksmithGenerator(Biome biome, int [] location){
+        Monster baseMonster = this.getEntity(biome,location);
+        baseMonster.goldCoins += 1000;
+        baseMonster.maxHp += 1000;
+        baseMonster.currentHp += 1000;
+        baseMonster.specialType = SpecialType.blacksmith;
+        baseMonster.aggressive = false;
+        return baseMonster;
+
+    }
+
     public List<Monster> shopMonsterGenerator(Biome biome, int [] location){
         List<Monster> shopMonsters = new ArrayList<>();
-        shopMonsters.add(shopkeeperGenerator(biome,location));
-        shopMonsters.add((guardsGenerator(biome,location)));
+        switch (biome) {
+            case shop:
+                shopMonsters.add(shopkeeperGenerator(biome,location));
+                shopMonsters.add((guardsGenerator(biome,location)));
+                break;
+            case smithy:
+                shopMonsters.add(blacksmithGenerator(biome,location));
+                break;
+        }
         return shopMonsters;
 
     }
