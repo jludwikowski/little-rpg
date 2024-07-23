@@ -137,6 +137,14 @@ public class Actions {
                         player.useSkill(player, thisPlace);
                     }
                     break;
+                case "search":
+                    if(thisPlace.placeFeature != null){
+                        System.out.println("You started searching through " + thisPlace.placeFeature.type);
+                        player.pickUpItems(thisPlace.placeFeature.hiddenItems);
+                    }else{
+                        System.out.println("You don't have anything to check here");
+                    }
+                    break;
                 case "look":
                     thisPlace.getDescription();
                     break;

@@ -163,10 +163,7 @@ public class Monster extends LivingEntity implements Serializable {
 
 
     public String getDescription() {
-        String monsterDescription = description +
-                ((this.equippedItems.get(WearSlot.mainHand) != null) ? "\n armed with " + (this.equippedItems.get(WearSlot.mainHand)).description: "") +
-                getArmorDescription() ;
-        return monsterDescription;
+        return description;
     }
 
 }

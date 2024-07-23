@@ -1,10 +1,13 @@
 package org.littleRpg.generator;
 
+import org.littleRpg.engine.Roller;
 import org.littleRpg.model.*;
 
 import java.util.Arrays;
 
-import static org.littleRpg.model.PlaceFeatureType.smallBuilding;
+import static org.littleRpg.model.Biome.shop;
+import static org.littleRpg.model.Biome.smithy;
+
 
 
 public class WorldGenerator {
@@ -19,12 +22,14 @@ public class WorldGenerator {
         for(int j=0;j<MAX_Y;j++) {
             for(int k=0;k<MAX_X;k++) {
                 int [] actualLocation = {i,j,k};
-                MapPlace place = placeGenerator.getEntity(lastPlace, actualLocation);
-                if(place.placeFeature != null){
-                    if(place.placeFeature.type == smallBuilding){
-                        MapPlace shop = placeGenerator.getShop(actualLocation);
-                        this.world[i+1][j][k] = shop;
+                MapPlace place = placeGenerator.getEntity(lastPlace, actualLocation,null);
+                if(place.placeFeature != null && place.placeFeature.biome != null){
+                    if (place.placeFeature.biome == shop) {
+                        if (Roller.pickNumberFrom(100) < 10) {
+                            place.placeFeature.biome = smithy;
+                        }
                     }
+                    this.world[i + 1][j][k] = placeGenerator.getEntity(null,actualLocation, place.placeFeature.biome);
                 }
                 lastPlace = place;
                 this.world[i][j][k] = place;

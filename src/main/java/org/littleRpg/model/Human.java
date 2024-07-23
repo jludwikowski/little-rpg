@@ -142,7 +142,7 @@ public class Human extends AdventurerClass implements Serializable{
 
     public void pickUpItems(List <Item> itemsOntheGround) {
         if(itemsOntheGround == null || itemsOntheGround.isEmpty()){
-            System.out.println("there is nothing on the ground");
+            System.out.println("there is nothing here");
         }
         if(itemsOntheGround != null) {
             loot.addAll(itemsOntheGround);

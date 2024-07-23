@@ -29,7 +29,7 @@ public class Place extends GameEntity {
 
     }
 
-    public String getDescription() {
+ /*   public String getDescription() {
         String describeLocation = "You are in: \n" + this.description + "\n";
         if(placeFeature != null) {
             describeLocation += "\nIn this place you have " + placeFeature.description;
@@ -64,7 +64,7 @@ public class Place extends GameEntity {
 
 
         return describeLocation;
-    }
+    }*/
 
     public List<Monster> getAggressiveMonsters(){
         return this.monsters.stream().filter(monster -> monster.aggressive).collect(Collectors.toList());

@@ -19,6 +19,7 @@ public class MonsterGenerator extends Generator<Monster> {
     MonsterTypes[] meadowMonsters = {MonsterTypes.ogr, MonsterTypes.vampire, MonsterTypes.slime};
     MonsterTypes[] swampMonsters =  {MonsterTypes.human, MonsterTypes.ghul, MonsterTypes.goblin};
     MonsterTypes[] shopMonsters = {MonsterTypes.human, MonsterTypes.elf, MonsterTypes.goblin};
+    MonsterTypes[] caveMonsters = {MonsterTypes.vampire, MonsterTypes.ghul, MonsterTypes.goblin};
     Map<Biome,MonsterTypes[]> biomeMonsterTypesMap = new HashMap<>(Map.of(Biome.desert,desertMonsters,
             Biome.mountain, mountainMonsters,
             Biome.hill, hillMonsters,
@@ -26,7 +27,8 @@ public class MonsterGenerator extends Generator<Monster> {
             Biome.meadow, meadowMonsters,
             Biome.swamp, swampMonsters,
             Biome.shop, shopMonsters,
-            Biome.smithy, shopMonsters));
+            Biome.smithy, shopMonsters,
+            Biome.cave, caveMonsters));
 
     Random random =new Random();
 

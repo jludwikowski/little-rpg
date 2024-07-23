@@ -7,8 +7,8 @@ import org.littleRpg.generator.WorldGenerator;
 
 import java.util.*;
 
-import static org.littleRpg.model.PlaceFeatureType.smallBuilding;
-//import static org.littleRpg.model.PlaceArchitectureTypes.shop;
+import static org.littleRpg.model.PlaceFeatureType.shop;
+
 
 public class Runner {
     public static int [] startLocation = {0,5,5};
@@ -44,8 +44,8 @@ public class Runner {
         world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10,1));
         world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10,1));
         Place location = world[player.location[0]][player.location[1]][player.location[2]];
-        world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getShop(player.location);
-        location.placeFeature = new PlaceFeature("u Zdzicha", "wodka, nalewki",smallBuilding);
+        world[player.location[0]+1][player.location[1]][player.location[2]] = placeGenerator.getEntity(null,player.location, Biome.shop);
+        location.placeFeature = new PlaceFeature("u Zdzicha", "wodka, nalewki",shop, null, Biome.shop);
         location.items.add(new Scroll("StoneDefend",ItemTypes.scroll, "StoneDefend",0, null,"StoneDefend",10,1));
         location.items.add(new Armor("shield", "shield", 5,2, Arrays.asList(WearSlot.offHand), 10, 1));
         location.items.add(new Scroll("Thunderbolt", ItemTypes.scroll, "Thunderbolt", 0.1, null,"Thunderbolt",10,1));

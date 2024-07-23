@@ -5,7 +5,8 @@ public enum PlaceFeatureType {
     ruins,
     cave,
     walls,
-    smallBuilding,
+    shop,
+    smithy
 
 
 }
