@@ -86,29 +86,73 @@ public class ItemGenerator extends Generator<Item>{
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case bottleOfWater:
-                return new Item(name, type, type.toString(), 0.8,3);
+                Item.ItemBuilder bottleOfWater = new Item.ItemBuilder(name, type, type.toString());
+                bottleOfWater.setWeight(0.8);
+                bottleOfWater.setPrice(3);
+                return bottleOfWater.build();
             case emptyBottle:
-                return new Item(name, type, type.toString(), 0.2,1);
+                Item.ItemBuilder emptyBottle = new Item.ItemBuilder(name, type, type.toString());
+                emptyBottle.setWeight(0.2);
+                emptyBottle.setPrice(1);
+                return emptyBottle.build();
             case cup:
-                return new Item(name, type, type.toString(), 0.5,1);
+                Item.ItemBuilder cup = new Item.ItemBuilder(name, type, type.toString());
+                cup.setWeight(0.5);
+                cup.setPrice(1);
+                return cup.build();
             case skull:
-                return new Item(name, type, type.toString(), 1.5,1);
+                Item.ItemBuilder skull = new Item.ItemBuilder(name, type, type.toString());
+                skull.setWeight(1.5);
+                skull.setPrice(1);
+                return skull.build();
             case bone:
-                return new Item(name, type, type.toString(), 1.1,1);
+                Item.ItemBuilder bone = new Item.ItemBuilder(name, type, type.toString());
+                bone.setWeight(1.1);
+                bone.setPrice(1);
+                return bone.build();
             case hide:
-                return new Item(name, type, type.toString(), 3.1,3);
+                Item.ItemBuilder hide = new Item.ItemBuilder(name, type, type.toString());
+                hide.setWeight(3.1);
+                hide.setPrice(3);
+                return hide.build();
             case meat:
-                return new Item(name, type, type.toString(), 1.3,2);
+                Item.ItemBuilder meat = new Item.ItemBuilder(name, type, type.toString());
+                meat.setWeight(1.3);
+                meat.setPrice(2);
+                return meat.build();
             case cookedMeat:
-                return new Item(name, type, type.toString(), 1.3,4);
+                Item.ItemBuilder cookedMeat = new Item.ItemBuilder(name, type, type.toString());
+                cookedMeat.setWeight(1.3);
+                cookedMeat.setPrice(4);
+                return cookedMeat.build();
             case flint:
-                return new Item(name, type, type.toString(), 0.3,3);
+                Item.ItemBuilder flint = new Item.ItemBuilder(name, type, type.toString());
+                flint.setWeight(0.3);
+                flint.setPrice(3);
+                return flint.build();
             case scroll:
-                return new Scroll(name, type, type.toString(), 0.1, null,skillManager.getRandomSkillName(),10,1);
+                Item.ItemBuilder scroll = new Item.ItemBuilder(name, type, type.toString());
+                scroll.setWeight(0.1);
+                scroll.setPrice(10);
+                scroll.setEffect(effectManager.getRandomEffect());
+                scroll.setItemLevel(1);
+                return scroll.build();
             case necklace:
-                return new Item(name, type, type.toString(),0.3,effectManager.getRandomEffect(), Arrays.asList(WearSlot.neck),9,1);
+                Item.ItemBuilder necklace = new Item.ItemBuilder(name, type, type.toString());
+                necklace.setWeight(0.3);
+                necklace.setPrice(9);
+                necklace.setEffect(effectManager.getRandomEffect());
+                necklace.setWearSlots(Arrays.asList(WearSlot.neck));
+                necklace.setItemLevel(1);
+                return necklace.build();
             case ring:
-                return new Item(name, type, type.toString(),0.2, effectManager.getRandomEffect(), Arrays.asList(WearSlot.finger),7,1);
+                Item.ItemBuilder ring = new Item.ItemBuilder(name, type, type.toString());
+                ring.setWeight(0.2);
+                ring.setPrice(7);
+                ring.setEffect(effectManager.getRandomEffect());
+                ring.setWearSlots(Arrays.asList(WearSlot.finger));
+                ring.setItemLevel(1);
+                return ring.build();
         }
         return null;
     }

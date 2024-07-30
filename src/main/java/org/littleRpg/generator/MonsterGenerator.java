@@ -96,68 +96,271 @@ public class MonsterGenerator extends Generator<Monster> {
         String name = monsterType + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(monsterType) {
             case goblin:
-                return new Monster(monsterType, name, "green goblin",5,5, 0,
+                /*return new Monster(monsterType, name, "green goblin",5,5, 0,
                         0,30,3, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(40), itemGenerator.getEntities(90),
                         null, 0, null, 7,0, new Archetype(1.1f,1,
-                        1.1f,1.1f,1.1f));
+                        1.1f,1.1f,1.1f));*/
+                Monster.MonsterBuilder goblin = new Monster.MonsterBuilder(monsterType, new Archetype(1.1f,1, 1.1f,1.1f,1.1f), 0);
+                goblin.setName(name);
+                goblin.setDescription("green goblin");
+                goblin.setMaxHp(5);
+                goblin.setCurrentHp(5);
+                goblin.setMaxMana(0);
+                goblin.setCurrentMana(0);
+                goblin.setAttack(30);
+                goblin.setStrength(3);
+                goblin.setMonsterDamageReduction(0);
+                goblin.setMainWeapon(weaponGenerator.getEntity());
+                goblin.setMainArmor(armorGenerator.armorMapGenerator(40));
+                goblin.setLoot(itemGenerator.getEntities(90));
+                goblin.setGoldCoins(0);
+                goblin.setSpecialType(null);
+                goblin.setExp(7);
+                return goblin.build();
+
             case slime:
-                return new Monster(monsterType, name, "foul smelling gelatinous mass",20,20,0,
+                /* new Monster(monsterType, name, "foul smelling gelatinous mass",20,20,0,
                         0,15,1,0, null, null,
                         itemGenerator.getEntities(30), null, 0, null, 4,0,
-                        new Archetype(1.1f,1.1f, 1.1f,2,1.1f));
+                        new Archetype(1.1f,1.1f, 1.1f,2,1.1f));*/
+                Monster.MonsterBuilder slime = new Monster.MonsterBuilder(monsterType, new Archetype(1.1f,1.1f, 1.1f,2,1.1f), 0);
+                slime.setName(name);
+                slime.setDescription("foul smelling gelatinous mass");
+                slime.setMaxHp(20);
+                slime.setCurrentHp(20);
+                slime.setMaxMana(0);
+                slime.setCurrentMana(0);
+                slime.setAttack(15);
+                slime.setStrength(1);
+                slime.setMonsterDamageReduction(0);
+                slime.setLoot(itemGenerator.getEntities(90));
+                slime.setGoldCoins(0);
+                slime.setExp(4);
+                return slime.build();
             case elf:
-                return new Monster(monsterType, name, "elf",20,20,0,
+               /* return new Monster(monsterType, name, "elf",20,20,0,
                         0, 18,5, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(60), itemGenerator.getEntities(90),
                         null,0, null,0,0, new Archetype(1.5f,2,
-                        1.3f,1.2f,1.3f));
+                        1.3f,1.2f,1.3f));*/
+
+                Monster.MonsterBuilder elf = new Monster.MonsterBuilder(monsterType, new Archetype(1.5f,2, 1.3f,1.2f,1.3f), 0);
+                elf.setName(name);
+                elf.setDescription("elf");
+                elf.setMaxHp(20);
+                elf.setCurrentHp(20);
+                elf.setMaxMana(0);
+                elf.setCurrentMana(0);
+                elf.setAttack(18);
+                elf.setStrength(5);
+                elf.setMonsterDamageReduction(0);
+                elf.setMainWeapon(weaponGenerator.getEntity());
+                elf.setMainArmor(armorGenerator.armorMapGenerator(60));
+                elf.setLoot(itemGenerator.getEntities(90));
+                elf.setGoldCoins(0);
+                elf.setExp(7);
+                return elf.build();
+
+
             case human:
-                return new Monster(monsterType, name, "human",20,20,0,0,
+                /*return new Monster(monsterType, name, "human",20,20,0,0,
                         15,6, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(65), itemGenerator.getEntities(90),
                         null,0, null,0,0, new Archetype(1.5f,1.2f,
-                        1.2f,1.1f,1.2f));
+                        1.2f,1.1f,1.2f));*/
+
+                Monster.MonsterBuilder human = new Monster.MonsterBuilder(monsterType, new Archetype(1.5f,1.2f, 1.2f,1.1f,1.2f), 0);
+                human.setName(name);
+                human.setDescription("human");
+                human.setMaxHp(20);
+                human.setCurrentHp(20);
+                human.setMaxMana(0);
+                human.setCurrentMana(0);
+                human.setAttack(15);
+                human.setStrength(6);
+                human.setMonsterDamageReduction(0);
+                human.setMainWeapon(weaponGenerator.getEntity());
+                human.setMainArmor(armorGenerator.armorMapGenerator(65));
+                human.setLoot(itemGenerator.getEntities(90));
+                human.setGoldCoins(0);
+                human.setExp(8);
+                return human.build();
+
+
             case orc:
-                return new Monster(monsterType, name, "orc",25,25,0,0,
+               /* return new Monster(monsterType, name, "orc",25,25,0,0,
                         10,8,0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(90), itemGenerator.getEntities(90),
                         null,0, null,0,0,new Archetype(1.5f,1.1f,
-                        1.4f,1.2f,1.4f));
+                        1.4f,1.2f,1.4f));*/
+
+                Monster.MonsterBuilder orc = new Monster.MonsterBuilder(monsterType, new Archetype(1.5f,1.1f,
+                        1.4f,1.2f,1.4f), 0);
+                orc.setName(name);
+                orc.setDescription("orc");
+                orc.setMaxHp(25);
+                orc.setCurrentHp(25);
+                orc.setMaxMana(0);
+                orc.setCurrentMana(0);
+                orc.setAttack(10);
+                orc.setStrength(8);
+                orc.setMonsterDamageReduction(0);
+                orc.setMainWeapon(weaponGenerator.getEntity());
+                orc.setMainArmor(armorGenerator.armorMapGenerator(90));
+                orc.setLoot(itemGenerator.getEntities(90));
+                orc.setGoldCoins(0);
+                orc.setExp(8);
+                return orc.build();
+
             case ghul:
-                return new Monster(monsterType, name, "ghul",15,15,0,0,
+                /*return new Monster(monsterType, name, "ghul",15,15,0,0,
                         20,5,0, null, null,
                         itemGenerator.getEntities(90), null,0, null,0,0,
-                        new Archetype(1.1f,1.1f, 1.1f,1.1f,1.1f));
+                        new Archetype(1.1f,1.1f, 1.1f,1.1f,1.1f));*/
+
+                Monster.MonsterBuilder ghul = new Monster.MonsterBuilder(monsterType, new Archetype(1.1f,1.1f, 1.1f,1.1f,1.1f), 0);
+                ghul.setName(name);
+                ghul.setDescription("ghul");
+                ghul.setMaxHp(15);
+                ghul.setCurrentHp(15);
+                ghul.setMaxMana(0);
+                ghul.setCurrentMana(0);
+                ghul.setAttack(20);
+                ghul.setStrength(5);
+                ghul.setMonsterDamageReduction(0);
+                ghul.setLoot(itemGenerator.getEntities(90));
+                ghul.setGoldCoins(0);
+                ghul.setExp(6);
+                return ghul.build();
+
+
             case demon:
-                return new Monster(monsterType, name, "demon",22,22,0,0,
+               /* return new Monster(monsterType, name, "demon",22,22,0,0,
                         25,10,0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(40), itemGenerator.getEntities(90),
                         null,0, null,0,0,new Archetype(1.4f,1.8f,
-                        1.4f,1.2f,1.4f));
+                        1.4f,1.2f,1.4f));*/
+
+
+                Monster.MonsterBuilder demon = new Monster.MonsterBuilder(monsterType, new Archetype(1.4f,1.8f,
+                        1.4f,1.2f,1.4f), 0);
+                demon.setName(name);
+                demon.setDescription("demon");
+                demon.setMaxHp(22);
+                demon.setCurrentHp(22);
+                demon.setMaxMana(0);
+                demon.setCurrentMana(0);
+                demon.setAttack(25);
+                demon.setStrength(10);
+                demon.setMonsterDamageReduction(0);
+                demon.setMainWeapon(weaponGenerator.getEntity());
+                demon.setMainArmor(armorGenerator.armorMapGenerator(40));
+                demon.setLoot(itemGenerator.getEntities(90));
+                demon.setGoldCoins(0);
+                demon.setExp(9);
+                return demon.build();
             case ogr:
-                return new Monster(monsterType, name, "ogr",30,30,0,0,
+              /*  return new Monster(monsterType, name, "ogr",30,30,0,0,
                         25,20, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(80), itemGenerator.getEntities(90),
                         null,0, null,0,0,new Archetype(1.6f,0.2f,
-                        1.6f,1.6f,1.6f));
+                        1.6f,1.6f,1.6f));*/
+
+                Monster.MonsterBuilder ogr = new Monster.MonsterBuilder(monsterType, new Archetype(1.6f,0.2f,
+                        1.6f,1.6f,1.6f), 0);
+                ogr.setName(name);
+                ogr.setDescription("ogr");
+                ogr.setMaxHp(30);
+                ogr.setCurrentHp(30);
+                ogr.setMaxMana(0);
+                ogr.setCurrentMana(0);
+                ogr.setAttack(25);
+                ogr.setStrength(20);
+                ogr.setMonsterDamageReduction(0);
+                ogr.setMainWeapon(weaponGenerator.getEntity());
+                ogr.setMainArmor(armorGenerator.armorMapGenerator(80));
+                ogr.setLoot(itemGenerator.getEntities(90));
+                ogr.setGoldCoins(0);
+                ogr.setExp(9);
+                return ogr.build();
+
+
             case giant:
-                return new Monster(monsterType, name, "giant",35,35,0,0,
+               /* return new Monster(monsterType, name, "giant",35,35,0,0,
                         20,20, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(15), itemGenerator.getEntities(90),
                         null,0, null,0,0,new Archetype(1.7f,0.2f,
-                        1.9f,1.8f,1.9f));
+                        1.9f,1.8f,1.9f));*/
+
+
+                Monster.MonsterBuilder giant = new Monster.MonsterBuilder(monsterType, new Archetype(1.7f,0.2f,
+                        1.9f,1.8f,1.9f), 0);
+                giant.setName(name);
+                giant.setDescription("giant");
+                giant.setMaxHp(35);
+                giant.setCurrentHp(35);
+                giant.setMaxMana(0);
+                giant.setCurrentMana(0);
+                giant.setAttack(20);
+                giant.setStrength(20);
+                giant.setMonsterDamageReduction(0);
+                giant.setMainWeapon(weaponGenerator.getEntity());
+                giant.setMainArmor(armorGenerator.armorMapGenerator(15));
+                giant.setLoot(itemGenerator.getEntities(90));
+                giant.setGoldCoins(0);
+                giant.setExp(8);
+                return giant.build();
+
+
             case werewolf:
-                return new Monster(monsterType, name, "werewolf",30,30,0,
+                /*return new Monster(monsterType, name, "werewolf",30,30,0,
                         0,15,10,0, null, null,
                         itemGenerator.getEntities(90), null,0, null,0,0,
-                        new Archetype(1.4f,0.9f, 1.4f,1.2f,1.4f));
+                        new Archetype(1.4f,0.9f, 1.4f,1.2f,1.4f));*/
+
+                Monster.MonsterBuilder werewolf = new Monster.MonsterBuilder(monsterType, new Archetype(1.4f,0.9f, 1.4f,1.2f,1.4f), 0);
+                werewolf.setName(name);
+                werewolf.setDescription("warewolf");
+                werewolf.setMaxHp(30);
+                werewolf.setCurrentHp(30);
+                werewolf.setMaxMana(0);
+                werewolf.setCurrentMana(0);
+                werewolf.setAttack(15);
+                werewolf.setStrength(10);
+                werewolf.setMonsterDamageReduction(0);
+                werewolf.setLoot(itemGenerator.getEntities(90));
+                werewolf.setGoldCoins(0);
+                werewolf.setExp(10);
+                return werewolf.build();
+
+
             case vampire:
-                return new Monster(monsterType, name, "vampire",30,30,0,
+               /* return new Monster(monsterType, name, "vampire",30,30,0,
                         0,20,10, 0, weaponGenerator.getEntity(),
                         armorGenerator.armorMapGenerator(75), itemGenerator.getEntities(90),
                         null,0, null,0,0,new Archetype(1.6f,1.2f,
-                        1.6f,1.6f,1.6f));
+                        1.6f,1.6f,1.6f));*/
+
+                Monster.MonsterBuilder vampire = new Monster.MonsterBuilder(monsterType, new Archetype(1.6f,1.2f,
+                        1.6f,1.6f,1.6f), 0);
+                vampire.setName(name);
+                vampire.setDescription("vampire");
+                vampire.setMaxHp(30);
+                vampire.setCurrentHp(30);
+                vampire.setMaxMana(0);
+                vampire.setCurrentMana(0);
+                vampire.setAttack(20);
+                vampire.setStrength(10);
+                vampire.setMonsterDamageReduction(0);
+                vampire.setMainWeapon(weaponGenerator.getEntity());
+                vampire.setMainArmor(armorGenerator.armorMapGenerator(75));
+                vampire.setLoot(itemGenerator.getEntities(90));
+                vampire.setGoldCoins(0);
+                vampire.setExp(10);
+                return vampire.build();
+
+
             /*case seller:
                 return new Monster(monsterType, name, "seller", 999,999,0,0,999,999,999,null,armorGenerator.armorMapGenerator(75),itemGenerator.getEntities(99),null, 1000);*/
 

@@ -50,6 +50,28 @@ public class Monster extends LivingEntity implements Serializable {
         }
     }
 
+    public Monster(MonsterBuilder builder){
+        super(builder.name, builder.description, builder.loot, builder.mainWeapon, builder.mainArmor);
+        this.type = builder.type;
+        this.maxHp = builder.maxHp;
+        this.currentHp = builder.currentHp;
+        this.maxMana = builder.maxMana;
+        this.currentMana = builder.currentMana;
+        this.attack = builder.attack;
+        this.strength = builder.strength;
+        this.monsterDamageReduction = builder.monsterDamageReduction;
+        this.goldCoins = builder.goldCoins;
+        this.specialType = builder.specialType;
+        this.exp = builder.exp;
+        this.monsterLevel = builder.monsterLevel;
+        if(archetype == null){
+            this.archetype = new Archetype(1,1,1,1,1);
+        }else {
+            this.archetype = builder.archetype;
+        }
+
+    }
+
     public String getStats() {
         int finalDamageReduction = monsterDamageReduction + getArmorValue();
         return "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
@@ -164,6 +186,110 @@ public class Monster extends LivingEntity implements Serializable {
 
     public String getDescription() {
         return description;
+    }
+
+    public static class MonsterBuilder{
+        private float maxHp = 1;
+        private float currentHp = 1;
+        private int maxMana = 1;
+        private int currentMana = 1;
+        private int attack = 0;
+        private int strength = 0;
+        private int monsterDamageReduction = 0;
+
+        private MonsterTypes type;
+        private List<Effect> activeEffects = new ArrayList<>();
+        private int goldCoins;
+        private SpecialType specialType;
+        private boolean aggressive = true;
+        private float exp;
+        private int monsterLevel;
+        private Archetype archetype;
+        private String name;
+        private String description;
+        private List<Item> loot;
+        private Weapon mainWeapon;
+        private Map<WearSlot, Armor> mainArmor;
+
+
+
+        public MonsterBuilder(MonsterTypes type, Archetype archetype, int monsterLevel){
+            this.type = type;
+            this.archetype = archetype;
+            this.monsterLevel = monsterLevel;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public void setLoot(List<Item> loot) {
+            this.loot = loot;
+        }
+
+        public void setMainWeapon(Weapon mainWeapon) {
+            this.mainWeapon = mainWeapon;
+        }
+
+        public void setMainArmor(Map<WearSlot, Armor> mainArmor) {
+            this.mainArmor = mainArmor;
+        }
+
+        public void setMaxHp(float maxHp) {
+            this.maxHp = maxHp;
+        }
+
+        public void setCurrentHp(float currentHp) {
+            this.currentHp = currentHp;
+        }
+
+        public void setMaxMana(int maxMana) {
+            this.maxMana = maxMana;
+        }
+
+        public void setCurrentMana(int currentMana) {
+            this.currentMana = currentMana;
+        }
+
+        public void setAttack(int attack) {
+            this.attack = attack;
+        }
+
+        public void setStrength(int strength) {
+            this.strength = strength;
+        }
+
+        public void setMonsterDamageReduction(int monsterDamageReduction) {
+            this.monsterDamageReduction = monsterDamageReduction;
+        }
+
+        public void setActiveEffects(List<Effect> activeEffects) {
+            this.activeEffects = activeEffects;
+        }
+
+        public void setGoldCoins(int goldCoins) {
+            this.goldCoins = goldCoins;
+        }
+
+        public void setSpecialType(SpecialType specialType) {
+            this.specialType = specialType;
+        }
+
+        public void setAggressive(boolean aggressive) {
+            this.aggressive = aggressive;
+        }
+
+        public void setExp(float exp) {
+            this.exp = exp;
+        }
+
+        public Monster build(){
+            return new Monster(this);
+        }
     }
 
 }
