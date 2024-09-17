@@ -13,10 +13,30 @@ public class EffectManager implements Serializable {
     private static List<Effect> itemEffect = new ArrayList<>();
 
     public EffectManager() {
-        itemEffect.add(new Effect("ancientPower",5,EffectType.buff, Attribute.strength,999999));
-        itemEffect.add(new Effect("elfBlessing", 5,EffectType.buff, Attribute.monsterDamageReduction,999999));
-        itemEffect.add(new Effect("demonicRage",5,EffectType.buff, Attribute.attack, 9999999));
-        itemEffect.add(new Effect("stoneGolem", 5, EffectType.buff, Attribute.maxHp, 9999999));
+        itemEffect.add(new Effect.EffectBuilder("ancientPower","Ancient Power - greatly enhances the user's Strength by channeling the immense force of ancient warriors, allowing them to perform extraordinary feats of might.")
+            .setPower(5)
+            .setType(EffectType.buff)
+            .setBuffAttribute(Attribute.strength)
+            .setActivationLength(999999)
+            .build());
+        itemEffect.add(new Effect.EffectBuilder("elfBlessing","Elf Blessing grants the user enhanced agility and resilience, significantly reducing incoming damage and allowing them to evade attacks with ease." )
+                .setPower(5)
+                .setType(EffectType.buff)
+                .setBuffAttribute(Attribute.monsterDamageReduction)
+                .setActivationLength(999999)
+                .build());
+        itemEffect.add(new Effect.EffectBuilder("demonicRage","Demonic Rage unleashes a surge of dark power, dramatically boosting the user's attack strength and ferocity in battle." )
+                .setPower(5)
+                .setType(EffectType.buff)
+                .setBuffAttribute(Attribute.attack)
+                .setActivationLength(999999)
+                .build());
+        itemEffect.add(new Effect.EffectBuilder("stoneGolem","Stone Golem fortifies the user's body with the resilience of solid rock, significantly increasing their maximum health." )
+                .setPower(5)
+                .setType(EffectType.buff)
+                .setBuffAttribute(Attribute.maxHp)
+                .setActivationLength(999999)
+                .build());
 
     }
     public static Effect getItemEffect(String effectName) {

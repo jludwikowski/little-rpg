@@ -20,8 +20,12 @@ public class AdventurerClass extends Monster implements Serializable {
 
 
 
-    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana, int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins, SpecialType specialType, int exp, int monsterLevel, Archetype archetype) {
-        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction, mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel, archetype);
+    public AdventurerClass(MonsterTypes type, String name, String description, int maxHp, int currentHp, int maxMana,
+                           int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon,
+                           Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill> skills, int goldCoins,
+                           SpecialType specialType, int exp, int monsterLevel, Archetype archetype) {
+        super(type, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,
+                mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel, archetype);
     }
 
 

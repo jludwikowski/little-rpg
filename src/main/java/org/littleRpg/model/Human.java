@@ -16,8 +16,14 @@ public class Human extends AdventurerClass implements Serializable{
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
 
 
-    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack, int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot, List<Skill>skills, int goldCoins, SpecialType specialType, int exp, int monsterLevel, Archetype archetype, int attributePoints) {
-        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength, damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel, archetype);
+
+    public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack,
+                 int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot,
+                 List<Skill>skills, int goldCoins, SpecialType specialType, int exp, int monsterLevel, Archetype archetype,
+                 int attributePoints) {
+        super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength,
+                damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel,
+                archetype);
         this.attributePoints = attributePoints;
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));

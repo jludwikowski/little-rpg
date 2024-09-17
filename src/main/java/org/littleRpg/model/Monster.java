@@ -23,6 +23,7 @@ public class Monster extends LivingEntity implements Serializable {
     public float exp;
     public int monsterLevel;
     public Archetype archetype;
+    List <Quests> questList = new ArrayList<>();
 
 
 
@@ -48,6 +49,7 @@ public class Monster extends LivingEntity implements Serializable {
         }else {
             this.archetype = archetype;
         }
+
     }
 
     public Monster(MonsterBuilder builder){
@@ -70,6 +72,13 @@ public class Monster extends LivingEntity implements Serializable {
             this.archetype = builder.archetype;
         }
 
+    }
+
+    public void addQuest(Quests quest){
+        questList.add(quest);
+    }
+    public void removeQuest(Quests quest){
+        questList.remove(quest);
     }
 
     public String getStats() {
@@ -213,6 +222,7 @@ public class Monster extends LivingEntity implements Serializable {
 
 
 
+
         public MonsterBuilder(MonsterTypes type, Archetype archetype, int monsterLevel){
             this.type = type;
             this.archetype = archetype;
@@ -286,6 +296,7 @@ public class Monster extends LivingEntity implements Serializable {
         public void setExp(float exp) {
             this.exp = exp;
         }
+
 
         public Monster build(){
             return new Monster(this);

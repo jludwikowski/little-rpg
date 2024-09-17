@@ -49,7 +49,7 @@ public class LivingEntity extends GameEntity {
         }
         if (!equippedItems.values().isEmpty()) {
             equippedItems.values().forEach(item -> {
-                System.out.println(name + " is wearing: " + item.description);
+                System.out.println(description + " is wearing: " + item.description);
             });
         }
     }

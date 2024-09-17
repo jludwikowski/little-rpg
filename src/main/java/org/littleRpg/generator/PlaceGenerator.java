@@ -41,7 +41,7 @@ public class PlaceGenerator extends Generator<MapPlace> {
                 biome = biomeGenerator(lastPlace);
             }
             else{
-                biome = Biome.values()[Roller.pickNumberFrom(Biome.values().length - 1)];
+                biome = outsideBiomes[Roller.pickNumberFrom(outsideBiomes.length - 1)];
             }
         }
         MapPlace place = this.getBaseByType(biome, location);
@@ -76,7 +76,6 @@ public class PlaceGenerator extends Generator<MapPlace> {
            this.lastBiome = place.biome;
            int index = Arrays.binarySearch(outsideBiomes, lastBiome);
            double roll = Math.random()*100;
-
            if (roll <50) {
                this.newBiome = lastBiome;
            }

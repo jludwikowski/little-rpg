@@ -17,6 +17,7 @@ public class Actions {
     public static final List<String> STATICCOMMANDS = Arrays.asList("stats", "help", "map", "loot", "myitems", "checkmonster",
             "save","load");
     public Human player;
+    public QuestManager questManager = new QuestManager();
 
     public Actions(Human player){
         this.player = player;
@@ -101,6 +102,20 @@ public class Actions {
                     break;
                 case "wear":
                     player.wear();
+                    break;
+                case "startquest":
+                    if(thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy){
+                        questManager.chooseQuest(player);
+                    }else{
+                        System.out.println("You cannot start quest here!\n");
+                    }
+                    break;
+                case "finishquest":
+                    if(thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy){
+                        questManager.finishQuest(player);
+                    }else{
+                        System.out.println("You cannot finish quest here!\n");
+                    }
                     break;
                 case "checkmonster":
                     if (!thisPlace.monsters.isEmpty()) {

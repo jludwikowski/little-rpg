@@ -10,28 +10,152 @@ public class SkillManager implements Serializable {
 
 
     public SkillManager(){
-        skillList.add(new Skill("Thunderbolt", Arrays.asList(PlayerClasses.mage),null, 5,5,5,
-                false, true, SkillType.attack));
-        skillList.add(new Skill("Fireball", Arrays.asList(PlayerClasses.mage),null, 5,5,5,
-                false, true, SkillType.attack));
-        skillList.add(new Skill("LightPunch", Arrays.asList(PlayerClasses.paladin),null, 5,5,5,
-                false, true, SkillType.attack));
-        skillList.add(new Skill("BlessingDeath", Arrays.asList(PlayerClasses.priest), null, 5,5,5,
-                false, true, SkillType.attack));
-        skillList.add(new Skill("StoneWarrior", Arrays.asList(PlayerClasses.warrior),new Effect("Armor buff",3,EffectType.buff,Attribute.monsterDamageReduction,10), 0,3,5,
-                false, false, SkillType.buff));
-        skillList.add(new Skill("Light", Arrays.asList(PlayerClasses.warrior),new Effect("Light",3,EffectType.buff,Attribute.monsterDamageReduction,10),1, 0,3,false,false,
-                SkillType.buff));
-        skillList.add(new Skill("StoneDefend", Arrays.asList(PlayerClasses.warrior),new Effect("StoneDefend",3,EffectType.buff,Attribute.monsterDamageReduction,10),0,3,5,false,
-                false, SkillType.buff));
-        skillList.add(new Skill("Blessing", Arrays.asList(PlayerClasses.priest),new Effect("Blessing",3,EffectType.buff,Attribute.strength,10),0,0,5,false,
-                false,  SkillType.buff));
-        skillList.add(new Skill("Enrage", Arrays.asList(PlayerClasses.warrior),new Effect("Enrage",3,EffectType.buff,Attribute.attack,10), 0,3,5, false,
-                false, SkillType.buff));
-        skillList.add(new Skill("Rage", Arrays.asList(PlayerClasses.warrior),new Effect("Rage",3,EffectType.buff,Attribute.attack,10), 0,5,5,false,
-                false, SkillType.buff));
-        skillList.add(new Skill("BattleStance", Arrays.asList(PlayerClasses.warrior),new Effect("BattleStance",3,EffectType.buff,Attribute.maxHp,10), 0,5,5,false,false,
-                SkillType.buff));
+        //można też utworzyć skillBuildera osobno jak w monsterGenerator i dodać do listy
+        skillList.add(new Skill.SkillBuilder("Thunderbolt", "A thunderbolt strikes with blinding light and deafening sound, unleashing raw, electric fury that devastates all in its path.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.mage))
+                .setEffect(null)
+                .setAttack(5)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(true)
+                .setType(SkillType.attack)
+                .build());
+        skillList.add(new Skill.SkillBuilder("Fireball", "A blazing fireball erupts from the caster's hand, exploding upon impact in a searing inferno that engulfs everything in its vicinity.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.mage))
+                .setEffect(null)
+                .setAttack(5)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(true)
+                .setType(SkillType.attack)
+                .build());
+        skillList.add(new Skill.SkillBuilder("LightPunch", "A quick, precise punch delivered with just enough force to stagger an opponent without slowing the attacker down.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.paladin))
+                .setEffect(null)
+                .setAttack(5)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(true)
+                .setType(SkillType.attack)
+                .build());
+        skillList.add(new Skill.SkillBuilder("BlessingDeath", "A dark enchantment that simultaneously blesses the caster with immense power while condemning their target to an inevitable demise.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.priest))
+                .setEffect(null)
+                .setAttack(5)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(true)
+                .setType(SkillType.attack)
+                .build());
+        skillList.add(new Skill.SkillBuilder("StoneWarrior", "The StoneWarrior buff encases the target in a protective layer of stone, greatly reducing the impact of incoming strikes.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("Armor buff","protective layer of stone")
+                    .setType(EffectType.buff)
+                    .setPower(3)
+                    .setBuffAttribute(Attribute.monsterDamageReduction)
+                    .setActivationLength(10)
+                    .build())
+                .setAttack(0)
+                .setPower(3)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("Light", "The Llight buff envelops the target in a gentle, radiant glow, diminishing the damage taken from all attacks.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("Light", "radiant glow, diminishing the damage taken from all attacks.")
+                    .setType(EffectType.buff)
+                    .setPower(3)
+                    .setBuffAttribute(Attribute.monsterDamageReduction)
+                    .setActivationLength(10)
+                    .build())
+                .setAttack(1)
+                .setPower(0)
+                .setManaCost(3)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("StoneDefend", "The StoneDefend buff surrounds the target with a sturdy barrier of rock, significantly reducing damage taken from all attacks.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("StoneDefend", "sturdy barrier of rock")
+                        .setType(EffectType.buff)
+                        .setPower(3)
+                        .setBuffAttribute(Attribute.monsterDamageReduction)
+                        .setActivationLength(10)
+                        .build())
+                .setAttack(0)
+                .setPower(3)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("Blessing", "The Blessing buff surrounds the target with a divine aura, reducing damage taken from all attacks and enhancing resilience.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.priest))
+                .setEffect(new Effect.EffectBuilder("Blessing", "reducing damage taken from all attacks and enhancing resilience")
+                        .setType(EffectType.buff)
+                        .setPower(3)
+                        .setBuffAttribute(Attribute.strength)
+                        .setActivationLength(10)
+                        .build())
+                .setAttack(0)
+                .setPower(0)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("Enrage", "The Enrage buff fuels the target with intense fury, significantly increasing their attack power and aggression for a short duration.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("Enrage", "significantly increasing attack power and aggression for a short duration")
+                        .setType(EffectType.buff)
+                        .setPower(3)
+                        .setBuffAttribute(Attribute.attack)
+                        .setActivationLength(10)
+                        .build())
+                .setAttack(0)
+                .setPower(3)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("Rage", "The Rage buff ignites the target's fury, drastically boosting their attack power and speed, making every strike more devastating.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("Rage", "rastically boosting attack power and speed")
+                        .setType(EffectType.buff)
+                        .setPower(3)
+                        .setBuffAttribute(Attribute.attack)
+                        .setActivationLength(10)
+                        .build())
+                .setAttack(0)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
+        skillList.add(new Skill.SkillBuilder("BattleStance", "The BattleStance buff enhances the target's combat readiness, increasing their maximum HP and bolstering their overall endurance in battle.")
+                .setAdventurerClasses(Arrays.asList(PlayerClasses.warrior))
+                .setEffect(new Effect.EffectBuilder("BattleStance", "increasing maximum HP and bolstering overall endurance in battle")
+                        .setType(EffectType.buff)
+                        .setPower(3)
+                        .setBuffAttribute(Attribute.maxHp)
+                        .setActivationLength(10)
+                        .build())
+                .setAttack(0)
+                .setPower(5)
+                .setManaCost(5)
+                .setRanged(false)
+                .setArea(false)
+                .setType(SkillType.buff)
+                .build());
         /*skillList.add(new Skill("Heal", null,new Effect("Heal",3,EffectType.buff,Attribute.heal,10),0,10,5, false,false,
                 SkillType.heal));*/
 
