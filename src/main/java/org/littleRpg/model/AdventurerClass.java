@@ -6,10 +6,7 @@ import org.littleRpg.engine.ListHelper;
 import org.littleRpg.engine.SkillManager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 public class AdventurerClass extends Monster implements Serializable {
 
@@ -35,22 +32,22 @@ public class AdventurerClass extends Monster implements Serializable {
                 return new Human("mage", "mage", 5, 5, 100,100,
                         30, 3, 0, null, null, new ArrayList<Item>(),
                         new ArrayList<Skill>(), 100, null , 0,0, null,
-                        0);
+                        0, new HashMap<>());
             case paladin:
                 return new Human("paladin", "paladin", 20, 20, 50,
                         50,15, 1, 0, null, null,
                         new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0,
-                        null, 0);
+                        null, 0, new HashMap<>());
             case warrior:
                 return new Human("warrior", "warrior", 20, 20, 30,
                         30,15, 1, 0, null, null,
                         new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0,
-                        null,0);
+                        null,0,new HashMap<>());
             case priest:
                 return new Human("priest", "priest", 20, 20, 50,
                         50,15, 1, 0, null, null,
                         new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0,
-                        null, 0);
+                        null, 0,new HashMap<>());
         }
         return null;
     }
@@ -98,7 +95,7 @@ public class AdventurerClass extends Monster implements Serializable {
 
 
 
-    public void useSkill(Monster attacker, Place location) {
+    public void useSkill(Monster attacker, Place location, Human player) {
         if (!skills.isEmpty()) {
             ListHelper.showList("Your learned skills: ", this.skills, true);
             int skillIndex = Human.readChoice("Choose skill to use: ");
@@ -113,9 +110,9 @@ public class AdventurerClass extends Monster implements Serializable {
             currentMana = currentMana - chosenSkill.manaCost;
             if (chosenSkill.type == SkillType.attack) {
                 if (chosenSkill.isArea) {
-                    Judge.attackAll(attacker, location, chosenSkill);
+                    Judge.attackAll(attacker, location, chosenSkill, player);
                 } else if (chosenSkill.isRanged) {
-                    Judge.rangeAttack(attacker, location, chosenSkill);
+                    Judge.rangeAttack(attacker, location, chosenSkill, player);
                 }
             } else if (chosenSkill.type == SkillType.heal) {
                 if(chosenSkill.activationLength == 0) {

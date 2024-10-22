@@ -14,19 +14,33 @@ public class Human extends AdventurerClass implements Serializable{
     public int[] location;
     public int attributePoints;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
+    public Map<MonsterTypes, Integer> monsterKillCounter = new HashMap<>();
+
 
 
 
     public Human(String name, String description,int maxHp, int currentHp, int maxMana,  int currentMana, int attack,
                  int strength, int damageReduction, Weapon mainWeapon, Map<WearSlot, Armor> mainArmor, List<Item> loot,
                  List<Skill>skills, int goldCoins, SpecialType specialType, int exp, int monsterLevel, Archetype archetype,
-                 int attributePoints) {
+                 int attributePoints, Map<MonsterTypes, Integer> monsterKillCounter) {
         super(MonsterTypes.human, name, description, maxHp, currentHp, maxMana, currentMana, attack, strength,
                 damageReduction,  mainWeapon, mainArmor, loot, skills, goldCoins, specialType, exp, monsterLevel,
                 archetype);
         this.attributePoints = attributePoints;
+        this.monsterKillCounter = monsterKillCounter;
         survivalAttributes.put("thirst", new SurvivalAttribute("thirst"));
         survivalAttributes.put("hunger", new SurvivalAttribute("hunger",2,100));
+        monsterKillCounter.put(MonsterTypes.ghul, 0);
+        monsterKillCounter.put(MonsterTypes.human, 0);
+        monsterKillCounter.put(MonsterTypes.demon, 0);
+        monsterKillCounter.put(MonsterTypes.elf, 0);
+        monsterKillCounter.put(MonsterTypes.giant, 0);
+        monsterKillCounter.put(MonsterTypes.goblin, 0);
+        monsterKillCounter.put(MonsterTypes.ogr, 0);
+        monsterKillCounter.put(MonsterTypes.orc, 0);
+        monsterKillCounter.put(MonsterTypes.slime, 0);
+        monsterKillCounter.put(MonsterTypes.vampire, 0);
+        monsterKillCounter.put(MonsterTypes.werewolf, 0);
 
 
     }
@@ -48,21 +62,6 @@ public class Human extends AdventurerClass implements Serializable{
             }
         }
     }
-  /* public void playerAdjust(Monster playerAdjust){
-       this.currentHp += playerAdjust.currentHp;
-       this.maxHp += playerAdjust.maxHp;
-       this.attack += playerAdjust.attack;
-       this.strength += playerAdjust.strength;
-       this.monsterDamageReduction += playerAdjust.monsterDamageReduction;
-       for (Map.Entry<WearSlot,Item> entry : equippedItems.entrySet()){
-           Item equippedItem = playerAdjust.equippedItems.get(entry.getKey()) != null ?
-                   playerAdjust.equippedItems.get(entry.getKey()) : entry.getValue();
-           equippedItems.replace(entry.getKey(), equippedItem);
-       }
-
-    }*/
-
-
 
     public void chooseClass() {
         List <PlayerClasses> playerClasses = Arrays.asList(PlayerClasses.mage, PlayerClasses.paladin, PlayerClasses.warrior, PlayerClasses.priest);
@@ -112,7 +111,9 @@ public class Human extends AdventurerClass implements Serializable{
         return 0;
     }
 
-
+    public void countDeadMonsters(Monster deadMonster){
+         monsterKillCounter.put(deadMonster.type, +1);
+    }
 
     private String getBar(Attribute attribute){
         String fullAttribute = "*";

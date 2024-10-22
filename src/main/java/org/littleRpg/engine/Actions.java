@@ -76,7 +76,7 @@ public class Actions {
                     System.out.println("test");
                     if (!thisPlace.monsters.isEmpty()) {
                         System.out.println("test2");
-                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null);
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
                     }
                     break;
                 case "exchange":
@@ -97,7 +97,7 @@ public class Actions {
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && ((Weapon) player.equippedItems.get(WearSlot.mainHand)).isRanged) {
-                        thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null);
+                        thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null, player);
                     }
                     break;
                 case "wear":
@@ -149,7 +149,7 @@ public class Actions {
                     break;
                 case "useskill":
                     if (!thisPlace.monsters.isEmpty()) {
-                        player.useSkill(player, thisPlace);
+                        player.useSkill(player, thisPlace, player);
                     }
                     break;
                 case "search":

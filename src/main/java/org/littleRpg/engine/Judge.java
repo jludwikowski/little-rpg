@@ -49,22 +49,22 @@ public class Judge {
         return location.monsters;
     }
 
-    public static List<Monster> combat(Monster attacker, Place location, int monsterIndex, Skill skill){
+    public static List<Monster> combat(Monster attacker, Place location, int monsterIndex, Skill skill, Human player){
         Monster firstMonster = location.monsters.get(monsterIndex);
         Judge.attack(attacker, firstMonster, skill);
-        checkIfDead(location, firstMonster);
+        checkIfDead(location, firstMonster, player);
 
         return monsterAttack(attacker, location);
     }
 
-    public static List<Monster> attackAll(Monster attacker, Place location, Skill skill){
+    public static List<Monster> attackAll(Monster attacker, Place location, Skill skill, Human player){
         ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
         while (monsterListIterator.hasNext()) {
             Monster nextMonster = monsterListIterator.next();
             int damageValue = (int) Math.floor(Math.random()*10) + skill.power;
             System.out.println(attacker.getName() + " hitted " + nextMonster.getName() + " for " + damageValue + "HP!");
             nextMonster.damage(damageValue);
-            if(checkIfDead(location, nextMonster)){
+            if(checkIfDead(location, nextMonster, player)){
                 attacker.exp += nextMonster.exp;
             }
 
@@ -74,19 +74,20 @@ public class Judge {
         return location.monsters;
     }
 
-    private static boolean checkIfDead(Place location, Monster nextMonster) {
+    private static boolean checkIfDead(Place location, Monster nextMonster, Human player) {
         if (nextMonster.currentHp <= 0) {
             if (nextMonster.loot != null && !nextMonster.loot.isEmpty()) {
                 location.items.addAll(nextMonster.dropItems());
                 System.out.println("You gained " + (int) Math.floor(nextMonster.exp) + " exp points");
             }
+            player.countDeadMonsters(nextMonster);
             location.monsters.remove(0);
             return true;
         }
         return false;
     }
 
-    public static List<Monster> rangeAttack(Monster attacker, Place location, Skill skill){
+    public static List<Monster> rangeAttack(Monster attacker, Place location, Skill skill, Human player){
         ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
         while (monsterListIterator.hasNext()) {
             Monster nextMonster = monsterListIterator.next();
@@ -95,7 +96,7 @@ public class Judge {
         System.out.println("Choose monster for attack");
         Scanner target = new Scanner(System.in);
         int monsterIndex = target.nextInt();
-        return combat(attacker, location, monsterIndex, skill);
+        return combat(attacker, location, monsterIndex, skill, player);
     }
 
 

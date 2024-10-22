@@ -18,7 +18,7 @@ public class Runner {
         PlaceGenerator placeGenerator = new PlaceGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
         Scanner keyboard = new Scanner(System.in);
-        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0, null, 0);
+        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0, null, 0, new HashMap<>());
         Actions actions = new Actions(player);
         while("".equalsIgnoreCase(player.name)){
             System.out.println("What is you name?");
