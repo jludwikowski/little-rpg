@@ -53,7 +53,6 @@ public class Judge {
         Monster firstMonster = location.monsters.get(monsterIndex);
         Judge.attack(attacker, firstMonster, skill);
         checkIfDead(location, firstMonster, player);
-
         return monsterAttack(attacker, location);
     }
 
