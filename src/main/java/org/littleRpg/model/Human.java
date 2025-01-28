@@ -83,8 +83,7 @@ public class Human extends AdventurerClass implements Serializable{
     public String getStats() {
         String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "actualHp: " + String.valueOf(getPercentStats(this.currentHp, this.maxHp)+"%") + "\n" + getBar(Attribute.maxHp) + "\n" +
-                "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" +
-                "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
+                "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" + "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
                 "strength: " + String.valueOf(getAttribute(Attribute.strength)) + "\n" +
                 "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n"+
                 "goldCoins: " + this.goldCoins + "\n"+
@@ -95,8 +94,9 @@ public class Human extends AdventurerClass implements Serializable{
         description += "race " + type;
         return description;
     }
-
-    private int getPercentStats (int a, int b){
+//podczas testów refactor usunął private
+    
+    int getPercentStats(int a, int b){
         if(b > 0) {
             int result = a * 100 / b;
             return result;
@@ -176,9 +176,13 @@ public class Human extends AdventurerClass implements Serializable{
         return false;
     }
 
-    public static int readChoice(String prompt){
+    public static int readChoice(String prompt) throws RuntimeException{
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
+        if(!scanner.hasNextInt()){
+           scanner.nextLine();
+           throw new RuntimeException("it's not a number");
+        }
         return scanner.nextInt();
     }
 

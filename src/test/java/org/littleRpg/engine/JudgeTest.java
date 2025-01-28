@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.littleRpg.model.Biome.hill;
 
 public class JudgeTest {
-    Human player = new Human("","player",20,20,20,20, 0,
+    Human player = new Human("","player",20,20,20,20, 105,
             0,0, null,null, new ArrayList<Item>(),
             null,100, null,0,0,
             null, 0, new HashMap<>());
@@ -46,7 +46,7 @@ public class JudgeTest {
     }
     @Test
     public void missedAttack(){
-        monster1.attack = 0;
+        monster1.attack = -2;
 
         Judge.attack(monster1, monster2, null);
         assertTrue(monster2.currentHp == monster2.maxHp);
@@ -58,7 +58,7 @@ public class JudgeTest {
     }
     @Test
     public void combatTest(){
-        Judge.combat(monster1, westPlace, 0,null, player);
+        Judge.combat(player, westPlace, 0,null, player);
         assertTrue(player.currentHp< player.maxHp);
     }
 }
