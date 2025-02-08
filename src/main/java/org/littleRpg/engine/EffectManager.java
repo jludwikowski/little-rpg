@@ -14,11 +14,11 @@ public class EffectManager implements Serializable {
 
     public EffectManager() {
         itemEffect.add(new Effect.EffectBuilder("ancientPower","Ancient Power - greatly enhances the user's Strength by channeling the immense force of ancient warriors, allowing them to perform extraordinary feats of might.")
-            .setPower(5)
-            .setType(EffectType.buff)
-            .setBuffAttribute(Attribute.strength)
-            .setActivationLength(999999)
-            .build());
+                .setPower(5)
+                .setType(EffectType.buff)
+                .setBuffAttribute(Attribute.strength)
+                .setActivationLength(999999)
+                .build());
         itemEffect.add(new Effect.EffectBuilder("elfBlessing","Elf Blessing grants the user enhanced agility and resilience, significantly reducing incoming damage and allowing them to evade attacks with ease." )
                 .setPower(5)
                 .setType(EffectType.buff)

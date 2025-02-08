@@ -24,6 +24,7 @@ public class Monster extends LivingEntity implements Serializable {
     public int monsterLevel;
     public Archetype archetype;
     List <Quests> questList = new ArrayList<>();
+    public Map<MonsterTypes, Integer> monsterKillCounter = new HashMap<>();
 
 
 
@@ -106,7 +107,9 @@ public class Monster extends LivingEntity implements Serializable {
          this.strength += (archetype.strength * monsterLevel);
     }
 
-
+    public void countDeadMonsters(Monster deadMonster){
+        monsterKillCounter.put(deadMonster.type, +1);
+    }
 
     public int getBaseAttribute(Attribute attribute){
         int buff = 0;

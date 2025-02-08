@@ -2,100 +2,73 @@ package org.littleRpg.engine;
 
 import org.littleRpg.model.*;
 
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Judge {
 
-    public static void attack(Monster monster1, Monster monster2, Skill skill) {
-        double roll =  Math.random()*100;
-        System.out.println("Attack is: " + monster1.getAttribute(Attribute.attack) + " Roll is:" + String.valueOf(roll));
-        if(monster1.getAttribute(Attribute.attack) > roll) {
-            int damageValue = (int) Math.floor(Math.random()*10);
-            if(skill != null){
-                damageValue += skill.power;
-            }else {
-                damageValue += monster1.getDamage();
-            }
-            System.out.println(monster1.getName() + " hitted " + monster2.getName() + " for " + damageValue + "HP!");
-            monster2.damage(damageValue);
-            monster1.exp += (0.2F * monster2.exp);
-        } else {
-            System.out.println(monster1.getName() + " Missed!");
-            monster1.exp += (0.1F * monster2.exp);
+    public static void attack(Monster attacker, List<Monster> targets, Skill skill, Place location, boolean surefire) {
+        targets.stream().forEach(target -> {
+            if(surefire || attacker.getAttribute(Attribute.attack) > Roller.pickNumberFrom(100)){
+                int damageValue = (int) Math.floor(Roller.pickNumberFrom(10));
+                if(skill != null){
+                    damageValue += skill.power;
+                }else {
+                    damageValue += attacker.getDamage();
+                }
+                System.out.println(attacker.getName() + " hitted " + target.getName() + " for " + damageValue + "HP!");
+                target.damage(damageValue);
+                attacker.exp += (0.2F * target.exp);
+                checkIfDead(location, target, attacker);
+            } else {
+            System.out.println(attacker.getName() + " Missed!");
+                attacker.exp += (0.1F * target.exp);
         }
+        });
     }
 
-
-
     public static List<Monster> monsterAttack(Monster attacker, Place location){
-            ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
-            while (monsterListIterator.hasNext()) {
-                Monster nextMonster = monsterListIterator.next();
-                System.out.println("You see around: " + nextMonster.description);
-            }
-
-
-            ListIterator<Monster> j = location.monsters.listIterator();
-            System.out.println("When you moved, the monsters noticed you and started attacking you");
-            while (j.hasNext()) {
-                Monster nextMonster = j.next();
-                if(nextMonster.aggressive) {
-                    Judge.attack(nextMonster, attacker, null);
-                }
-            }
-
+        location.monsters.stream().forEach(monster -> System.out.println("You see around: " + monster.description));
+        location.monsters.stream().filter(monster -> monster.aggressive).forEach(aggresiveMonster -> Judge
+                .attack(aggresiveMonster, Arrays.asList(attacker),null, location, false));
         return location.monsters;
     }
 
     public static List<Monster> combat(Monster attacker, Place location, int monsterIndex, Skill skill, Human player){
-        Monster firstMonster = location.monsters.get(monsterIndex);
-        Judge.attack(attacker, firstMonster, skill);
-        checkIfDead(location, firstMonster, player);
-        return monsterAttack(attacker, location);
-    }
-
-    public static List<Monster> attackAll(Monster attacker, Place location, Skill skill, Human player){
-        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
-        while (monsterListIterator.hasNext()) {
-            Monster nextMonster = monsterListIterator.next();
-            int damageValue = (int) Math.floor(Math.random()*10) + skill.power;
-            System.out.println(attacker.getName() + " hitted " + nextMonster.getName() + " for " + damageValue + "HP!");
-            nextMonster.damage(damageValue);
-            if(checkIfDead(location, nextMonster, player)){
-                attacker.exp += nextMonster.exp;
+        List<Monster> targets;
+        boolean surefire = false;
+        if(skill.isArea){
+            targets = location.monsters;
+            surefire = true;
+        } else {
+            if (skill.isRanged) {
+                targets = Arrays.asList(chooseMonster(location));
+            } else {
+                targets = Arrays.asList(location.monsters.get(monsterIndex));
             }
-
         }
-
-
-        return location.monsters;
+        attack(attacker, targets, skill, location, surefire);
+        return location.monsters.stream().filter(target -> target.currentHp > 0).collect(Collectors.toList());
     }
 
-    private static boolean checkIfDead(Place location, Monster nextMonster, Human player) {
+    private static boolean checkIfDead(Place location, Monster nextMonster, Monster attacker) {
         if (nextMonster.currentHp <= 0) {
             if (nextMonster.loot != null && !nextMonster.loot.isEmpty()) {
                 location.items.addAll(nextMonster.dropItems());
                 System.out.println("You gained " + (int) Math.floor(nextMonster.exp) + " exp points");
             }
-            player.countDeadMonsters(nextMonster);
-            location.monsters.remove(0);
+            attacker.countDeadMonsters(nextMonster);
             return true;
         }
         return false;
     }
 
-    public static List<Monster> rangeAttack(Monster attacker, Place location, Skill skill, Human player){
-        ListIterator<Monster> monsterListIterator = location.monsters.listIterator();
-        while (monsterListIterator.hasNext()) {
-            Monster nextMonster = monsterListIterator.next();
-            System.out.println("You see: " + nextMonster.description);
-        }
+    public static Monster chooseMonster(Place location){
+        location.monsters.stream().forEach(monster -> System.out.println("You see around: " + monster.description));
         System.out.println("Choose monster for attack");
         Scanner target = new Scanner(System.in);
         int monsterIndex = target.nextInt();
-        return combat(attacker, location, monsterIndex, skill, player);
+        return location.monsters.get(monsterIndex);
     }
 
 

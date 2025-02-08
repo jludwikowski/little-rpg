@@ -25,8 +25,8 @@ public class Actions {
 
     public void turnCounter(Place place){
         List<Monster> aggressiveMonsters = place.getAggressiveMonsters();
+        player.effectTurnCounter();
         if (!aggressiveMonsters.isEmpty()) {
-            player.effectTurnCounter();
             Judge.monsterAttack(player, place);
         }
     }

@@ -15,20 +15,12 @@ public class Runner {
     public static void main(String[] args) {
 
         WorldGenerator worldGenerator = new WorldGenerator();
-        PlaceGenerator placeGenerator = new PlaceGenerator();
         MapPlace[][][] world = worldGenerator.generateWorld();
         Scanner keyboard = new Scanner(System.in);
-        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0, null, 0, new HashMap<>());
-        Actions actions = new Actions(player);
-        while("".equalsIgnoreCase(player.name)){
-            System.out.println("What is you name?");
-            player.name = keyboard.nextLine();
-        }
-        player.chooseRace();
-        player.chooseClass();
-        player.location = startLocation;
 
-        Place location = prepareStartingLocation(world, player, placeGenerator);
+        Human player = createPlayer(keyboard);
+        Actions actions = new Actions(player);
+        Place location = prepareStartingLocation(world, player);
 
         System.out.println(location.getDescription());
         while(player.currentHp >= 0){
@@ -39,7 +31,20 @@ public class Runner {
 
     }
 
-    private static Place prepareStartingLocation(MapPlace[][][] world, Human player, PlaceGenerator placeGenerator) {
+    private static Human createPlayer(Scanner keyboard){
+        Human player = new Human("","player",20,20,20,20, 0,0,0, null,null, new ArrayList<Item>(), new ArrayList<Skill>(),100, null,0,0, null, 0, new HashMap<>());
+        while("".equalsIgnoreCase(player.name)){
+            System.out.println("What is you name?");
+            player.name = keyboard.nextLine();
+        }
+        player.chooseRace();
+        player.chooseClass();
+        player.location = startLocation;
+        return player;
+    }
+
+    private static Place prepareStartingLocation(MapPlace[][][] world, Human player) {
+        PlaceGenerator placeGenerator = new PlaceGenerator();
         world[0][5][5].items.add(new Weapon("stick", "stick", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10,1));
         world[0][5][5].items.add(new Weapon("sword", "sword", 0 , 0, 0, false, false, Arrays.asList(WearSlot.mainHand), 10,1));
         world[0][5][5].items.add(new Weapon("bow", "bow", 0 , 0, 0, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand), 10,1));

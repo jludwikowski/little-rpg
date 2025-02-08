@@ -14,7 +14,6 @@ public class Human extends AdventurerClass implements Serializable{
     public int[] location;
     public int attributePoints;
     Map<String, SurvivalAttribute> survivalAttributes = new HashMap<String, SurvivalAttribute>();
-    public Map<MonsterTypes, Integer> monsterKillCounter = new HashMap<>();
 
 
 
@@ -111,10 +110,6 @@ public class Human extends AdventurerClass implements Serializable{
         return 0;
     }
 
-    public void countDeadMonsters(Monster deadMonster){
-         monsterKillCounter.put(deadMonster.type, +1);
-    }
-
     private String getBar(Attribute attribute){
         String fullAttribute = "*";
         String emptyAttribute = "-";
@@ -179,10 +174,6 @@ public class Human extends AdventurerClass implements Serializable{
     public static int readChoice(String prompt) throws RuntimeException{
         System.out.println(prompt);
         Scanner scanner = new Scanner(System.in);
-        if(!scanner.hasNextInt()){
-           scanner.nextLine();
-           throw new RuntimeException("it's not a number");
-        }
         return scanner.nextInt();
     }
 
