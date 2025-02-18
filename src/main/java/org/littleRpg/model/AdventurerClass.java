@@ -75,24 +75,18 @@ public class AdventurerClass extends Monster implements Serializable {
 
     public int getAttribute(Attribute attribute) {
         int base = getBaseAttribute(attribute);
-        ListIterator<Item> specialItem = specialItems.listIterator();
-        while (specialItem.hasNext()){
-            Effect effect = EffectManager.getItemEffect(specialItem.next().name);
-            if (attribute == effect.buffAttribute) {
-                base += effect.power;
-            }
-        }
-        ListIterator<Skill> activeSkill = skills.listIterator();
-        while (activeSkill.hasNext()) {
-            Skill skill = activeSkill.next();
-            if (attribute == skill.buffAttribute) {
-                base += skill.power;
+        int power = specialItems.stream()
+                .map(item -> EffectManager.getItemEffect(item.name))
+                .filter(effect -> effect != null && attribute == effect.buffAttribute)
+                .reduce(0,(sum, effect) -> sum + effect.power,Integer::sum);
+        base += power;
+        for (Skill activeSkill : skills){
+            if (attribute == activeSkill.buffAttribute) {
+                base += activeSkill.power;
             }
         }
         return base;
-        }
-
-
+    }
 
 
     public void useSkill(Monster attacker, Place location, Human player) {
@@ -110,9 +104,9 @@ public class AdventurerClass extends Monster implements Serializable {
             currentMana = currentMana - chosenSkill.manaCost;
             if (chosenSkill.type == SkillType.attack) {
                 if (chosenSkill.isArea) {
-                    Judge.attackAll(attacker, location, chosenSkill, player);
+                    Judge.combat(attacker, location, 0,chosenSkill, player);
                 } else if (chosenSkill.isRanged) {
-                    Judge.rangeAttack(attacker, location, chosenSkill, player);
+                    Judge.combat(attacker, location, 0,chosenSkill, player);
                 }
             } else if (chosenSkill.type == SkillType.heal) {
                 if(chosenSkill.activationLength == 0) {
@@ -122,13 +116,12 @@ public class AdventurerClass extends Monster implements Serializable {
                 }
             }
             if (chosenSkill.effect != null) {
-                ListIterator<Effect> effectIterator = activeEffects.listIterator();
-                while (effectIterator.hasNext()) {
-                    Effect nextEffect = effectIterator.next();
-                    if (nextEffect.buffAttribute == chosenSkill.effect.buffAttribute) {
-                        effectIterator.remove();
+                activeEffects.stream().forEach(effect -> {
+                    if (effect.buffAttribute == chosenSkill.effect.buffAttribute){
+                        activeEffects.remove(effect);
                     }
-                }
+                });
+
                 activeEffects.add(chosenSkill.effect);
             }
         }

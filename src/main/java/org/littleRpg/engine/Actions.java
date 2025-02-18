@@ -59,7 +59,6 @@ public class Actions {
                     player.pickUpItems(thisPlace.items);
                     thisPlace.items.clear();
                     break;
-
                 case "help":
                     System.out.println("stats - player stats \n\nnorth - move to north \nsouth - move to south\n" +
                             "east - move to east\nwest - move to west\n\npickup - pickup items\nattack - attack for monster\n" + "special - special attack for monster\n" +
@@ -68,7 +67,6 @@ public class Actions {
                             "useitem - use item from loot \nsave - save progress\nload - load save\nlearn - learn spell for your class\n" +
                             "useskill - use learned skill");
                     break;
-
                 case "map":
                     mapPrinter(world, player.location);
                     break;
@@ -97,7 +95,7 @@ public class Actions {
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && ((Weapon) player.equippedItems.get(WearSlot.mainHand)).isRanged) {
-                        thisPlace.monsters = Judge.rangeAttack(player, thisPlace, null, player);
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0,null, player);
                     }
                     break;
                 case "wear":
@@ -128,7 +126,6 @@ public class Actions {
                         }
                     }
                     break;
-
                 case "buy":
                     if(thisPlace.biome == Biome.shop){
                         Monster seller = thisPlace.monsters.get(0);
@@ -180,16 +177,13 @@ public class Actions {
             }
             if(TRAVELCOMMANDS.contains(command)){
                 player.effectTurnCounter();
-
             }
         }catch (Exception e) {
             e.printStackTrace();
             System.out.println("error");
         }
-
         return player.location;
     }
-
     public static void mapPrinter(Place[][][] world, int[] location) {
 
         for (int i=0; i < world.length; i++){
