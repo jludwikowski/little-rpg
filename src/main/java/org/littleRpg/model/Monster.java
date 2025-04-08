@@ -113,13 +113,11 @@ public class Monster extends LivingEntity implements Serializable {
 
     public int getBaseAttribute(Attribute attribute){
         int buff = 0;
-        ListIterator<Effect> iterator = activeEffects.listIterator();
-        while (iterator.hasNext()) {
-            Effect effect = iterator.next();
-            if (effect.type == EffectType.buff && attribute == effect.buffAttribute) {
-                buff += effect.power;
+        for (Effect activeEffect : activeEffects) {
+            if (activeEffect.type == EffectType.buff && attribute == activeEffect.buffAttribute) {
+                buff += activeEffect.power;
                 System.out.println(buff);
-                System.out.println(effect.power);
+                System.out.println(activeEffect.power);
             }
         }
 
@@ -178,17 +176,15 @@ public class Monster extends LivingEntity implements Serializable {
     public void effectTurnCounter () {
         if (activeEffects != null){
             ListHelper.showList("Active Effects: ",activeEffects,false);
-            ListIterator <Effect> iterator = activeEffects.listIterator();
-            while(iterator.hasNext()){
-                Effect effect = iterator.next();
-                if(effect.type == EffectType.heal){
-                    this.heal(effect.power);
-                    System.out.println(this.getName() + " is healed for " + effect.power);
+            for(Effect activeEffect : activeEffects){
+                if(activeEffect.type == EffectType.heal){
+                    this.heal(activeEffect.power);
+                    System.out.println(this.getName() + " is healed for " + activeEffect.power);
                 }
-                effect.activationLength -= 1;
-                System.out.println("skill kończy się za: " + effect.activationLength);
-                if (effect.activationLength == 0){
-                    iterator.remove();
+                activeEffect.activationLength -= 1;
+                System.out.println("skill kończy się za: " + activeEffect.activationLength);
+                if (activeEffect.activationLength == 0){
+                    activeEffects.remove(activeEffect);
                 }
             }
         }

@@ -28,6 +28,8 @@ public class PlaceGenerator extends Generator<MapPlace> {
     public static String[] weatherTypes = {"sunny", "stormy", "rainy","foggy"};
     public static String [] sceneryElements = {"a river", "a small cave", "many ancient signs on the ground", "a ruined castle", "strangely twisted statues"};
     public static Biome[] outsideBiomes = {desert,mountain,hill,forest,swamp,meadow};
+
+
     public PlaceGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"cheerful","strange","dark","foreboding","quiet"});
         this.adjectiveTypes = Arrays.asList(featureAdjective);
@@ -75,24 +77,8 @@ public class PlaceGenerator extends Generator<MapPlace> {
        else {
            this.lastBiome = place.biome;
            int index = Arrays.binarySearch(outsideBiomes, lastBiome);
-           double roll = Math.random()*100;
-           if (roll <50) {
-               this.newBiome = lastBiome;
-           }
-
-           if (roll > 50 && roll < 75 && index != outsideBiomes.length - 1){
-               this.newBiome = outsideBiomes[index + 1];
-           }
-           if(roll >= 75 && index != 0) {
-               this.newBiome = outsideBiomes[index - 1];
-           }
-           if(roll > 50 && roll < 75 && index == outsideBiomes.length - 1) {
-               this.newBiome = outsideBiomes[0];
-           }
-           if(roll >= 75 && index == 0) {
-               this.newBiome = outsideBiomes[outsideBiomes.length-1];
-           }
-
+           int indexChange = (int) Math.floor(Math.random()*3)-1;
+           this.newBiome = outsideBiomes[(index + indexChange + outsideBiomes.length)%outsideBiomes.length];
         }
         return this.newBiome;
     }

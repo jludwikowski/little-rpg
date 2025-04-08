@@ -37,7 +37,9 @@ public class Judge {
     public static List<Monster> combat(Monster attacker, Place location, int monsterIndex, Skill skill, Human player){
         List<Monster> targets;
         boolean surefire = false;
-        if(skill.isArea){
+        if (skill == null) {
+            targets = Arrays.asList(location.monsters.get(monsterIndex));
+        }else if(skill.isArea){
             targets = location.monsters;
             surefire = true;
         } else {

@@ -113,7 +113,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 goblin.setSpecialType(null);
                 goblin.setExp(7);
                 return goblin.build();
-
             case slime:
                 Monster.MonsterBuilder slime = new Monster.MonsterBuilder(monsterType, new Archetype(1.1f,1.1f, 1.1f,2,1.1f), 0);
                 slime.setName(name);
@@ -146,8 +145,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 elf.setGoldCoins(0);
                 elf.setExp(7);
                 return elf.build();
-
-
             case human:
                 Monster.MonsterBuilder human = new Monster.MonsterBuilder(monsterType, new Archetype(1.5f,1.2f, 1.2f,1.1f,1.2f), 0);
                 human.setName(name);
@@ -165,8 +162,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 human.setGoldCoins(0);
                 human.setExp(8);
                 return human.build();
-
-
             case orc:
                 Monster.MonsterBuilder orc = new Monster.MonsterBuilder(monsterType, new Archetype(1.5f,1.1f,
                         1.4f,1.2f,1.4f), 0);
@@ -185,7 +180,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 orc.setGoldCoins(0);
                 orc.setExp(8);
                 return orc.build();
-
             case ghul:
                 Monster.MonsterBuilder ghul = new Monster.MonsterBuilder(monsterType, new Archetype(1.1f,1.1f, 1.1f,1.1f,1.1f), 0);
                 ghul.setName(name);
@@ -201,8 +195,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 ghul.setGoldCoins(0);
                 ghul.setExp(6);
                 return ghul.build();
-
-
             case demon:
                 Monster.MonsterBuilder demon = new Monster.MonsterBuilder(monsterType, new Archetype(1.4f,1.8f,
                         1.4f,1.2f,1.4f), 0);
@@ -239,8 +231,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 ogr.setGoldCoins(0);
                 ogr.setExp(9);
                 return ogr.build();
-
-
             case giant:
                 Monster.MonsterBuilder giant = new Monster.MonsterBuilder(monsterType, new Archetype(1.7f,0.2f,
                         1.9f,1.8f,1.9f), 0);
@@ -259,8 +249,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 giant.setGoldCoins(0);
                 giant.setExp(8);
                 return giant.build();
-
-
             case werewolf:
                 Monster.MonsterBuilder werewolf = new Monster.MonsterBuilder(monsterType, new Archetype(1.4f,0.9f, 1.4f,1.2f,1.4f), 0);
                 werewolf.setName(name);
@@ -276,8 +264,6 @@ public class MonsterGenerator extends Generator<Monster> {
                 werewolf.setGoldCoins(0);
                 werewolf.setExp(10);
                 return werewolf.build();
-
-
             case vampire:
                 Monster.MonsterBuilder vampire = new Monster.MonsterBuilder(monsterType, new Archetype(1.6f,1.2f,
                         1.6f,1.6f,1.6f), 0);

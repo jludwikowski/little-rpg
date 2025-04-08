@@ -24,12 +24,10 @@ public abstract class Generator<T> {
 
     public T finalizeEntity(T entity) {
         if(adjectiveTypes!=null && !adjectiveTypes.isEmpty()) {
-            Iterator<AdjectivesTable> tableList = adjectiveTypes.listIterator();
-            while(tableList.hasNext()) {
-                AdjectivesTable adjectivesList = tableList.next();
+            for(AdjectivesTable tableList : adjectiveTypes){
                 String adjective = null;
-                if(Math.random()*100 < adjectivesList.entryProbability) {
-                    adjective = adjectivesList.adjectives.get(Roller.pickNumberFrom(adjectivesList.adjectives.size()));
+                if(Math.random()*100 < tableList.entryProbability) {
+                    adjective = tableList.adjectives.get(Roller.pickNumberFrom(tableList.adjectives.size()));
                 }
                 if(adjective != null) {
                     entity = this.adjust(entity, adjective);

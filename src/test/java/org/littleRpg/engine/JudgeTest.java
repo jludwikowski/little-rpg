@@ -41,14 +41,14 @@ public class JudgeTest {
     }
     @Test
     public void shouldAttackWithNullSkillAndDamage(){
-        Judge.attack(monster1, monster2, null);
+        Judge.attack(monster1, Arrays.asList(monster2), null, westPlace, false);
         assertTrue(monster2.currentHp < monster2.maxHp);
     }
     @Test
     public void missedAttack(){
         monster1.attack = -2;
 
-        Judge.attack(monster1, monster2, null);
+        Judge.attack(monster1, Arrays.asList(monster2), null, westPlace, false);
         assertTrue(monster2.currentHp == monster2.maxHp);
     }
     @Test

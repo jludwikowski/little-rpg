@@ -11,19 +11,19 @@ import java.util.Scanner;
 //import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Actions {
-    public static final List<String> TRAVELCOMMANDS = Arrays.asList("north", "south", "east", "west","enter", "exit");
+    public static final List<String> TRAVELCOMMANDS = Arrays.asList("north", "south", "east", "west", "enter", "exit");
     public static final List<String> TURNCOUNTERCOMMANDS = Arrays.asList("pickup", "attack", "takeoff", "special", "wear",
-            "buy", "sell", "useitem","learn","useskill","drop");
+            "buy", "sell", "useitem", "learn", "useskill", "drop");
     public static final List<String> STATICCOMMANDS = Arrays.asList("stats", "help", "map", "loot", "myitems", "checkmonster",
-            "save","load");
+            "save", "load");
     public Human player;
     public QuestManager questManager = new QuestManager();
 
-    public Actions(Human player){
+    public Actions(Human player) {
         this.player = player;
     }
 
-    public void turnCounter(Place place){
+    public void turnCounter(Place place) {
         List<Monster> aggressiveMonsters = place.getAggressiveMonsters();
         player.effectTurnCounter();
         if (!aggressiveMonsters.isEmpty()) {
@@ -34,7 +34,7 @@ public class Actions {
     public int[] locationActions(Place[][][] world, Scanner keyboard) {
         Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
         System.out.println("What Do you do?");
-        if(thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
+        if (thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
             System.out.println("You encountered monster!!! press a to attack");
         }
         try {
@@ -70,22 +70,21 @@ public class Actions {
                 case "map":
                     mapPrinter(world, player.location);
                     break;
+                case "a":
                 case "attack":
-                    System.out.println("test");
                     if (!thisPlace.monsters.isEmpty()) {
-                        System.out.println("test2");
                         thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
                     }
                     break;
                 case "exchange":
-                    if(player.attributePoints > 0){
+                    if (player.attributePoints > 0) {
                         player.attributePointsExchange();
-                    }else {
+                    } else {
                         System.out.println("You don't have enough points");
                     }
                     break;
                 case "loot":
-                    ListHelper.showList("In loot you have: ",player.loot,false);
+                    ListHelper.showList("In loot you have: ", player.loot, false);
                     break;
                 case "takeoff":
                     player.takeOff();
@@ -95,30 +94,30 @@ public class Actions {
                     break;
                 case "special":
                     if (!thisPlace.monsters.isEmpty() && ((Weapon) player.equippedItems.get(WearSlot.mainHand)).isRanged) {
-                        thisPlace.monsters = Judge.combat(player, thisPlace, 0,null, player);
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
                     }
                     break;
                 case "wear":
                     player.wear();
                     break;
                 case "startquest":
-                    if(thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy){
+                    if (thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy) {
                         questManager.chooseQuest(player);
-                    }else{
+                    } else {
                         System.out.println("You cannot start quest here!\n");
                     }
                     break;
                 case "finishquest":
-                    if(thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy){
+                    if (thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy) {
                         questManager.finishQuest(player);
-                    }else{
+                    } else {
                         System.out.println("You cannot finish quest here!\n");
                     }
                     break;
                 case "checkmonster":
                     if (!thisPlace.monsters.isEmpty()) {
                         ListIterator<Monster> o = thisPlace.monsters.listIterator();
-                        while(o.hasNext()) {
+                        while (o.hasNext()) {
                             Monster nextMonster = o.next();
                             System.out.println(nextMonster.description);
                             nextMonster.showEquipItems();
@@ -127,13 +126,13 @@ public class Actions {
                     }
                     break;
                 case "buy":
-                    if(thisPlace.biome == Biome.shop){
+                    if (thisPlace.biome == Biome.shop) {
                         Monster seller = thisPlace.monsters.get(0);
                         LivingEntity.tradeItem(seller, player, "buy");
                     }
                     break;
                 case "sell":
-                    if(thisPlace.biome == Biome.shop){
+                    if (thisPlace.biome == Biome.shop) {
                         Monster seller = thisPlace.monsters.get(0);
                         LivingEntity.tradeItem(player, seller, "sell");
                     }
@@ -150,10 +149,10 @@ public class Actions {
                     }
                     break;
                 case "search":
-                    if(thisPlace.placeFeature != null){
+                    if (thisPlace.placeFeature != null) {
                         System.out.println("You started searching through " + thisPlace.placeFeature.type);
                         player.pickUpItems(thisPlace.placeFeature.hiddenItems);
-                    }else{
+                    } else {
                         System.out.println("You don't have anything to check here");
                     }
                     break;
@@ -172,57 +171,61 @@ public class Actions {
                 default:
                     System.out.println("i don't recognize this try again");
             }
-            if(TURNCOUNTERCOMMANDS.contains(command)){
+            if (TURNCOUNTERCOMMANDS.contains(command)) {
                 turnCounter(thisPlace);
             }
-            if(TRAVELCOMMANDS.contains(command)){
+            if (TRAVELCOMMANDS.contains(command)) {
                 player.effectTurnCounter();
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("error");
         }
         return player.location;
     }
+
     public static void mapPrinter(Place[][][] world, int[] location) {
-
-        for (int i=0; i < world.length; i++){
-            for (int j=0; j < world[0].length; j++){
-
-                for (int k=0; k < world[0][0].length; k++){
-                    Biome biome = world[i][j][k].biome;
-                    if (location[0]==i && location[1]==j && location[2]==k){
-                        TextColorGenerator.purpleText("00");
-                    }else {
-                        switch (biome) {
-                            case desert:
-                                TextColorGenerator.yellowText("~~");
-                                break;
-                            case mountain:
-                                TextColorGenerator.whiteText("^^");
-                                break;
-                            case hill:
-                                TextColorGenerator.greenText("hh");
-                                break;
-                            case forest:
-                                TextColorGenerator.greenText("##");
-                                break;
-                            case meadow:
-                                TextColorGenerator.cyanText("mm");
-                                break;
-                            case swamp:
-                                TextColorGenerator.blueText("ss");
-                                break;
-                        }
+        int i = 0;
+        for (int j = 0; j < world[i].length; j++) {
+            for (int k = 0; k < world[i][j].length; k++) {
+                Place place = world[i][j][k];
+                Biome biome = (place != null) ? place.biome : null;
+                if (location[0] == i && location[1] == j && location[2] == k) {
+                    TextColorGenerator.purpleText("00");
+                } else {
+                    switch (biome) {
+                        case desert:
+                            TextColorGenerator.yellowText("~~");
+                            break;
+                        case mountain:
+                            TextColorGenerator.whiteText("^^");
+                            break;
+                        case hill:
+                            TextColorGenerator.greenText("hh");
+                            break;
+                        case forest:
+                            TextColorGenerator.greenText("##");
+                            break;
+                        case meadow:
+                            TextColorGenerator.cyanText("mm");
+                            break;
+                        case swamp:
+                            TextColorGenerator.blueText("ss");
+                            break;
+                        default:
+                            System.out.print("??"); // nieznane
+                            break;
                     }
                 }
-                System.out.print("\n");
             }
-
+            System.out.print("\n");
         }
 
-
     }
+
+
+
+
 
     public void playerMove(String command, Place[][][] world){
         Place thisPlace = null;

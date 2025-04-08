@@ -148,11 +148,7 @@ public class Human extends AdventurerClass implements Serializable{
         }
         if(itemsOntheGround != null) {
             loot.addAll(itemsOntheGround);
-            ListIterator<Item> groundItemIterator = itemsOntheGround.listIterator();
-            while (groundItemIterator.hasNext()) {
-                GameEntity nextOnTheGround = groundItemIterator.next();
-                System.out.println("podniosłeś: " + nextOnTheGround.description);
-            }
+            itemsOntheGround.stream().forEach(itemOnTheGround -> System.out.println("podniosłeś: " + itemOnTheGround.description));
             itemsOntheGround.clear();
             ListHelper.showList("You have in inventory: ",this.loot,false);
         }

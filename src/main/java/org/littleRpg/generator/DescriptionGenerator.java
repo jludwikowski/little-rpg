@@ -189,18 +189,14 @@ public class DescriptionGenerator extends Generator {
         }
         if (place.monsters != null && !place.monsters.isEmpty()){
             placeDescription += "\nHere is standing: \n";
-            ListIterator<Monster> i = place.monsters.listIterator();
-            while(i.hasNext()) {
-                Monster nextMonster = i.next();
-                placeDescription +=  "-" + nextMonster.getDescription() + " level " + nextMonster.monsterLevel+"\n";
+            for(Monster monster : place.monsters){
+                placeDescription +=  "-" + monster.getDescription() + " level " + monster.monsterLevel+"\n";
             }
         }
         if (place.items != null && place.biome != Biome.shop && !place.items.isEmpty()) {
             placeDescription += "\nHere you can find items: \n";
-            ListIterator<Item> k = place.items.listIterator();
-            while (k.hasNext()) {
-                Item nextItem = k.next();
-                placeDescription += "-" + nextItem.getDescription() + "\n";
+            for(Item item : place.items){
+                placeDescription += "-" + item.getDescription() + "\n";
 
             }
         }
