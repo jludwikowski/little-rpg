@@ -11,10 +11,10 @@ import java.util.Scanner;
 //import static org.littleRpg.model.PlaceArchitectureTypes.shop;
 
 public class Actions {
-    public static final List<String> TRAVELCOMMANDS = Arrays.asList("north", "south", "east", "west", "enter", "exit");
-    public static final List<String> TURNCOUNTERCOMMANDS = Arrays.asList("pickup", "attack", "takeoff", "special", "wear",
+    public static final List<String> TRAVELCOMMANDS = List.of("north", "south", "east", "west", "enter", "exit");
+    public static final List<String> TURNCOUNTERCOMMANDS = List.of("pickup", "attack", "takeoff", "special", "wear",
             "buy", "sell", "useitem", "learn", "useskill", "drop");
-    public static final List<String> STATICCOMMANDS = Arrays.asList("stats", "help", "map", "loot", "myitems", "checkmonster",
+    public static final List<String> STATICCOMMANDS = List.of("stats", "help", "map", "loot", "myitems", "checkmonster",
             "save", "load");
     public Human player;
     public QuestManager questManager = new QuestManager();
@@ -31,7 +31,7 @@ public class Actions {
         }
     }
 
-    public int[] locationActions(Place[][][] world, Scanner keyboard) {
+    /*public int[] locationActions(Place[][][] world, Scanner keyboard) {
         Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
         System.out.println("What Do you do?");
         if (thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
@@ -43,16 +43,7 @@ public class Actions {
                 case "stats":
                     System.out.println(player.getStats());
                     break;
-                case "north":
-                case "n":
-                case "enter":
-                case "exit":
-                case "east":
-                case "e":
-                case "west":
-                case "w":
-                case "south":
-                case "s":
+                case "north", "n", "enter", "exit", "east", "e","west", "w", "south", "s":
                     playerMove(command, world);
                     break;
                 case "pickup":
@@ -70,8 +61,7 @@ public class Actions {
                 case "map":
                     mapPrinter(world, player.location);
                     break;
-                case "a":
-                case "attack":
+                case "a", "attack":
                     if (!thisPlace.monsters.isEmpty()) {
                         thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
                     }
@@ -180,6 +170,132 @@ public class Actions {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("error");
+        }
+        return player.location;
+    }*/
+
+
+
+    public int[] locationActions(Place[][][] world, Scanner keyboard) {
+        Place thisPlace = world[player.location[0]][player.location[1]][player.location[2]];
+        System.out.println("What do you do?");
+        if (thisPlace.monsters != null && !thisPlace.monsters.isEmpty()) {
+            System.out.println("You encountered a monster! Press 'a' to attack.");
+        }
+        try {
+            String command = keyboard.nextLine();
+
+            switch (command) {
+                case "stats" -> System.out.println(player.getStats());
+                case "north", "n", "enter", "exit", "east", "e", "west", "w", "south", "s" -> playerMove(command, world);
+                case "pickup" -> {
+                    player.pickUpItems(thisPlace.items);
+                    thisPlace.items.clear();
+                }
+                case "help" -> System.out.println("""
+                    stats - player stats
+                    
+                    Movement:
+                    north, south, east, west, enter, exit
+                    
+                    Combat:
+                    attack (a), special
+                    
+                    Inventory:
+                    pickup, loot, myitems, wear, takeoff, drop
+                    
+                    Skills:
+                    learn, useskill
+                    
+                    Other:
+                    map, checkmonster, startquest, finishquest, useitem
+                    save, load
+                    """);
+                case "map" -> mapPrinter(world, player.location);
+                case "a", "attack" -> {
+                    if (!thisPlace.monsters.isEmpty()) {
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
+                    }
+                }
+                case "exchange" -> {
+                    if (player.attributePoints > 0) {
+                        player.attributePointsExchange();
+                    } else {
+                        System.out.println("You don't have enough points");
+                    }
+                }
+                case "loot" -> ListHelper.showList("In loot you have: ", player.loot, false);
+                case "takeoff" -> player.takeOff();
+                case "myitems" -> player.showEquipItems();
+                case "special" -> {
+                    if (!thisPlace.monsters.isEmpty() && player.equippedItems.get(WearSlot.mainHand) instanceof Weapon weapon && weapon.isRanged) {
+                        thisPlace.monsters = Judge.combat(player, thisPlace, 0, null, player);
+                    }
+                }
+                case "wear" -> player.wear();
+                case "startquest" -> {
+                    if (thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy) {
+                        questManager.chooseQuest(player);
+                    } else {
+                        System.out.println("You cannot start a quest here!");
+                    }
+                }
+                case "finishquest" -> {
+                    if (thisPlace.biome == Biome.shop || thisPlace.biome == Biome.smithy) {
+                        questManager.finishQuest(player);
+                    } else {
+                        System.out.println("You cannot finish a quest here!");
+                    }
+                }
+                case "checkmonster" -> {
+                    for (Monster monster : thisPlace.monsters) {
+                        System.out.println(monster.description);
+                        monster.showEquipItems();
+                        System.out.println("~~~~~~~~~~~~~~");
+                    }
+                }
+                case "buy" -> {
+                    if (thisPlace.biome == Biome.shop) {
+                        Monster seller = thisPlace.monsters.get(0);
+                        LivingEntity.tradeItem(seller, player, "buy");
+                    }
+                }
+                case "sell" -> {
+                    if (thisPlace.biome == Biome.shop) {
+                        Monster seller = thisPlace.monsters.get(0);
+                        LivingEntity.tradeItem(player, seller, "sell");
+                    }
+                }
+                case "useitem" -> player.useItem();
+                case "learn" -> player.learnSkill();
+                case "useskill" -> {
+                    if (!thisPlace.monsters.isEmpty()) {
+                        player.useSkill(player, thisPlace, player);
+                    }
+                }
+                case "search" -> {
+                    if (thisPlace.placeFeature != null) {
+                        System.out.println("You started searching through " + thisPlace.placeFeature.type);
+                        player.pickUpItems(thisPlace.placeFeature.hiddenItems);
+                    } else {
+                        System.out.println("You don't have anything to check here");
+                    }
+                }
+                case "look" -> thisPlace.getDescription();
+                case "save" -> LoadSaveOperator.savePoint(player);
+                case "load" -> player = LoadSaveOperator.loadPoint();
+                case "drop" -> player.dropItems();
+                default -> System.out.println("I don't recognize this. Try again.");
+            }
+            if (TURNCOUNTERCOMMANDS.contains(command)) {
+                turnCounter(thisPlace);
+            }
+            if (TRAVELCOMMANDS.contains(command)) {
+                player.effectTurnCounter();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error during input processing.");
         }
         return player.location;
     }

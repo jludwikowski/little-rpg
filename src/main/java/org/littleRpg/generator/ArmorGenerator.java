@@ -13,7 +13,7 @@ public class ArmorGenerator extends Generator<Armor> {
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","dragon","ugly","serpent","dwarf-crafted","elf-crafted","legendary"});
         AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient", "mystic"});
 
-        this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
+        this.adjectiveTypes = List.of(timeAdjective, featureAdjective);
         this.exclusives = null;
     }
     public Map<WearSlot, Armor> armorMapGenerator(int probability){
@@ -118,17 +118,17 @@ public class ArmorGenerator extends Generator<Armor> {
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case helmet:
-                return new Armor(name, type.toString(), 5,4, Arrays.asList(WearSlot.head), 10,1);
+                return new Armor(name, type.toString(), 5,4, List.of(WearSlot.head), 10,1);
             case shield:
-                return new Armor(name, type.toString(), 9,6, Arrays.asList(WearSlot.offHand),18,1);
+                return new Armor(name, type.toString(), 9,6, List.of(WearSlot.offHand),18,1);
             case gloves:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.hands),7,1);
+                return new Armor(name, type.toString(), 1, 2, List.of(WearSlot.hands),7,1);
             case shoes:
-                return new Armor(name, type.toString(), 1, 2, Arrays.asList(WearSlot.feet),10,1);
+                return new Armor(name, type.toString(), 1, 2, List.of(WearSlot.feet),10,1);
             case pants:
-                return new Armor(name, type.toString(), 2, 3, Arrays.asList(WearSlot.legs),12,1);
+                return new Armor(name, type.toString(), 2, 3, List.of(WearSlot.legs),12,1);
             case jacket:
-                return new Armor(name, type.toString(), 3, 4, Arrays.asList(WearSlot.torso),16,1);
+                return new Armor(name, type.toString(), 3, 4, List.of(WearSlot.torso),16,1);
 
         }
         return null;

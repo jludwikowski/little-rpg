@@ -45,7 +45,7 @@ public class Human extends AdventurerClass implements Serializable{
     }
 
     public void chooseRace() {
-        List <MonsterTypes> playerRaces = Arrays.asList(MonsterTypes.elf, MonsterTypes.human, MonsterTypes.orc, MonsterTypes.goblin);
+        List <MonsterTypes> playerRaces = List.of(MonsterTypes.elf, MonsterTypes.human, MonsterTypes.orc, MonsterTypes.goblin);
         playerRaces.forEach(race -> System.out.println(race));
         MonsterGenerator monsterGenerator = new MonsterGenerator();
         while(true){
@@ -63,7 +63,7 @@ public class Human extends AdventurerClass implements Serializable{
     }
 
     public void chooseClass() {
-        List <PlayerClasses> playerClasses = Arrays.asList(PlayerClasses.mage, PlayerClasses.paladin, PlayerClasses.warrior, PlayerClasses.priest);
+        List <PlayerClasses> playerClasses = List.of(PlayerClasses.mage, PlayerClasses.paladin, PlayerClasses.warrior, PlayerClasses.priest);
         playerClasses.forEach(playerClass -> System.out.println(playerClass));
         while(true){
             try {
@@ -80,13 +80,18 @@ public class Human extends AdventurerClass implements Serializable{
 
     @Override
     public String getStats() {
-        String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
+        String description = """
+                maxHp: %.0f
+                currentHP: %.0f
+                
+                """.formatted(this.maxHp, this.currentHp);
+        /*String description = "maxHp: " + String.valueOf(this.maxHp) + "\n" + "currentHP: " + String.valueOf(this.currentHp) + "\n" +
                 "actualHp: " + String.valueOf(getPercentStats(this.currentHp, this.maxHp)+"%") + "\n" + getBar(Attribute.maxHp) + "\n" +
                 "actualMana: " + String.valueOf(getPercentStats(this.currentMana, this.maxMana)+"%") + "\n" + "attack: " + String.valueOf(getAttribute(Attribute.attack)) + "\n" +
                 "strength: " + String.valueOf(getAttribute(Attribute.strength)) + "\n" +
                 "damageReduction: " + String.valueOf(getAttribute(Attribute.monsterDamageReduction)+ "\n"+
                 "goldCoins: " + this.goldCoins + "\n"+
-                "exp: " + (int) Math.floor(this.exp) + "\n");
+                "exp: " + (int) Math.floor(this.exp) + "\n");*/
         for (String attributeName: survivalAttributes.keySet()){
             description += survivalAttributes.get(attributeName).getDescription() + "\n";
         }
@@ -185,7 +190,7 @@ public class Human extends AdventurerClass implements Serializable{
     }
 
     public void attributePointsExchange(){
-        List<String> attributeList = Arrays.asList("maxHp", "maxMana", "attack", "armor", "strength");
+        List<String> attributeList = List.of("maxHp", "maxMana", "attack", "armor", "strength");
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("On your account is "+ this.attributePoints + " archetypePoints\n" +

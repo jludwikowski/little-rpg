@@ -7,6 +7,7 @@ import org.littleRpg.model.AdjectivesTable;
 import org.littleRpg.model.WearSlot;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class WeaponGenerator extends Generator<Weapon>{
 
@@ -14,7 +15,7 @@ public class WeaponGenerator extends Generator<Weapon>{
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","sturdy","bloody","poisoned","exceptional","elf-crafted", "legendary"});
         AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient", "mystic"});
 
-        this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
+        this.adjectiveTypes = List.of(timeAdjective, featureAdjective);
         this.exclusives = null;
     }
     @Override
@@ -98,13 +99,13 @@ public class WeaponGenerator extends Generator<Weapon>{
         String name = type + " " + String.valueOf(Math.floor(Math.random()*1000));
         switch(type) {
             case stick:
-                return new Weapon(name, type.toString(), 3, 2,2, false,false, Arrays.asList(WearSlot.mainHand),10,1);
+                return new Weapon(name, type.toString(), 3, 2,2, false,false, List.of(WearSlot.mainHand),10,1);
             case axe:
-                return new Weapon(name, type.toString(), 10, 10, 7, false,false, Arrays.asList(WearSlot.mainHand),28,1);
+                return new Weapon(name, type.toString(), 10, 10, 7, false,false, List.of(WearSlot.mainHand),28,1);
             case sword:
-                return new Weapon(name, type.toString(), 8, 9, 6, false,false, Arrays.asList(WearSlot.mainHand),30,1);
+                return new Weapon(name, type.toString(), 8, 9, 6, false,false, List.of(WearSlot.mainHand),30,1);
             case bow:
-                return new Weapon(name, type.toString(), 5, 6,5, true, true, Arrays.asList(WearSlot.mainHand, WearSlot.offHand),25,1);
+                return new Weapon(name, type.toString(), 5, 6,5, true, true, List.of(WearSlot.mainHand, WearSlot.offHand),25,1);
 
 
         }

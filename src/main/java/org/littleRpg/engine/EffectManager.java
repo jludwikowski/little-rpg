@@ -39,7 +39,7 @@ public class EffectManager implements Serializable {
                 .build());
 
     }
-    public static Effect getItemEffect(String effectName) {
+ /*   public static Effect getItemEffect(String effectName) {
         ListIterator<Effect> effectListIterator = itemEffect.listIterator();
         while(effectListIterator.hasNext()){
             Effect effect = effectListIterator.next();
@@ -48,18 +48,29 @@ public class EffectManager implements Serializable {
             }
         }
         return null;
+    }*/
+
+    public static Effect getItemEffect(String effectName) {
+        for (Effect effect : itemEffect) {
+            if (effectName.equals(effect.name)) {
+                return effect;
+            }
+        }
+        return null;
     }
 
     public String getRandomEffectName() {
-        Random random = new Random();
+        /*Random random = new Random();
         int randomIndex = random.nextInt(itemEffect.size());
-        return itemEffect.get(randomIndex).name;
+        return itemEffect.get(randomIndex).name;*/
+        return getRandomEffect().name;
     }
 
     public Effect getRandomEffect() {
         Random random = new Random();
-        int randomIndex = random.nextInt(itemEffect.size());
-        return itemEffect.get(randomIndex);
+        /*int randomIndex = random.nextInt(itemEffect.size());
+        return itemEffect.get(randomIndex);*/
+        return itemEffect.get(random.nextInt(itemEffect.size()));
     }
 
 }

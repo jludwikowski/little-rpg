@@ -36,7 +36,7 @@ public class MonsterGenerator extends Generator<Monster> {
         AdjectivesTable sizeAdjectives = new AdjectivesTable(60, new String[] {"big","small","huge","enormous"});
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"ugly","strange","dark","pale"});
 
-        this.adjectiveTypes = Arrays.asList(sizeAdjectives, featureAdjective);
+        this.adjectiveTypes = List.of(sizeAdjectives, featureAdjective);
         this.exclusives = null;
     }
 

@@ -14,18 +14,18 @@ public class PlaceFeatureGenerator extends Generator<PlaceFeature>{
         AdjectivesTable sizeAdjectives = new AdjectivesTable(60, new String[] {"big","small","huge","enormous"});
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"ugly","strange","destroyed"});
 
-        this.adjectiveTypes = Arrays.asList(sizeAdjectives, featureAdjective);
+        this.adjectiveTypes = List.of(sizeAdjectives, featureAdjective);
         this.exclusives = null;
 
-        biomeFeatureTypes.put(Biome.desert,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.forest,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.mountain,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.meadow,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.shop,new ArrayList<>());
-        biomeFeatureTypes.put(Biome.hill,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.swamp,Arrays.asList(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
-        biomeFeatureTypes.put(Biome.smithy,new ArrayList<>());
-        biomeFeatureTypes.put(Biome.cave,new ArrayList<>());
+        biomeFeatureTypes.put(Biome.desert,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.forest,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.mountain,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.meadow,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.shop,List.of());
+        biomeFeatureTypes.put(Biome.hill,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.swamp,List.of(PlaceFeatureType.tree,PlaceFeatureType.cave,PlaceFeatureType.ruins,PlaceFeatureType.walls,PlaceFeatureType.shop, PlaceFeatureType.smithy));
+        biomeFeatureTypes.put(Biome.smithy,List.of());
+        biomeFeatureTypes.put(Biome.cave,List.of());
 
     }
 

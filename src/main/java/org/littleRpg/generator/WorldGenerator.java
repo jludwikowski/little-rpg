@@ -4,6 +4,7 @@ import org.littleRpg.engine.Roller;
 import org.littleRpg.model.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.littleRpg.model.Biome.shop;
 import static org.littleRpg.model.Biome.smithy;
@@ -40,7 +41,7 @@ public class WorldGenerator {
 
     private static Place createStartLocation(Place location) {
         location.monsters = null;
-        location.items.add(new Weapon("sword","old sword",2,5,2,false, false, Arrays.asList(WearSlot.mainHand),10,1));
+        location.items.add(new Weapon("sword","old sword",2,5,2,false, false, List.of(WearSlot.mainHand),10,1));
         return location;
     }
 

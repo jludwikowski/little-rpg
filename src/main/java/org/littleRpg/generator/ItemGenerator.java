@@ -6,6 +6,7 @@ import org.littleRpg.engine.SkillManager;
 import org.littleRpg.model.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ItemGenerator extends Generator<Item>{
 
@@ -16,7 +17,7 @@ public class ItemGenerator extends Generator<Item>{
         AdjectivesTable featureAdjective = new AdjectivesTable(70, new String[] {"ornate","sturdy","ugly","strange","exceptional","elf-crafted"});
         AdjectivesTable timeAdjective = new AdjectivesTable(60, new String[] {"old","weathered","new","ancient"});
         this.skillManager = new SkillManager();
-        this.adjectiveTypes = Arrays.asList(timeAdjective, featureAdjective);
+        this.adjectiveTypes = List.of(timeAdjective, featureAdjective);
         this.exclusives = null;
         this.effectManager = new EffectManager();
     }
@@ -142,7 +143,7 @@ public class ItemGenerator extends Generator<Item>{
                 necklace.setWeight(0.3);
                 necklace.setPrice(9);
                 necklace.setEffect(effectManager.getRandomEffect());
-                necklace.setWearSlots(Arrays.asList(WearSlot.neck));
+                necklace.setWearSlots(List.of(WearSlot.neck));
                 necklace.setItemLevel(1);
                 return necklace.build();
             case ring:
@@ -150,7 +151,7 @@ public class ItemGenerator extends Generator<Item>{
                 ring.setWeight(0.2);
                 ring.setPrice(7);
                 ring.setEffect(effectManager.getRandomEffect());
-                ring.setWearSlots(Arrays.asList(WearSlot.finger));
+                ring.setWearSlots(List.of(WearSlot.finger));
                 ring.setItemLevel(1);
                 return ring.build();
         }

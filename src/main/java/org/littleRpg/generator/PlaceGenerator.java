@@ -32,7 +32,7 @@ public class PlaceGenerator extends Generator<MapPlace> {
 
     public PlaceGenerator() {
         AdjectivesTable featureAdjective = new AdjectivesTable(80, new String[] {"cheerful","strange","dark","foreboding","quiet"});
-        this.adjectiveTypes = Arrays.asList(featureAdjective);
+        this.adjectiveTypes = List.of(featureAdjective);
         this.exclusives = null;
     }
 

@@ -149,15 +149,15 @@ public class DescriptionGenerator extends Generator {
         endDescriptions.put(Biome.cave, caveDescriptionEnd);
 
 
-        weatherTypes.put(Biome.desert, Arrays.asList("sunny","sandstorm"));
-        weatherTypes.put(Biome.forest,Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.hill,Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.meadow,Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.swamp,Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.mountain, Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.shop, Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.smithy, Arrays.asList("sunny", "foggy", "rainy", "stormy"));
-        weatherTypes.put(Biome.cave, Arrays.asList("it's cave !!! Hello "));
+        weatherTypes.put(Biome.desert, List.of("sunny","sandstorm"));
+        weatherTypes.put(Biome.forest,List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.hill,List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.meadow,List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.swamp,List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.mountain, List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.shop, List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.smithy, List.of("sunny", "foggy", "rainy", "stormy"));
+        weatherTypes.put(Biome.cave, List.of("it's cave !!! Hello "));
     }
     public String getEntity(){
         return null;
